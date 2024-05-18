@@ -3,7 +3,7 @@ import { Text, Pressable } from "react-native";
 interface CheckBoxProps {
   onPress: () => void;
   checked?: boolean;
-  className: string;
+  className?: string;
 }
 
 const bgColor = "bg-white";
