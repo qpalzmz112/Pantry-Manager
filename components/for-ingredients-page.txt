@@ -1,0 +1,53 @@
+Item quantity buttons: (for listItem)
+<View className="flex-row pt-1">
+          <Pressable
+            className="pr-1"
+            onPress={() => updateItem(item.name, "qty", item.qty - 1)}
+            disabled={item.qty == 0}
+          >
+            <AntDesign
+              name="minuscircleo"
+              size={18}
+              color={item.qty == 0 ? "gray" : "black"}
+            />
+          </Pressable>
+          <Text>{`Qty: ${item.qty}`}</Text>
+          <Pressable
+            className="px-1"
+            onPress={() => updateItem(item.name, "qty", item.qty + 1)}
+          >
+            <AntDesign name="pluscircleo" size={18} color="black" />
+          </Pressable>
+        </View>
+
+Item date: (for listItem) 
+{item.useByDate && (
+          <View className="flex-row items-center py-1">
+            <Text className="text-sm  pr-2">Use By:</Text>
+            <TextInput
+              className={`${
+                isPurchased ? "text-gray-600" : ""
+              } border-b-2 h-[2.5vh] min-w-[10vw]`}
+              value={useByText}
+              cursorColor="black"
+              keyboardType="number-pad"
+            />
+          </View>
+        )}
+
+Get date as string: (for listItem)
+let useByText;
+  if (useByDate == null) {
+    useByText = "";
+  } else {
+    if (typeof useByDate == "string") {
+      // JSON can't serialize dates
+      useByDate = new Date(useByDate);
+    }
+    useByText = `${
+      useByDate.getMonth() + 1
+    }-${useByDate.getDate()}-${useByDate.getFullYear()}`;
+  }
+
+
+

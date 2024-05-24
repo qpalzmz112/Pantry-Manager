@@ -3,7 +3,6 @@ interface Item {
   isGrocery: boolean;
   isRecurring: boolean;
   isPurchased: boolean;
-  useByDate: Date;
 }
 
 export { Item };

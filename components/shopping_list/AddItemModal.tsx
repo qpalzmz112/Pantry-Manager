@@ -14,12 +14,12 @@ export default function AddItemModal({
   nameAlreadyExists: (name: string) => boolean;
 }) {
   const [itemName, onChangeItemName] = useState("");
-  const emptyDate = "MM-DD-YY";
-  const [date, onChangeDate] = useState(emptyDate);
+
   const [isGrocery, setIsGrocery] = useState(true);
   const [isRecurring, setIsRecurring] = useState(false);
   const [addItemPressed, setAddItemPressed] = useState(false);
   const [closeButtonPressed, setCloseButtonPressed] = useState(false);
+  const [showingInfo, setShowingInfo] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
   const bgColor = "bg-white";
@@ -27,10 +27,7 @@ export default function AddItemModal({
   const textInputStyle = `border-2 ${borderColor} p-1 w-[80vw] ${bgColor} text-2xl`;
 
   const canAddItemCheck = () => {
-    if (date.length > 0 && date.length < 8) {
-      setErrorMessage("Please enter a full date or no date.");
-      return false;
-    } else if (nameAlreadyExists(itemName)) {
+    if (nameAlreadyExists(itemName)) {
       setErrorMessage("An item with this name already exists.");
       return false;
     } else if (itemName.length == 0) {
@@ -39,7 +36,6 @@ export default function AddItemModal({
     }
     return true;
   };
-  console.log(errorMessage);
 
   return (
     <Modal transparent={false} onRequestClose={close}>
@@ -55,40 +51,6 @@ export default function AddItemModal({
           cursorColor="black"
         />
 
-        <Text className="w-[80vw] text-left pt-4">Use by Date (optional):</Text>
-        <TextInput
-          className={textInputStyle}
-          keyboardType="number-pad"
-          maxLength={8}
-          onChangeText={(text) => {
-            setErrorMessage("");
-            if (text[text.length - 1] < "0" || text[text.length - 1] > "9") {
-              if (text.length == 3 || text.length == 6) {
-                onChangeDate(text);
-                return; // don't want to cause problems with the auto-inserted hyphens
-              }
-              // only allow digits to be entered
-              text = text.slice(0, -1);
-              return;
-            }
-            if (text.length == 2 || text.length == 5) {
-              if (text.length < date.length) {
-                text = text.slice(0, -1);
-              } else {
-                text += "-";
-              }
-            }
-            onChangeDate(text);
-          }}
-          onPressIn={() => {
-            if (date == emptyDate) {
-              onChangeDate("");
-            }
-          }}
-          value={date}
-          cursorColor="black"
-        ></TextInput>
-
         <View className="w-[80vw] flex items-left mt-4">
           <Text>Grocery Item?</Text>
           <CheckBox
@@ -102,8 +64,22 @@ export default function AddItemModal({
         <View className="w-[80vw] flex items-left mt-4">
           <View className="flex-row">
             <Text>Recurring Purchase?</Text>
-            <Feather name="info" size={20} color="black" className="pl-2" />
+            <Pressable onPress={() => setShowingInfo(!showingInfo)}>
+              <Feather name="info" size={20} color="black" className="pl-2" />
+            </Pressable>
           </View>
+
+          {showingInfo && (
+            <Text
+              className="bg-white p-1"
+              onPress={() => {
+                setShowingInfo(false);
+              }}
+            >
+              Recurring purchases will stay on your shopping list when you clear
+              it.
+            </Text>
+          )}
 
           <CheckBox
             onPress={() => {
@@ -127,21 +103,15 @@ export default function AddItemModal({
             setAddItemPressed(false);
           }}
           onPress={() => {
-            let month, day, year;
-            [month, day, year] = date.split("-");
             if (!canAddItemCheck()) {
               return;
             }
+
             addItem({
               name: itemName,
               isGrocery: isGrocery,
               isRecurring: isRecurring,
               isPurchased: false,
-              useByDate: new Date(
-                2000 + parseInt(year),
-                parseInt(month) - 1,
-                parseInt(day)
-              ),
             });
             close();
           }}
