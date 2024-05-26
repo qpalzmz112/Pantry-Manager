@@ -28,6 +28,12 @@ export default function DeleteSomethingModal({
           />
           <DeleteSomethingButton text="No" onPress={close} />
         </View>
+        {type == "category" && (
+          <Text className="max-w-[80vw] mt-4 text-xl text-center">
+            The ingredients in this category will remain, but will be
+            uncategorized.
+          </Text>
+        )}
       </View>
     </Modal>
   );
