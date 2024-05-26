@@ -1,12 +1,13 @@
-import { Text, Pressable, View } from "react-native";
+import { Text, Pressable } from "react-native";
 import { useState } from "react";
-import { Ingredient } from "@/types/ingredients";
 
 export default function AddIngredientButton({
+  text,
   errorMessage,
   canAddCheck,
   addIngredient,
 }: {
+  text: string;
   errorMessage: string;
   canAddCheck: () => boolean;
   addIngredient: () => void;
@@ -15,11 +16,11 @@ export default function AddIngredientButton({
   return (
     <>
       <Pressable
-        className={`p-2 mt-10 ${
+        className={`p-2 mx-4 mt-10 ${
           errorMessage == "" ? "bg-gray-100" : "bg-gray-200"
         } border-2 ${
           pressed ? "border-gray-300" : "border-gray-400"
-        } rounded-md`}
+        } rounded-md max-w-[50vw] flex justify-center`}
         disabled={!(errorMessage == "")}
         onPressIn={() => {
           setPressed(true);
@@ -40,14 +41,11 @@ export default function AddIngredientButton({
               : errorMessage == ""
               ? "text-black"
               : "text-gray-400"
-          } text-xl`}
+          } text-xl text-center`}
         >
-          Add Ingredient
+          {text}
         </Text>
       </Pressable>
-      {errorMessage != "" && (
-        <Text className="text-black pt-2 max-w-[80vw]">{errorMessage}</Text>
-      )}
     </>
   );
 }

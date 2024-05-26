@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { Entypo } from "@expo/vector-icons";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { CreateButton, AddItemModal, ListItem } from "@/components/index";
 import { Item } from "@/types/shopping_list";
 import { set_tab, store_data, get_data } from "@/code/data_functions";
@@ -19,6 +18,7 @@ const sortItemsByPurchased = (item1: Item, item2: Item) => {
 };
 
 export default function ShoppingList() {
+  const [loadedItems, setLoadedItems] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [items, updateItems] = useState<Item[]>([]);
   const [collapsedSections, setCollapsedSections] = useState({
@@ -27,12 +27,7 @@ export default function ShoppingList() {
   });
 
   useEffect(() => {
-    set_tab("ShoppingList");
-  });
-
-  useEffect(() => {
-    if (items.length == 0) {
-      // don't overwrite saved data on render
+    if (!loadedItems) {
       return;
     }
     store_data(items, "items");
@@ -40,11 +35,11 @@ export default function ShoppingList() {
 
   useEffect(() => {
     get_data("items").then((val) => {
-      if (val != null && val.length != items.length) {
-        updateItems(val);
-      }
+      updateItems(val);
+      setLoadedItems(true);
     });
-  });
+    set_tab("ShoppingList");
+  }, []);
 
   const updateItem = (itemName: string, fieldName: string, value: any) => {
     if (value == null) {
@@ -96,7 +91,11 @@ export default function ShoppingList() {
               )
               .sort(sortItemsByPurchased),
           },
-        ]}
+        ].filter(
+          (obj) =>
+            obj.data.length > 0 ||
+            collapsedSections[obj.title as keyof typeof collapsedSections]
+        )}
         renderItem={({ item }) => (
           <ListItem item={item} updateItem={updateItem} />
         )}

@@ -2,7 +2,8 @@ import { Text, View, Modal, TextInput, Pressable } from "react-native";
 import { useState } from "react";
 import { Feather } from "@expo/vector-icons";
 import { Item } from "@/types/shopping_list";
-import CheckBox from "./CheckBox";
+import CheckBox from "../CheckBox";
+import AddItemButtonPair from "./AddItemButtonPair";
 
 export default function AddItemModal({
   close,
@@ -17,14 +18,9 @@ export default function AddItemModal({
 
   const [isGrocery, setIsGrocery] = useState(true);
   const [isRecurring, setIsRecurring] = useState(false);
-  const [addItemPressed, setAddItemPressed] = useState(false);
   const [closeButtonPressed, setCloseButtonPressed] = useState(false);
   const [showingInfo, setShowingInfo] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-
-  const bgColor = "bg-white";
-  const borderColor = "border-gray-500";
-  const textInputStyle = `border-2 ${borderColor} p-1 w-[80vw] ${bgColor} text-2xl`;
 
   const canAddItemCheck = () => {
     if (nameAlreadyExists(itemName)) {
@@ -42,7 +38,7 @@ export default function AddItemModal({
       <View className="w-[100vw] h-[100vh] bg-gray-100 flex-col justify-center items-center">
         <Text className="w-[80vw] text-left">Item Name:</Text>
         <TextInput
-          className={textInputStyle}
+          className="border-2 border-gray-500 p-1 w-[80vw] bg-white text-2xl"
           onChangeText={(text) => {
             onChangeItemName(text);
             setErrorMessage("");
@@ -89,48 +85,25 @@ export default function AddItemModal({
           ></CheckBox>
         </View>
 
-        <Pressable
-          className={`p-2 ${
-            errorMessage == "" ? bgColor : "bg-gray-200"
-          } border-2 ${
-            addItemPressed ? "border-gray-300" : borderColor
-          } rounded-md`}
-          disabled={!(errorMessage == "")}
-          onPressIn={() => {
-            setAddItemPressed(true);
-          }}
-          onPressOut={() => {
-            setAddItemPressed(false);
-          }}
-          onPress={() => {
-            if (!canAddItemCheck()) {
-              return;
-            }
-
+        <AddItemButtonPair
+          errorMessage={errorMessage}
+          canAddItemCheck={canAddItemCheck}
+          addItem={() => {
             addItem({
               name: itemName,
               isGrocery: isGrocery,
               isRecurring: isRecurring,
               isPurchased: false,
             });
-            close();
           }}
-        >
-          <Text
-            className={`${
-              addItemPressed
-                ? "text-gray-300"
-                : errorMessage == ""
-                ? "text-black"
-                : "text-gray-400"
-            }`}
-          >
-            Add Item
-          </Text>
-        </Pressable>
-        {errorMessage != "" && (
-          <Text className="text-black pt-1">{errorMessage}</Text>
-        )}
+          success={() => {
+            onChangeItemName("");
+            setIsGrocery(true);
+            setIsRecurring(false);
+            setErrorMessage("Success!");
+          }}
+          close={close}
+        />
 
         <Pressable
           className={`absolute top-0 right-0 m-2 bg-gray-100`}

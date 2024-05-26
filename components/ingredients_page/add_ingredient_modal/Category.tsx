@@ -1,6 +1,6 @@
-import { Text, View, Pressable, Keyboard, Modal } from "react-native";
+import { Text, View, Pressable, Keyboard } from "react-native";
 import { useState } from "react";
-import DeleteCategoryButton from "./DeleteCategoryButton";
+import DeleteSomethingModal from "../../DeleteSomethingModal";
 
 export default function Category({
   name,
@@ -28,37 +28,13 @@ export default function Category({
       </Pressable>
 
       {showDelete && (
-        <Modal
-          animationType="slide"
-          onRequestClose={() => setShowDelete(false)}
-        >
-          <View className="h-[100vh] w-[100vw] flex-col items-center justify-center">
-            <Text className="text-2xl">Delete the {name} category?</Text>
-            <View className="flex-row">
-              <DeleteCategoryButton
-                text="Yes"
-                onPress={() => {
-                  deleteCategory();
-                  setShowDelete(false);
-                }}
-              />
-              <DeleteCategoryButton
-                text="No"
-                onPress={() => setShowDelete(false)}
-              />
-            </View>
-          </View>
-        </Modal>
+        <DeleteSomethingModal
+          name={name}
+          type="category"
+          deleteThing={deleteCategory}
+          close={() => setShowDelete(false)}
+        />
       )}
     </View>
   );
 }
-
-// {categoryDeleteButton == name && (
-//     <Pressable
-//       onPress={() => setCategories(categories.filter((c) => c != name))}
-//       className="border-2 border-red-600 p-1 m-1 rounded-lg"
-//     >
-//       <Text className="text-lg">Delete category</Text>
-//     </Pressable>
-//   )}

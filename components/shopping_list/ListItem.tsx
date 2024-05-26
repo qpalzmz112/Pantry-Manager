@@ -1,8 +1,9 @@
-import { Text, View, Pressable } from "react-native";
+import { Text, View, Pressable, Modal } from "react-native";
 import { useState } from "react";
 import { AntDesign } from "@expo/vector-icons";
 import CheckBox from "./CheckBox";
 import { Item } from "@/types/shopping_list";
+import DeleteSomethingModal from "../DeleteSomethingModal";
 
 export default function ListItem({
   item,
@@ -23,9 +24,7 @@ export default function ListItem({
           isPurchased ? "bg-black opacity-40" : "bg-white"
         }`}
       >
-        <View className="flex-col">
-          <Text className="text-xl">{item.name}</Text>
-        </View>
+        <Text className="text-xl">{item.name}</Text>
 
         <View className="absolute right-2 flex-row">
           <CheckBox
@@ -42,27 +41,12 @@ export default function ListItem({
       </View>
 
       {showingDelete && (
-        <View className="flex-col items-center py-2">
-          <Text className="">Delete this item?</Text>
-          <View className="flex-row">
-            <Pressable
-              className="border-b-2 border-gray-500 mx-2"
-              onPress={() => updateItem(item.name, "", null)}
-            >
-              <Text style={{ paddingVertical: 2, paddingHorizontal: 10 }}>
-                Yes
-              </Text>
-            </Pressable>
-            <Pressable
-              className="border-b-2 border-gray-500 mx-2"
-              onPress={() => setShowingDelete(false)}
-            >
-              <Text style={{ paddingVertical: 2, paddingHorizontal: 10 }}>
-                No
-              </Text>
-            </Pressable>
-          </View>
-        </View>
+        <DeleteSomethingModal
+          name={item.name}
+          type="item"
+          deleteThing={() => updateItem(item.name, "", null)}
+          close={() => setShowingDelete(false)}
+        />
       )}
     </Pressable>
   );

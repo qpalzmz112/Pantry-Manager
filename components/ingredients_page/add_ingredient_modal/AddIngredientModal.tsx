@@ -12,7 +12,7 @@ import LabelledTextInput from "./LabelledTextInput";
 import DateInput from "./DateInput";
 import Category from "./Category";
 import QuantitySetter from "./QuantitySetter";
-import AddIngredientButton from "./AddIngredientButton";
+import AddIngredientButtonPair from "./AddIngredientButtonPair";
 import CloseButton from "./CloseButton";
 
 export default function AddIngredientModal({
@@ -38,7 +38,7 @@ export default function AddIngredientModal({
   let matching_categories = showCategories
     ? Object.keys(categories).filter(
         (name) =>
-          name.toLowerCase().includes(category.toLowerCase()) && category != ""
+          name.toLowerCase().includes(category.toLowerCase()) && name != ""
       )
     : [];
 
@@ -119,6 +119,7 @@ export default function AddIngredientModal({
                 onChangeCategory={onChangeCategory}
                 deleteCategory={() => {
                   let c = { ...categories };
+                  c[name].map((i) => c[""].push({ ...i, category: "" }));
                   delete c[name];
                   setCategories(c);
                 }}
@@ -150,7 +151,7 @@ export default function AddIngredientModal({
 
         <QuantitySetter qty={qty} setQty={setQty} />
 
-        <AddIngredientButton
+        <AddIngredientButtonPair
           errorMessage={errorMessage}
           canAddCheck={canAddIngredientCheck}
           addIngredient={() => {
@@ -169,6 +170,7 @@ export default function AddIngredientModal({
               name: name,
               qty: qty,
               useByDate: newDate,
+              category: category,
             });
             setCategories(c);
             onChangeName("");
@@ -177,6 +179,7 @@ export default function AddIngredientModal({
             onChangeDate(emptyDate);
             setErrorMessage("Success!");
           }}
+          close={close}
         />
 
         <CloseButton close={close} />
