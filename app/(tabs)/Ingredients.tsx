@@ -1,4 +1,4 @@
-import { Text, View, Modal } from "react-native";
+import { View } from "react-native";
 import { useState, useEffect } from "react";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";

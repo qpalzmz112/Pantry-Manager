@@ -7,7 +7,7 @@ import {
   View,
 } from "react-native";
 import { useState } from "react";
-import { Categories, Ingredient } from "@/types/ingredients";
+import { Categories } from "@/types/ingredients";
 import LabelledTextInput from "./LabelledTextInput";
 import DateInput from "./DateInput";
 import Category from "./Category";
