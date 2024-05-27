@@ -1,5 +1,6 @@
 import { View, SectionList, Pressable, Text } from "react-native";
 import { useState } from "react";
+import * as Haptics from "expo-haptics";
 import { Entypo } from "@expo/vector-icons";
 import ListItem from "./ListItem";
 import { Categories } from "@/types/ingredients";
@@ -39,6 +40,13 @@ export default function IngredientsList({
             )!.qty += n;
             setCategories(newCategories);
           }}
+          updateDate={(date) => {
+            let newCategories = { ...categories };
+            newCategories[item.category].find(
+              (i) => i.name == item.name
+            )!.useByDate = date;
+            setCategories(newCategories);
+          }}
           deleteIngredient={(name) => {
             let newCategories = { ...categories };
             newCategories[item.category] = newCategories[item.category].filter(
@@ -54,6 +62,7 @@ export default function IngredientsList({
       renderSectionHeader={({ section: { title } }) => (
         <Pressable
           onLongPress={() => {
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
             setDeletingCategory(title);
           }}
         >

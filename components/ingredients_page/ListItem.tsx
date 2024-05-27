@@ -1,19 +1,24 @@
 import { Text, View, Pressable, Modal } from "react-native";
 import { useState } from "react";
+import * as Haptics from "expo-haptics";
 import { AntDesign } from "@expo/vector-icons";
 import { Ingredient } from "@/types/ingredients";
 import DeleteSomethingModal from "../DeleteSomethingModal";
+import ChangeDateModal from "../ChangeDateModal";
 
 export default function ListItem({
   ingredient,
   updateQty,
+  updateDate,
   deleteIngredient,
 }: {
   ingredient: Ingredient;
   updateQty: (n: number) => void;
+  updateDate: (d: Date | null) => void;
   deleteIngredient: (n: string) => void;
 }) {
   const [showingDelete, setShowingDelete] = useState(false);
+  const [showDateModal, setShowDateModal] = useState(false);
 
   let { useByDate } = ingredient;
   let useByText;
@@ -52,10 +57,23 @@ export default function ListItem({
               <AntDesign name="pluscircleo" size={20} color="black" />
             </Pressable>
 
-            {useByText && (
-              <View className="flex-row items-center py-1">
-                <Text className="text-sm  pr-2">Use By: {useByText}</Text>
-              </View>
+            {useByText ? (
+              <Text
+                onLongPress={() => {
+                  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+                  setShowDateModal(true);
+                }}
+                className="mx-4"
+              >
+                Use by: {useByText}
+              </Text>
+            ) : (
+              <Pressable
+                className="mx-4 bg-gray-200 rounded-lg p-1"
+                onPress={() => setShowDateModal(true)}
+              >
+                <Text className="text-center">Add use by date</Text>
+              </Pressable>
             )}
           </View>
         </View>
@@ -67,6 +85,26 @@ export default function ListItem({
           <AntDesign name="delete" size={22} color="black" />
         </Pressable>
       </View>
+
+      {showDateModal && (
+        <ChangeDateModal
+          givenDate={useByText.slice(0, 6) + useByText.slice(8, 10)}
+          addDate={(date) => {
+            let month, day, year;
+            [month, day, year] = date.split("-");
+            let newDate =
+              date == "" || date == "MM-DD-YY"
+                ? null
+                : new Date(
+                    2000 + parseInt(year),
+                    parseInt(month) - 1,
+                    parseInt(day)
+                  );
+            updateDate(newDate);
+          }}
+          close={() => setShowDateModal(false)}
+        />
+      )}
 
       {showingDelete && (
         <DeleteSomethingModal

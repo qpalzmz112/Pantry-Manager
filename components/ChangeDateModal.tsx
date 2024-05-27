@@ -3,20 +3,20 @@ import { useState } from "react";
 import DateInput from "./ingredients_page/add_ingredient_modal/DateInput";
 import CloseButton from "./CloseButton";
 
-export default function ChangeDateModal({
-  addDate,
-  close,
-}: {
+interface props {
+  givenDate?: string;
   addDate: (d: string) => void;
   close: () => void;
-}) {
+}
+
+export default function ChangeDateModal({ givenDate, addDate, close }: props) {
   const [pressed, setPressed] = useState(false);
   const emptyDate = "MM-DD-YY";
-  const [date, setDate] = useState(emptyDate);
+  const [date, setDate] = useState(givenDate ? givenDate : emptyDate);
   const [error, setError] = useState("");
 
   return (
-    <Modal onRequestClose={close}>
+    <Modal animationType="slide" onRequestClose={close}>
       <View className="h-[100vh] w-[100vw] flex-col items-center justify-center">
         <DateInput
           date={date}

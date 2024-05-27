@@ -1,5 +1,6 @@
 import { Text, View, Pressable, Keyboard } from "react-native";
 import { useState } from "react";
+import * as Haptics from "expo-haptics";
 import DeleteSomethingModal from "../../DeleteSomethingModal";
 
 export default function Category({
@@ -21,6 +22,7 @@ export default function Category({
           Keyboard.dismiss();
         }}
         onLongPress={() => {
+          Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
           setShowDelete(true);
         }}
       >

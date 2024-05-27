@@ -1,16 +1,9 @@
-import {
-  Text,
-  Modal,
-  Pressable,
-  ScrollView,
-  Keyboard,
-  View,
-} from "react-native";
+import { Modal, ScrollView } from "react-native";
 import { useState } from "react";
 import { Categories } from "@/types/ingredients";
 import LabelledTextInput from "./LabelledTextInput";
 import DateInput from "./DateInput";
-import Category from "./Category";
+import CategoryList from "./CategoryList";
 import QuantitySetter from "./QuantitySetter";
 import AddIngredientButtonPair from "./AddIngredientButtonPair";
 import CloseButton from "../../CloseButton";
@@ -78,7 +71,7 @@ export default function AddIngredientModal({
       <ScrollView
         className="w-[100vw] h-[100vh] bg-gray-100 flex-col"
         contentContainerStyle={{
-          paddingTop: 225,
+          paddingTop: 175,
           alignItems: "center",
           justifyContent: "center",
         }}
@@ -110,37 +103,15 @@ export default function AddIngredientModal({
           }}
         />
 
-        {showCategories && matching_categories.length > 0 && (
-          <View className="w-[80vw] flex-row flex-wrap">
-            {matching_categories.map((name) => (
-              <Category
-                key={name}
-                name={name}
-                onChangeCategory={onChangeCategory}
-                deleteCategory={() => {
-                  let c = { ...categories };
-                  c[name].map((i) => c[""].push({ ...i, category: "" }));
-                  delete c[name];
-                  setCategories(c);
-                }}
-              />
-            ))}
-          </View>
+        {showCategories && (
+          <CategoryList
+            category={category}
+            categories={categories}
+            matching_categories={matching_categories}
+            onChangeCategory={onChangeCategory}
+            setCategories={setCategories}
+          />
         )}
-
-        {showCategories &&
-          matching_categories.length == 0 &&
-          category.length > 0 && (
-            <Pressable
-              className="bg-gray-300 p-2 m-1 rounded-lg"
-              onPress={() => {
-                Keyboard.dismiss();
-                setCategories({ ...categories, [category]: [] });
-              }}
-            >
-              <Text className="text-xl">Add new category: {category}</Text>
-            </Pressable>
-          )}
 
         <DateInput
           date={date}

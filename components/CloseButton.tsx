@@ -6,7 +6,7 @@ export default function CloseButton({ close }: { close: () => void }) {
   const [pressed, setPressed] = useState(false);
   return (
     <Pressable
-      className={`absolute top-0 right-0 m-2 bg-gray-100`}
+      className={`absolute top-0 right-0 m-2`}
       onPressIn={() => {
         setPressed(true);
       }}

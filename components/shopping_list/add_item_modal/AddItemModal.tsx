@@ -1,9 +1,13 @@
 import { Text, View, Modal, TextInput, Pressable } from "react-native";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Feather } from "@expo/vector-icons";
+import { set_tab, store_data, get_data } from "@/code/data_functions";
 import { Item } from "@/types/shopping_list";
+import { Categories } from "@/types/ingredients";
 import CheckBox from "../CheckBox";
 import AddItemButtonPair from "./AddItemButtonPair";
+import LabelledTextInput from "@/components/ingredients_page/add_ingredient_modal/LabelledTextInput";
+import CategoryList from "@/components/ingredients_page/add_ingredient_modal/CategoryList";
 
 export default function AddItemModal({
   close,
@@ -16,11 +20,36 @@ export default function AddItemModal({
 }) {
   const [itemName, onChangeItemName] = useState("");
 
+  const [category, setCategory] = useState("");
+  const [showCategories, setShowCategories] = useState(false);
+  const [categories, setCategories] = useState<Categories>({});
+  const [loadedData, setLoadedData] = useState(false);
+  useEffect(() => {
+    if (!loadedData) {
+      return;
+    }
+    store_data(categories, "categories");
+  }, [categories]);
+
+  useEffect(() => {
+    get_data("categories").then((val) => {
+      setCategories(val);
+      setLoadedData(true);
+    });
+  }, []);
+
   const [isGrocery, setIsGrocery] = useState(true);
   const [isRecurring, setIsRecurring] = useState(false);
   const [closeButtonPressed, setCloseButtonPressed] = useState(false);
   const [showingInfo, setShowingInfo] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+
+  let matching_categories = showCategories
+    ? Object.keys(categories).filter(
+        (name) =>
+          name.toLowerCase().includes(category.toLowerCase()) && name != ""
+      )
+    : [];
 
   const canAddItemCheck = () => {
     if (nameAlreadyExists(itemName)) {
@@ -46,6 +75,32 @@ export default function AddItemModal({
           value={itemName}
           cursorColor="black"
         />
+
+        <LabelledTextInput
+          labelText="Category (optional):"
+          inputText={category}
+          onChangeText={(text) => {
+            setCategory(text);
+            setErrorMessage("");
+          }}
+          onPress={() => {
+            setShowCategories(true);
+            setCategory("");
+            setErrorMessage("");
+          }}
+          onEndEditing={() => {
+            setShowCategories(false);
+          }}
+        />
+        {showCategories && (
+          <CategoryList
+            category={category}
+            categories={categories}
+            matching_categories={matching_categories}
+            onChangeCategory={setCategory}
+            setCategories={setCategories}
+          />
+        )}
 
         <View className="w-[80vw] flex items-left mt-4">
           <Text>Grocery Item?</Text>

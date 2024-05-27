@@ -1,5 +1,6 @@
 import { Text, View, Pressable } from "react-native";
 import { useState } from "react";
+import * as Haptics from "expo-haptics";
 import { AntDesign } from "@expo/vector-icons";
 import CheckBox from "./CheckBox";
 import { Item } from "@/types/shopping_list";
@@ -32,6 +33,7 @@ export default function ListItem({
         {item.date ? (
           <Text
             onLongPress={() => {
+              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
               setShowDateModal(true);
             }}
             className="mx-4"
@@ -63,8 +65,13 @@ export default function ListItem({
 
       {showDateModal && (
         <ChangeDateModal
+          givenDate={
+            item.date
+              ? item.date.slice(0, 6) + item.date.slice(8, 10)
+              : undefined
+          }
           addDate={(d) => {
-            updateItem(item.name, "date", d);
+            updateItem(item.name, "date", d.slice(0, 6) + "20" + d.slice(6, 8));
           }}
           close={() => setShowDateModal(false)}
         />
