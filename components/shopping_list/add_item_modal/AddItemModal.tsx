@@ -91,6 +91,7 @@ export default function AddItemModal({
           addItem={() => {
             addItem({
               name: itemName,
+              date: "",
               isGrocery: isGrocery,
               isRecurring: isRecurring,
               isPurchased: false,

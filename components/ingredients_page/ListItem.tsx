@@ -59,6 +59,7 @@ export default function ListItem({
             )}
           </View>
         </View>
+
         <Pressable
           className="absolute right-4"
           onPress={() => setShowingDelete(!showingDelete)}

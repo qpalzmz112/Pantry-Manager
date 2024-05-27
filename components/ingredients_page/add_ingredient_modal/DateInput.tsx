@@ -1,4 +1,3 @@
-import { Text, TextInput } from "react-native";
 import LabelledTextInput from "./LabelledTextInput";
 
 export default function DateInput({

@@ -1,5 +1,6 @@
 import { Modal, View, Text } from "react-native";
 import DeleteSomethingButton from "./DeleteSomethingButton";
+import CloseButton from "./CloseButton";
 
 export default function DeleteSomethingModal({
   name,
@@ -34,6 +35,8 @@ export default function DeleteSomethingModal({
             uncategorized.
           </Text>
         )}
+
+        <CloseButton close={close} />
       </View>
     </Modal>
   );

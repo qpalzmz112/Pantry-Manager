@@ -13,7 +13,7 @@ import DateInput from "./DateInput";
 import Category from "./Category";
 import QuantitySetter from "./QuantitySetter";
 import AddIngredientButtonPair from "./AddIngredientButtonPair";
-import CloseButton from "./CloseButton";
+import CloseButton from "../../CloseButton";
 
 export default function AddIngredientModal({
   close,
