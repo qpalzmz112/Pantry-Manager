@@ -20,7 +20,7 @@ export default function AddIngredientButton({
           errorMessage == "" ? "bg-gray-100" : "bg-gray-200"
         } border-2 ${
           pressed ? "border-gray-300" : "border-gray-400"
-        } rounded-md max-w-[50vw] flex justify-center`}
+        } rounded-lg max-w-[50vw] flex justify-center`}
         disabled={!(errorMessage == "")}
         onPressIn={() => {
           setPressed(true);

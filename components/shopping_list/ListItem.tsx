@@ -24,7 +24,7 @@ export default function ListItem({
       onPress={() => updateItem(item.name, "isPurchased", !isPurchased)}
     >
       <View
-        className={`flex-row items-center p-2 ${
+        className={`flex-row items-center p-2 mx-1 mb-2 rounded-xl ${
           isPurchased ? "bg-black opacity-40" : "bg-white"
         }`}
       >
@@ -33,7 +33,7 @@ export default function ListItem({
         {item.date ? (
           <Text
             onLongPress={() => {
-              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
               setShowDateModal(true);
             }}
             className="mx-4"
@@ -49,13 +49,13 @@ export default function ListItem({
           </Pressable>
         ) : null}
 
-        <View className="absolute right-2 flex-row">
+        <View className="absolute right-2 flex-row items-center">
           <CheckBox
             checked={isPurchased}
             onPress={() => updateItem(item.name, "isPurchased", !isPurchased)}
           />
           <Pressable
-            className="pt-2 pl-2"
+            className="pl-2"
             onPress={() => setShowingDelete(!showingDelete)}
           >
             <AntDesign name="delete" size={20} color="black" />

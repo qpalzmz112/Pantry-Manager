@@ -1,33 +1,20 @@
 import { View } from "react-native";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { CategoryContext } from "@/code/data_context";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { CreateButton, AddIngredientModal } from "@/components/index";
-import { Categories } from "@/types/ingredients";
-import { set_tab, store_data, get_data } from "@/code/data_functions";
+import { set_tab } from "@/code/data_functions";
 import { IngredientsList, DeleteSomethingModal } from "@/components/index";
 
 export default function Ingredients() {
   const [modalVisible, setModalVisible] = useState(false);
   const [deletingCategory, setDeletingCategory] = useState("");
-  const [categories, setCategories] = useState<Categories>({ "": [] });
 
-  const [loadedItems, setLoadedItems] = useState(false);
-  useEffect(() => {
-    if (!loadedItems) {
-      return;
-    }
-    store_data(categories, "categories");
-  }, [categories]);
+  const { data: categories, update: setCategories } =
+    useContext(CategoryContext);
 
   useEffect(() => {
-    get_data("categories").then((val) => {
-      if (JSON.stringify(val) == JSON.stringify(categories)) {
-        return;
-      }
-      setCategories(val);
-      setLoadedItems(true);
-    });
     set_tab("Ingredients");
   });
 
@@ -75,7 +62,7 @@ export default function Ingredients() {
 
       <IngredientsList
         categories={categories}
-        setCategories={(c) => setCategories(c)}
+        setCategories={setCategories}
         setDeletingCategory={setDeletingCategory}
       />
     </View>

@@ -1,4 +1,4 @@
-import { Text, View, Pressable, Modal } from "react-native";
+import { Text, View, Pressable } from "react-native";
 import { useState } from "react";
 import * as Haptics from "expo-haptics";
 import { AntDesign } from "@expo/vector-icons";
@@ -36,15 +36,19 @@ export default function ListItem({
 
   return (
     <>
-      <View className="flex-row items-center p-2 bg-white">
+      <View className="flex-row items-center p-2 mx-1 mb-2 rounded-xl bg-white">
         <View className="flex-col">
           <Text className="text-xl">{ingredient.name}</Text>
 
           <View className="flex-row pt-1 items-center">
             <Pressable
               className="pr-1"
+              hitSlop={15}
               disabled={ingredient.qty == 1}
-              onPress={() => updateQty(-1)}
+              onPress={() => {
+                updateQty(-1);
+                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft);
+              }}
             >
               <AntDesign
                 name="minuscircleo"
@@ -53,14 +57,21 @@ export default function ListItem({
               />
             </Pressable>
             <Text>{`Qty: ${ingredient.qty}`}</Text>
-            <Pressable className="pl-1 pr-4" onPress={() => updateQty(1)}>
+            <Pressable
+              className="pl-1 pr-4"
+              hitSlop={15}
+              onPress={() => {
+                updateQty(1);
+                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft);
+              }}
+            >
               <AntDesign name="pluscircleo" size={20} color="black" />
             </Pressable>
 
             {useByText ? (
               <Text
                 onLongPress={() => {
-                  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+                  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
                   setShowDateModal(true);
                 }}
                 className="mx-4"
@@ -112,6 +123,14 @@ export default function ListItem({
           type="ingredient"
           deleteThing={() => {
             deleteIngredient(ingredient.name);
+          }}
+          shoppingListItem={{
+            name: ingredient.name,
+            date: "",
+            category: ingredient.category,
+            isGrocery: true,
+            isRecurring: false,
+            isPurchased: false,
           }}
           close={() => {
             setShowingDelete(false);

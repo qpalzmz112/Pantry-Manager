@@ -21,7 +21,7 @@ export default function LabelledTextInput({
 }: LabelledTextInputProps) {
   return (
     <>
-      <Text className="w-[80vw] text-left pt-6">{labelText}</Text>
+      <Text className="w-[80vw] text-left pt-6 ">{labelText}</Text>
       <TextInput
         onChangeText={onChangeText}
         onPress={onPress}
@@ -29,7 +29,7 @@ export default function LabelledTextInput({
         maxLength={maxLength}
         keyboardType={keyboardType as KeyboardTypeOptions}
         value={inputText}
-        className="border-2 border-gray-500 p-1 w-[80vw] bg-white text-2xl"
+        className="border-2 border-gray-500 rounded-lg p-1 w-[80vw] bg-white text-2xl"
         cursorColor="black"
       />
     </>

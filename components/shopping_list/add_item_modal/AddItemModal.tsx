@@ -1,9 +1,8 @@
-import { Text, View, Modal, TextInput, Pressable } from "react-native";
-import { useState, useEffect } from "react";
+import { Text, View, Modal, Pressable } from "react-native";
+import { useState, useContext } from "react";
+import { CategoryContext } from "@/code/data_context";
 import { Feather } from "@expo/vector-icons";
-import { set_tab, store_data, get_data } from "@/code/data_functions";
 import { Item } from "@/types/shopping_list";
-import { Categories } from "@/types/ingredients";
 import CheckBox from "../CheckBox";
 import AddItemButtonPair from "./AddItemButtonPair";
 import LabelledTextInput from "@/components/ingredients_page/add_ingredient_modal/LabelledTextInput";
@@ -22,21 +21,9 @@ export default function AddItemModal({
 
   const [category, setCategory] = useState("");
   const [showCategories, setShowCategories] = useState(false);
-  const [categories, setCategories] = useState<Categories>({});
-  const [loadedData, setLoadedData] = useState(false);
-  useEffect(() => {
-    if (!loadedData) {
-      return;
-    }
-    store_data(categories, "categories");
-  }, [categories]);
 
-  useEffect(() => {
-    get_data("categories").then((val) => {
-      setCategories(val);
-      setLoadedData(true);
-    });
-  }, []);
+  const { data: categories, update: setCategories } =
+    useContext(CategoryContext);
 
   const [isGrocery, setIsGrocery] = useState(true);
   const [isRecurring, setIsRecurring] = useState(false);
@@ -65,15 +52,13 @@ export default function AddItemModal({
   return (
     <Modal transparent={false} onRequestClose={close}>
       <View className="w-[100vw] h-[100vh] bg-gray-100 flex-col justify-center items-center">
-        <Text className="w-[80vw] text-left">Item Name:</Text>
-        <TextInput
-          className="border-2 border-gray-500 p-1 w-[80vw] bg-white text-2xl"
+        <LabelledTextInput
+          labelText="Item name: "
+          inputText={itemName}
           onChangeText={(text) => {
             onChangeItemName(text);
             setErrorMessage("");
           }}
-          value={itemName}
-          cursorColor="black"
         />
 
         <LabelledTextInput
@@ -146,6 +131,7 @@ export default function AddItemModal({
           addItem={() => {
             addItem({
               name: itemName,
+              category: category,
               date: "",
               isGrocery: isGrocery,
               isRecurring: isRecurring,

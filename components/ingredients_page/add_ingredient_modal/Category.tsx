@@ -22,7 +22,7 @@ export default function Category({
           Keyboard.dismiss();
         }}
         onLongPress={() => {
-          Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+          Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
           setShowDelete(true);
         }}
       >

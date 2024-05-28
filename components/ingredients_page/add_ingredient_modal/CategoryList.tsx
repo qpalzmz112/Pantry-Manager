@@ -39,7 +39,9 @@ export default function CategoryList({
         className="bg-gray-300 p-2 m-1 rounded-lg"
         onPress={() => {
           Keyboard.dismiss();
-          setCategories({ ...categories, [category]: [] });
+          let c = { ...categories };
+          c = { ...categories, [category]: [] };
+          setCategories(c);
         }}
       >
         <Text className="text-xl">Add new category: {category}</Text>

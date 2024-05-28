@@ -1,11 +1,13 @@
 import { View, SectionList, Text, Pressable } from "react-native";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
+import * as Haptics from "expo-haptics";
 import { Entypo } from "@expo/vector-icons";
 import { CreateButton, AddItemModal, ListItem } from "@/components/index";
 import { Item } from "@/types/shopping_list";
-import { set_tab, store_data, get_data } from "@/code/data_functions";
+import { set_tab } from "@/code/data_functions";
+import { ItemContext } from "@/code/data_context";
 
 const sortItemsByPurchased = (item1: Item, item2: Item) => {
   if (item1.isPurchased == item2.isPurchased) {
@@ -18,28 +20,16 @@ const sortItemsByPurchased = (item1: Item, item2: Item) => {
 };
 
 export default function ShoppingList() {
-  const [loadedItems, setLoadedItems] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
-  const [items, updateItems] = useState<Item[]>([]);
+  const { data: items, update: updateItems } = useContext(ItemContext);
   const [collapsedSections, setCollapsedSections] = useState({
     Groceries: false,
     "Non-Grocery Items": false,
   });
 
   useEffect(() => {
-    if (!loadedItems) {
-      return;
-    }
-    store_data(items, "items");
-  }, [items]);
-
-  useEffect(() => {
-    get_data("items").then((val) => {
-      updateItems(val);
-      setLoadedItems(true);
-    });
     set_tab("ShoppingList");
-  }, []);
+  });
 
   const updateItem = (itemName: string, fieldName: string, value: any) => {
     if (value == null) {
@@ -101,12 +91,14 @@ export default function ShoppingList() {
         )}
         renderSectionHeader={({ section: { title } }) => (
           <View>
-            <Text className="text-xl font-medium text-center border-b-2 py-2 bg-slate-300">
+            <Text className="text-xl text-white text-center py-2 mb-2 bg-indigo-600">
               {title}
             </Text>
             <Pressable
               className="absolute right-3 top-2"
+              hitSlop={15}
               onPress={() => {
+                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
                 let field = title as keyof typeof collapsedSections;
                 let newCollapsedSections = {
                   ...collapsedSections,
@@ -122,13 +114,10 @@ export default function ShoppingList() {
                     : "chevron-down"
                 }
                 size={24}
-                color="black"
+                color="white"
               />
             </Pressable>
           </View>
-        )}
-        ItemSeparatorComponent={() => (
-          <View className="w-max bg-gray-400 h-[.3vh]" />
         )}
       />
 

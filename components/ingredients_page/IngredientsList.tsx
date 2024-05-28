@@ -56,22 +56,21 @@ export default function IngredientsList({
           }}
         />
       )}
-      ItemSeparatorComponent={() => (
-        <View className="w-max bg-gray-400 h-[.3vh]" />
-      )}
       renderSectionHeader={({ section: { title } }) => (
         <Pressable
           onLongPress={() => {
-            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
             setDeletingCategory(title);
           }}
         >
-          <Text className="text-xl font-medium text-center border-b-2 py-2 bg-slate-300">
+          <Text className="text-xl text-white text-center py-2 mb-2 bg-indigo-600">
             {title == "" ? "Uncategorized" : title}
           </Text>
           <Pressable
             className="absolute right-3 top-2"
+            hitSlop={30}
             onPress={() => {
+              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
               let c = { ...collapsedCategories };
               c[title] = !c[title];
               setCollapsedCategories(c);
@@ -82,7 +81,7 @@ export default function IngredientsList({
                 collapsedCategories[title] ? "chevron-left" : "chevron-down"
               }
               size={24}
-              color="black"
+              color="white"
             />
           </Pressable>
         </Pressable>
