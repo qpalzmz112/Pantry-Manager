@@ -24,7 +24,7 @@ export default function ListItem({
       onPress={() => updateItem(item.name, "isPurchased", !isPurchased)}
     >
       <View
-        className={`flex-row items-center p-2 mx-1 mb-2 rounded-xl ${
+        className={`flex-row items-center px-2 py-4 mx-1 mb-2 rounded-xl ${
           isPurchased ? "bg-black opacity-40" : "bg-white"
         }`}
       >
@@ -58,7 +58,7 @@ export default function ListItem({
             className="pl-2"
             onPress={() => setShowingDelete(!showingDelete)}
           >
-            <AntDesign name="delete" size={20} color="black" />
+            <AntDesign name="delete" size={24} color="black" />
           </Pressable>
         </View>
       </View>
@@ -71,7 +71,13 @@ export default function ListItem({
               : undefined
           }
           addDate={(d) => {
-            updateItem(item.name, "date", d.slice(0, 6) + "20" + d.slice(6, 8));
+            updateItem(
+              item.name,
+              "date",
+              d == "" || d == "MM-DD-YY"
+                ? ""
+                : d.slice(0, 6) + "20" + d.slice(6, 8)
+            );
           }}
           close={() => setShowDateModal(false)}
         />

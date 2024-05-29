@@ -13,29 +13,41 @@ import { Categories } from "@/types/ingredients";
 export default function TabLayout() {
   const { data: Items } = useContext(ItemContext);
   const [items, updateItems] = useState<Item[]>(Items);
+  const [loadedItems, setLoadedItems] = useState(false);
 
   const { data: Categories } = useContext(CategoryContext);
   const [categories, setCategories] = useState<Categories>(Categories);
+  const [loadedCategories, setLoadedCategories] = useState(false);
 
   useEffect(() => {
-    store_data(items, "items");
-    store_data(categories, "categories");
+    if (loadedItems) {
+      store_data(items, "items");
+    }
+    if (loadedCategories) {
+      store_data(categories, "categories");
+    }
   }, [items, categories]);
 
   useEffect(() => {
     get_data("items").then((val) => {
-      if (JSON.stringify(val) == JSON.stringify(items)) {
+      setLoadedItems(true);
+      if (val == null) {
         return;
       }
       updateItems(val);
     });
     get_data("categories").then((val) => {
-      if (JSON.stringify(val) == JSON.stringify(categories)) {
+      setLoadedCategories(true);
+      if (val == null) {
         return;
       }
       setCategories(val);
     });
-  });
+  }, []);
+
+  if (items == null || categories == null) {
+    return; //loading
+  }
 
   return (
     <CategoryContext.Provider

@@ -1,5 +1,6 @@
 import { View } from "react-native";
 import { useState, useEffect, useContext } from "react";
+import { useIsFocused } from "@react-navigation/native";
 import { CategoryContext } from "@/code/data_context";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
@@ -14,8 +15,11 @@ export default function Ingredients() {
   const { data: categories, update: setCategories } =
     useContext(CategoryContext);
 
+  const isFocused = useIsFocused();
   useEffect(() => {
-    set_tab("Ingredients");
+    if (isFocused) {
+      set_tab("Ingredients");
+    }
   });
 
   const deleteCategory = () => {

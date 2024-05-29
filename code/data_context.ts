@@ -10,4 +10,4 @@ export const ItemContext = createContext<{
 export const CategoryContext = createContext<{
   data: Categories;
   update: (c: Categories) => void;
-}>({ data: {}, update: () => {} });
+}>({ data: { "": [] }, update: () => {} });

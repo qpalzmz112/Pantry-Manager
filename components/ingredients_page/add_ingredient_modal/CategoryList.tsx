@@ -1,4 +1,5 @@
 import { View, Text, Pressable, Keyboard } from "react-native";
+import * as Haptics from "expo-haptics";
 import Category from "./Category";
 import { Categories } from "@/types/ingredients";
 
@@ -38,6 +39,7 @@ export default function CategoryList({
       <Pressable
         className="bg-gray-300 p-2 m-1 rounded-lg"
         onPress={() => {
+          Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
           Keyboard.dismiss();
           let c = { ...categories };
           c = { ...categories, [category]: [] };

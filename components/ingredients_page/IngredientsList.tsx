@@ -1,4 +1,4 @@
-import { View, SectionList, Pressable, Text } from "react-native";
+import { SectionList, Pressable, Text } from "react-native";
 import { useState } from "react";
 import * as Haptics from "expo-haptics";
 import { Entypo } from "@expo/vector-icons";

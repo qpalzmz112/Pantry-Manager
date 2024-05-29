@@ -18,6 +18,7 @@ export default function Category({
       <Pressable
         className="bg-gray-300 p-1 m-1 rounded-lg"
         onPress={() => {
+          Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
           onChangeCategory(name);
           Keyboard.dismiss();
         }}

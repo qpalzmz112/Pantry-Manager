@@ -24,6 +24,13 @@ export default function ChangeDateModal({ givenDate, addDate, close }: props) {
           setErrorMessage={setError}
           emptyDate={emptyDate}
         />
+
+        {date == "MM-DD-YY" && (
+          <Text className="w-[80vw] mt-8 text-center">
+            After adding a date, you can change it by tapping and holding it.
+          </Text>
+        )}
+
         <Pressable
           onPress={() => {
             if (date.length > 0 && date.length < 8) {

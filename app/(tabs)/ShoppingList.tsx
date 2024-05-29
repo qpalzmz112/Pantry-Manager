@@ -1,5 +1,6 @@
 import { View, SectionList, Text, Pressable } from "react-native";
 import { useState, useEffect, useContext } from "react";
+import { useIsFocused } from "@react-navigation/native";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import * as Haptics from "expo-haptics";
@@ -27,8 +28,11 @@ export default function ShoppingList() {
     "Non-Grocery Items": false,
   });
 
+  const isFocused = useIsFocused();
   useEffect(() => {
-    set_tab("ShoppingList");
+    if (isFocused) {
+      set_tab("ShoppingList");
+    }
   });
 
   const updateItem = (itemName: string, fieldName: string, value: any) => {

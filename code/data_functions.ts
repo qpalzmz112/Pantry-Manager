@@ -1,9 +1,8 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Item } from "@/types/shopping_list";
 
-function set_tab(tab: string) {
+async function set_tab(tab: string) {
   try {
-    AsyncStorage.setItem("Tab", JSON.stringify(tab));
+    await AsyncStorage.setItem("Tab", JSON.stringify(tab));
   } catch (e) {
     console.log(e);
   }
