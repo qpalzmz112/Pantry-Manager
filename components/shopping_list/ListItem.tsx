@@ -6,6 +6,7 @@ import CheckBox from "./CheckBox";
 import { Item } from "@/types/shopping_list";
 import DeleteSomethingModal from "../DeleteSomethingModal";
 import ChangeDateModal from "../ChangeDateModal";
+import QuantitySetter from "../ingredients_page/add_ingredient_modal/QuantitySetter";
 
 export default function ListItem({
   item,
@@ -24,31 +25,40 @@ export default function ListItem({
       onPress={() => updateItem(item.name, "isPurchased", !isPurchased)}
     >
       <View
-        className={`flex-row items-center px-2 py-4 mx-1 mb-2 rounded-xl ${
+        className={`flex-row items-center p-2 mx-1 mb-2 rounded-xl ${
           isPurchased ? "bg-black opacity-40" : "bg-white"
         }`}
       >
-        <Text className="text-xl">{item.name}</Text>
+        <View className="flex-col">
+          <Text className="text-xl mr-3 pb-1">{item.name}</Text>
 
-        {item.date ? (
-          <Text
-            onLongPress={() => {
-              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
-              setShowDateModal(true);
-            }}
-            className="mx-4"
-          >
-            Use by: {item.date}
-          </Text>
-        ) : item.isGrocery ? (
-          <Pressable
-            className="mx-4 bg-gray-200 rounded-lg p-1"
-            onPress={() => setShowDateModal(true)}
-          >
-            <Text className="text-center">Add use by date</Text>
-          </Pressable>
-        ) : null}
+          <View className="flex-row">
+            <QuantitySetter
+              qty={item.qty}
+              setQty={(n) => updateItem(item.name, "qty", n)}
+              inList={true}
+            />
 
+            {item.date ? (
+              <Text
+                onLongPress={() => {
+                  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+                  setShowDateModal(true);
+                }}
+                className="mx-4"
+              >
+                Use by: {item.date}
+              </Text>
+            ) : item.isGrocery ? (
+              <Pressable
+                className="mx-4 bg-gray-200 rounded-lg p-1"
+                onPress={() => setShowDateModal(true)}
+              >
+                <Text className="text-center">Add use by date</Text>
+              </Pressable>
+            ) : null}
+          </View>
+        </View>
         <View className="absolute right-2 flex-row items-center">
           <CheckBox
             checked={isPurchased}

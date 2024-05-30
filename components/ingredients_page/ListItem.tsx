@@ -5,6 +5,7 @@ import { AntDesign } from "@expo/vector-icons";
 import { Ingredient } from "@/types/ingredients";
 import DeleteSomethingModal from "../DeleteSomethingModal";
 import ChangeDateModal from "../ChangeDateModal";
+import QuantitySetter from "./add_ingredient_modal/QuantitySetter";
 
 export default function ListItem({
   ingredient,
@@ -41,32 +42,11 @@ export default function ListItem({
           <Text className="text-xl">{ingredient.name}</Text>
 
           <View className="flex-row pt-1 items-center">
-            <Pressable
-              className="pr-1"
-              hitSlop={15}
-              disabled={ingredient.qty == 1}
-              onPress={() => {
-                updateQty(-1);
-                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft);
-              }}
-            >
-              <AntDesign
-                name="minuscircleo"
-                size={20}
-                color={ingredient.qty == 1 ? "gray" : "black"}
-              />
-            </Pressable>
-            <Text>{`Qty: ${ingredient.qty}`}</Text>
-            <Pressable
-              className="pl-1 pr-4"
-              hitSlop={15}
-              onPress={() => {
-                updateQty(1);
-                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft);
-              }}
-            >
-              <AntDesign name="pluscircleo" size={20} color="black" />
-            </Pressable>
+            <QuantitySetter
+              qty={ingredient.qty}
+              setQty={(n) => updateQty(n)}
+              inList={true}
+            />
 
             {useByText ? (
               <Text
@@ -128,6 +108,7 @@ export default function ListItem({
             name: ingredient.name,
             date: "",
             category: ingredient.category,
+            qty: 1,
             isGrocery: true,
             isRecurring: false,
             isPurchased: false,

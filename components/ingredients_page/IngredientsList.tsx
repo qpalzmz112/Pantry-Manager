@@ -35,9 +35,8 @@ export default function IngredientsList({
           ingredient={item}
           updateQty={(n) => {
             let newCategories = { ...categories };
-            newCategories[item.category].find(
-              (i) => i.name == item.name
-            )!.qty += n;
+            newCategories[item.category].find((i) => i.name == item.name)!.qty =
+              n;
             setCategories(newCategories);
           }}
           updateDate={(date) => {

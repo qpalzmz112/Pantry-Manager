@@ -6,17 +6,19 @@ import { AntDesign } from "@expo/vector-icons";
 export default function QuantitySetter({
   qty,
   setQty,
+  inList,
 }: {
   qty: number;
   setQty: (n: number) => void;
+  inList: boolean;
 }) {
   const [minusPressed, setMinusPressed] = useState(false);
   const [plusPressed, setPlusPressed] = useState(false);
   return (
-    <View className="flex-row pt-6 items-center">
+    <View className={`${inList ? "" : "pt-6"} flex-row items-center`}>
       <Pressable
         className="pr-1"
-        hitSlop={30}
+        hitSlop={inList ? 15 : 30}
         onPress={() => {
           Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft);
           setQty(qty - 1);
@@ -27,14 +29,14 @@ export default function QuantitySetter({
       >
         <AntDesign
           name="minuscircleo"
-          size={36}
+          size={inList ? 20 : 36}
           color={qty == 1 || minusPressed ? "gray" : "black"}
         />
       </Pressable>
-      <Text className="text-xl px-4">{`Qty: ${qty}`}</Text>
+      <Text className={inList ? "px-1" : "text-xl px-4"}>{`Qty: ${qty}`}</Text>
       <Pressable
-        className="px-1"
-        hitSlop={30}
+        className={inList ? "pr-1" : "px-1"}
+        hitSlop={inList ? 15 : 30}
         onPress={() => {
           setQty(qty + 1);
           Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft);
@@ -44,7 +46,7 @@ export default function QuantitySetter({
       >
         <AntDesign
           name="pluscircleo"
-          size={36}
+          size={inList ? 20 : 36}
           color={plusPressed ? "gray" : "black"}
         />
       </Pressable>

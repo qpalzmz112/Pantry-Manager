@@ -7,6 +7,7 @@ import CheckBox from "../CheckBox";
 import AddItemButtonPair from "./AddItemButtonPair";
 import LabelledTextInput from "@/components/ingredients_page/add_ingredient_modal/LabelledTextInput";
 import CategoryList from "@/components/ingredients_page/add_ingredient_modal/CategoryList";
+import QuantitySetter from "@/components/ingredients_page/add_ingredient_modal/QuantitySetter";
 
 export default function AddItemModal({
   close,
@@ -21,6 +22,8 @@ export default function AddItemModal({
 
   const [category, setCategory] = useState("");
   const [showCategories, setShowCategories] = useState(false);
+
+  const [qty, setQty] = useState(1);
 
   const { data: categories, update: setCategories } =
     useContext(CategoryContext);
@@ -125,6 +128,8 @@ export default function AddItemModal({
           ></CheckBox>
         </View>
 
+        <QuantitySetter qty={qty} setQty={setQty} inList={false} />
+
         <AddItemButtonPair
           errorMessage={errorMessage}
           canAddItemCheck={canAddItemCheck}
@@ -133,6 +138,7 @@ export default function AddItemModal({
               name: itemName,
               category: category,
               date: "",
+              qty: qty,
               isGrocery: isGrocery,
               isRecurring: isRecurring,
               isPurchased: false,
