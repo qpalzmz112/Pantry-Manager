@@ -1,7 +1,7 @@
 import { Text, View, Modal } from "react-native";
 import { useState, useContext } from "react";
 import { ItemContext, CategoryContext } from "@/code/data_context";
-import string_to_date from "@/code/string_to_date";
+import string_to_date from "@/code/string_and_date";
 import { Item } from "@/types/shopping_list";
 import CloseButton from "../CloseButton";
 import Button from "../Button";

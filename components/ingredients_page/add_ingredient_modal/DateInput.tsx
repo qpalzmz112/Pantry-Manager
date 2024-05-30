@@ -4,17 +4,16 @@ export default function DateInput({
   date,
   onChangeDate,
   setErrorMessage,
-  emptyDate,
 }: {
   date: string;
   onChangeDate: (d: string) => void;
   setErrorMessage: (e: string) => void;
-  emptyDate: string;
 }) {
   return (
     <LabelledTextInput
       labelText="Use by Date (optional):"
       inputText={date}
+      placeholder="MM-DD-YY"
       keyboardType="number-pad"
       maxLength={8}
       onChangeText={(text) => {
@@ -36,12 +35,6 @@ export default function DateInput({
           }
         }
         onChangeDate(text);
-      }}
-      onPress={() => {
-        if (date == emptyDate) {
-          onChangeDate("");
-          setErrorMessage("");
-        }
       }}
     />
   );

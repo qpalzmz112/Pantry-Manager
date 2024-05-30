@@ -3,6 +3,7 @@ import { useState } from "react";
 import * as Haptics from "expo-haptics";
 import { AntDesign } from "@expo/vector-icons";
 import { Ingredient } from "@/types/ingredients";
+import string_to_date, { date_to_string } from "@/code/string_and_date";
 import DeleteSomethingModal from "../DeleteSomethingModal";
 import ChangeDateModal from "../ChangeDateModal";
 import QuantitySetter from "./add_ingredient_modal/QuantitySetter";
@@ -22,18 +23,7 @@ export default function ListItem({
   const [showDateModal, setShowDateModal] = useState(false);
 
   let { useByDate } = ingredient;
-  let useByText;
-  if (useByDate == null) {
-    useByText = "";
-  } else {
-    if (typeof useByDate == "string") {
-      // JSON can't serialize dates
-      useByDate = new Date(useByDate);
-    }
-    useByText = `${
-      useByDate.getMonth() + 1
-    }-${useByDate.getDate()}-${useByDate.getFullYear()}`;
-  }
+  let useByText = date_to_string(useByDate);
 
   return (
     <>
@@ -81,17 +71,7 @@ export default function ListItem({
         <ChangeDateModal
           givenDate={useByText.slice(0, 6) + useByText.slice(8, 10)}
           addDate={(date) => {
-            let month, day, year;
-            [month, day, year] = date.split("-");
-            let newDate =
-              date == "" || date == "MM-DD-YY"
-                ? null
-                : new Date(
-                    2000 + parseInt(year),
-                    parseInt(month) - 1,
-                    parseInt(day)
-                  );
-            updateDate(newDate);
+            updateDate(string_to_date(date));
           }}
           close={() => setShowDateModal(false)}
         />

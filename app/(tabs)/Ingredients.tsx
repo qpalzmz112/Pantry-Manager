@@ -1,4 +1,4 @@
-import { View } from "react-native";
+import { View, TextInput } from "react-native";
 import { useState, useEffect, useContext } from "react";
 import { useIsFocused } from "@react-navigation/native";
 import { CategoryContext } from "@/code/data_context";
@@ -12,6 +12,7 @@ import { IngredientsList, DeleteSomethingModal } from "@/components/index";
 export default function Ingredients() {
   const [modalVisible, setModalVisible] = useState(false);
   const [deletingCategory, setDeletingCategory] = useState("");
+  const [search, setSearch] = useState("");
 
   const { data: categories, update: setCategories } =
     useContext(CategoryContext);
@@ -64,6 +65,8 @@ export default function Ingredients() {
           close={() => setDeletingCategory("")}
         />
       )}
+
+      <TextInput placeholder="Test" />
 
       <IngredientsList
         categories={categories}

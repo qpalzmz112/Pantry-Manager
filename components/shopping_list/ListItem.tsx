@@ -89,9 +89,7 @@ export default function ListItem({
             updateItem(
               item.name,
               "date",
-              d == "" || d == "MM-DD-YY"
-                ? ""
-                : d.slice(0, 6) + "20" + d.slice(6, 8)
+              d == "" ? "" : d.slice(0, 6) + "20" + d.slice(6, 8)
             );
           }}
           close={() => setShowDateModal(false)}

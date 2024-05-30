@@ -11,8 +11,7 @@ interface props {
 
 export default function ChangeDateModal({ givenDate, addDate, close }: props) {
   const [pressed, setPressed] = useState(false);
-  const emptyDate = "MM-DD-YY";
-  const [date, setDate] = useState(givenDate ? givenDate : emptyDate);
+  const [date, setDate] = useState(givenDate ? givenDate : "");
   const [error, setError] = useState("");
 
   return (
@@ -22,10 +21,9 @@ export default function ChangeDateModal({ givenDate, addDate, close }: props) {
           date={date}
           onChangeDate={setDate}
           setErrorMessage={setError}
-          emptyDate={emptyDate}
         />
 
-        {date == "MM-DD-YY" && (
+        {date == "" && (
           <Text className="w-[80vw] mt-8 text-center">
             After adding a date, you can change it by tapping and holding it.
           </Text>

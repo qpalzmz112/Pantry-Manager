@@ -7,7 +7,7 @@ import CategoryList from "./CategoryList";
 import QuantitySetter from "./QuantitySetter";
 import AddIngredientButtonPair from "./AddIngredientButtonPair";
 import CloseButton from "../../CloseButton";
-import string_to_date from "@/code/string_to_date";
+import string_to_date from "@/code/string_and_date";
 
 export default function AddIngredientModal({
   close,
@@ -22,8 +22,7 @@ export default function AddIngredientModal({
   const [category, onChangeCategory] = useState("");
   const [showCategories, setShowCategories] = useState(false);
 
-  const emptyDate = "MM-DD-YY";
-  const [date, onChangeDate] = useState(emptyDate);
+  const [date, onChangeDate] = useState("");
 
   const [qty, setQty] = useState(1);
 
@@ -118,7 +117,6 @@ export default function AddIngredientModal({
           date={date}
           onChangeDate={onChangeDate}
           setErrorMessage={setErrorMessage}
-          emptyDate={emptyDate}
         />
 
         <QuantitySetter qty={qty} setQty={setQty} inList={false} />
@@ -139,7 +137,7 @@ export default function AddIngredientModal({
             onChangeName("");
             onChangeCategory("");
             setQty(1);
-            onChangeDate(emptyDate);
+            onChangeDate("");
             setErrorMessage("Success!");
           }}
           close={close}

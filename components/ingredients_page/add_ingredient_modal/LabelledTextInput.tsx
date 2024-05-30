@@ -3,6 +3,7 @@ import { Text, TextInput, KeyboardTypeOptions } from "react-native";
 interface LabelledTextInputProps {
   labelText: string;
   inputText: string;
+  placeholder?: string;
   keyboardType?: string;
   maxLength?: number;
   onChangeText: (t: string) => void;
@@ -13,6 +14,7 @@ interface LabelledTextInputProps {
 export default function LabelledTextInput({
   labelText,
   inputText,
+  placeholder = "",
   keyboardType = "default",
   maxLength,
   onChangeText,
@@ -29,6 +31,7 @@ export default function LabelledTextInput({
         maxLength={maxLength}
         keyboardType={keyboardType as KeyboardTypeOptions}
         value={inputText}
+        placeholder={placeholder}
         className="border-2 border-gray-500 rounded-lg p-1 w-[80vw] bg-white text-2xl"
         cursorColor="black"
       />
