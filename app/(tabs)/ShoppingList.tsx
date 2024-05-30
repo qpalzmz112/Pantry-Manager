@@ -5,6 +5,7 @@ import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import * as Haptics from "expo-haptics";
 import { Entypo } from "@expo/vector-icons";
+import { AntDesign } from "@expo/vector-icons";
 import {
   CreateButton,
   AddItemModal,
@@ -72,7 +73,7 @@ export default function ShoppingList() {
         options={{
           headerRight: () => (
             <CreateButton
-              text="Add Item"
+              text={<Entypo name="plus" size={24} color="black" />}
               onPress={() => {
                 setAddModalVisible(true);
               }}
@@ -136,9 +137,9 @@ export default function ShoppingList() {
         )}
       />
 
-      <View className="fixed bottom-0 w-[100vw] flex-row justify-center">
+      <View className="fixed top-0 w-[100vw] flex-row justify-center">
         <Button
-          text="Add Item"
+          text={<Entypo name="plus" size={24} color="black" />}
           pressableClass="m-1 bg-gray-300 rounded-3xl border-gray-500 border-2 w-[45vw]"
           pressedClass="bg-gray-400"
           textClass="text-center text-xl py-2 font-medium"
@@ -147,7 +148,7 @@ export default function ShoppingList() {
           }}
         />
         <Button
-          text="Clear List"
+          text={<AntDesign name="delete" size={24} color="black" />}
           pressableClass="m-1 bg-gray-300 rounded-3xl border-gray-500 border-2 w-[45vw]"
           pressedClass="bg-gray-400"
           textClass={`${

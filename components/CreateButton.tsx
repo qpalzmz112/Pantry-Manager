@@ -5,7 +5,7 @@ export default function CreateButton({
   text,
   onPress,
 }: {
-  text: string;
+  text: any;
   onPress: () => void;
 }) {
   let defaultColor = "bg-gray-300";

@@ -2,7 +2,7 @@ import { Pressable, Text } from "react-native";
 import { useState } from "react";
 
 interface props {
-  text: string;
+  text: any;
   textClass: string;
   pressableClass: string;
   pressedClass: string;

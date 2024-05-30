@@ -4,6 +4,7 @@ import { useIsFocused } from "@react-navigation/native";
 import { CategoryContext } from "@/code/data_context";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
+import { Entypo } from "@expo/vector-icons";
 import { CreateButton, AddIngredientModal } from "@/components/index";
 import { set_tab } from "@/code/data_functions";
 import { IngredientsList, DeleteSomethingModal } from "@/components/index";
@@ -36,7 +37,7 @@ export default function Ingredients() {
         options={{
           headerRight: () => (
             <CreateButton
-              text="Add Ingredient"
+              text={<Entypo name="plus" size={24} color="black" />}
               onPress={() => {
                 setModalVisible(true);
               }}

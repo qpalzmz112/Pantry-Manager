@@ -13,5 +13,5 @@ export default function Page() {
     });
   });
 
-  return <Redirect href={tab} />;
+  return <Redirect href="ShoppingList" />;
 }

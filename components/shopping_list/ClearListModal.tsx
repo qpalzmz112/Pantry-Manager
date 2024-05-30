@@ -77,11 +77,10 @@ export default function AddItemModal({ close }: { close: () => void }) {
   return (
     <Modal transparent={false} onRequestClose={close}>
       <View className="w-[100vw] h-[100vh] bg-gray-100 flex-col justify-center items-center">
-        <Text className="w-[80vw] text-lg text-center mb-10">
-          Would you like to clear your shopping list? All of your purchased
-          grocery items will be moved to your ingredients list, but your
-          unpurchased items and recurring purchases will remain in your shopping
-          list.
+        <Text className="w-[80vw] text-lg text-center mb-6">
+          Clear your shopping list? {"\n\n"} Your purchased grocery items will
+          be moved to your ingredients list, but unpurchased items and recurring
+          purchases will remain.
         </Text>
         <View className="flex-row">
           <Button
