@@ -46,9 +46,9 @@ export default function DeleteSomethingModal({
         )}
 
         {type == "ingredient" && (
-          <View className="max-w-[50vw]">
+          <View className="max-w-[75vw]">
             <DeleteSomethingButton
-              text="Yes, and add this to your shopping list."
+              text="Yes, and add to shopping list."
               onPress={() => {
                 deleteThing();
                 if (

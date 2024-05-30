@@ -47,14 +47,22 @@ export default function ShoppingList() {
       updateItems(items.filter((item) => item.name != itemName));
       return;
     }
-    const newItems = items.map((item) => {
+    let newItems = items.map((item) => {
       if (item.name == itemName) {
         let field = fieldName as keyof typeof item;
         return { ...item, [field]: value };
       }
       return item;
     });
+
     updateItems(newItems);
+    if (fieldName == "isPurchased") {
+      setTimeout(() => {
+        newItems = [...newItems];
+        newItems.sort(sortItemsByPurchased);
+        updateItems(newItems);
+      }, 100);
+    }
   };
 
   return (
@@ -77,20 +85,16 @@ export default function ShoppingList() {
         sections={[
           {
             title: "Groceries",
-            data: items
-              .filter(
-                (item) => item.isGrocery && !collapsedSections["Groceries"]
-              )
-              .sort(sortItemsByPurchased),
+            data: items.filter(
+              (item) => item.isGrocery && !collapsedSections["Groceries"]
+            ),
           },
           {
             title: "Non-Grocery Items",
-            data: items
-              .filter(
-                (item) =>
-                  !item.isGrocery && !collapsedSections["Non-Grocery Items"]
-              )
-              .sort(sortItemsByPurchased),
+            data: items.filter(
+              (item) =>
+                !item.isGrocery && !collapsedSections["Non-Grocery Items"]
+            ),
           },
         ].filter(
           (obj) =>

@@ -18,7 +18,7 @@ export default function DeleteSomethingButton({
       onPressOut={() => setPressed(false)}
       onPress={onPress}
     >
-      <Text className="text-2xl">{text}</Text>
+      <Text className="text-2xl text-center">{text}</Text>
     </Pressable>
   );
 }

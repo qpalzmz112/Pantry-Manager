@@ -5,7 +5,7 @@ export default function string_to_date(d: string) {
     d == "" || d == "MM-DD-YY"
       ? null
       : new Date(
-          d.length == 8 ? 2000 : 0 + parseInt(year),
+          (d.length == 8 ? 2000 : 0) + parseInt(year),
           parseInt(month) - 1,
           parseInt(day)
         );

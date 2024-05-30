@@ -99,7 +99,7 @@ export default function AddItemModal({ close }: { close: () => void }) {
             onPress={close}
           />
         </View>
-        {status && <Text className="">{status}</Text>}
+        {status && <Text className="text-xl">{status}</Text>}
         <CloseButton close={close} />
       </View>
     </Modal>
