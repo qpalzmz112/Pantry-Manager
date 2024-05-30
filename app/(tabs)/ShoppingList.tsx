@@ -5,7 +5,13 @@ import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import * as Haptics from "expo-haptics";
 import { Entypo } from "@expo/vector-icons";
-import { CreateButton, AddItemModal, ListItem } from "@/components/index";
+import {
+  CreateButton,
+  AddItemModal,
+  ClearListModal,
+  ListItem,
+  Button,
+} from "@/components/index";
 import { Item } from "@/types/shopping_list";
 import { set_tab } from "@/code/data_functions";
 import { ItemContext } from "@/code/data_context";
@@ -21,7 +27,8 @@ const sortItemsByPurchased = (item1: Item, item2: Item) => {
 };
 
 export default function ShoppingList() {
-  const [modalVisible, setModalVisible] = useState(false);
+  const [addModalVisible, setAddModalVisible] = useState(false);
+  const [clearModalVisible, setClearModalVisible] = useState(false);
   const { data: items, update: updateItems } = useContext(ItemContext);
   const [collapsedSections, setCollapsedSections] = useState({
     Groceries: false,
@@ -51,7 +58,7 @@ export default function ShoppingList() {
   };
 
   return (
-    <View>
+    <View className="h-[85vh]">
       <StatusBar hidden={false} style="dark" />
       <Stack.Screen
         options={{
@@ -59,7 +66,7 @@ export default function ShoppingList() {
             <CreateButton
               text="Add Item"
               onPress={() => {
-                setModalVisible(true);
+                setAddModalVisible(true);
               }}
             />
           ),
@@ -125,10 +132,32 @@ export default function ShoppingList() {
         )}
       />
 
-      {modalVisible && (
+      <View className="fixed bottom-0 w-[100vw] flex-row justify-center">
+        <Button
+          text="Add Item"
+          pressableClass="m-1 bg-gray-300 rounded-3xl border-gray-500 border-2 w-[45vw]"
+          pressedClass="bg-gray-400"
+          textClass="text-center text-xl py-2 font-medium"
+          onPress={() => {
+            setAddModalVisible(true);
+          }}
+        />
+        <Button
+          text="Clear List"
+          pressableClass="m-1 bg-gray-300 rounded-3xl border-gray-500 border-2 w-[45vw]"
+          pressedClass="bg-gray-400"
+          textClass={`${
+            items.length == 0 ? "text-gray-500" : ""
+          } text-center text-xl py-2 font-medium`}
+          onPress={() => setClearModalVisible(true)}
+          disabled={items.length == 0}
+        />
+      </View>
+
+      {addModalVisible && (
         <AddItemModal
           close={() => {
-            setModalVisible(false);
+            setAddModalVisible(false);
           }}
           addItem={(item: Item) => {
             updateItems([...items, item]);
@@ -136,6 +165,14 @@ export default function ShoppingList() {
           nameAlreadyExists={(name) =>
             items.map((item) => item.name).includes(name, 0)
           }
+        />
+      )}
+
+      {clearModalVisible && (
+        <ClearListModal
+          close={() => {
+            setClearModalVisible(false);
+          }}
         />
       )}
     </View>

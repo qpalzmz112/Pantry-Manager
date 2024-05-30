@@ -2,6 +2,7 @@ import { Text, View, Pressable } from "react-native";
 import { useState } from "react";
 import * as Haptics from "expo-haptics";
 import { AntDesign } from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
 import CheckBox from "./CheckBox";
 import { Item } from "@/types/shopping_list";
 import DeleteSomethingModal from "../DeleteSomethingModal";
@@ -19,7 +20,6 @@ export default function ListItem({
 
   const [showingDelete, setShowingDelete] = useState(false);
   const [showDateModal, setShowDateModal] = useState(false);
-
   return (
     <Pressable
       onPress={() => updateItem(item.name, "isPurchased", !isPurchased)}
@@ -30,7 +30,12 @@ export default function ListItem({
         }`}
       >
         <View className="flex-col">
-          <Text className="text-xl mr-3 pb-1">{item.name}</Text>
+          <View className="flex-row">
+            <Text className="text-xl mr-3 pb-1">{item.name}</Text>
+            {item.isRecurring && (
+              <MaterialIcons name="loop" size={22} color="black" />
+            )}
+          </View>
 
           <View className="flex-row">
             <QuantitySetter

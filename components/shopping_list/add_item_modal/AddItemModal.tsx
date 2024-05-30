@@ -2,12 +2,14 @@ import { Text, View, Modal, Pressable } from "react-native";
 import { useState, useContext } from "react";
 import { CategoryContext } from "@/code/data_context";
 import { Feather } from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
 import { Item } from "@/types/shopping_list";
 import CheckBox from "../CheckBox";
 import AddItemButtonPair from "./AddItemButtonPair";
 import LabelledTextInput from "@/components/ingredients_page/add_ingredient_modal/LabelledTextInput";
 import CategoryList from "@/components/ingredients_page/add_ingredient_modal/CategoryList";
 import QuantitySetter from "@/components/ingredients_page/add_ingredient_modal/QuantitySetter";
+import CloseButton from "@/components/CloseButton";
 
 export default function AddItemModal({
   close,
@@ -30,7 +32,6 @@ export default function AddItemModal({
 
   const [isGrocery, setIsGrocery] = useState(true);
   const [isRecurring, setIsRecurring] = useState(false);
-  const [closeButtonPressed, setCloseButtonPressed] = useState(false);
   const [showingInfo, setShowingInfo] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -110,13 +111,14 @@ export default function AddItemModal({
 
           {showingInfo && (
             <Text
-              className="bg-white p-1"
+              className="bg-white p-1 m-1 border-2"
               onPress={() => {
                 setShowingInfo(false);
               }}
             >
               Recurring purchases will stay on your shopping list when you clear
-              it.
+              it and they will be marked with this icon:{" "}
+              {<MaterialIcons name="loop" size={22} color="black" />}.
             </Text>
           )}
 
@@ -153,24 +155,7 @@ export default function AddItemModal({
           close={close}
         />
 
-        <Pressable
-          className={`absolute top-0 right-0 m-2 bg-gray-100`}
-          onPressIn={() => {
-            setCloseButtonPressed(true);
-          }}
-          onPressOut={() => {
-            setCloseButtonPressed(false);
-          }}
-          onPress={() => {
-            close();
-          }}
-        >
-          <Feather
-            name="x-square"
-            size={36}
-            color={closeButtonPressed ? "gray" : "black"}
-          />
-        </Pressable>
+        <CloseButton close={close} />
       </View>
     </Modal>
   );

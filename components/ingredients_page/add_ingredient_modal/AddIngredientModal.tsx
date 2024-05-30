@@ -7,6 +7,7 @@ import CategoryList from "./CategoryList";
 import QuantitySetter from "./QuantitySetter";
 import AddIngredientButtonPair from "./AddIngredientButtonPair";
 import CloseButton from "../../CloseButton";
+import string_to_date from "@/code/string_to_date";
 
 export default function AddIngredientModal({
   close,
@@ -120,22 +121,13 @@ export default function AddIngredientModal({
           emptyDate={emptyDate}
         />
 
-        <QuantitySetter qty={qty} setQty={setQty} />
+        <QuantitySetter qty={qty} setQty={setQty} inList={false} />
 
         <AddIngredientButtonPair
           errorMessage={errorMessage}
           canAddCheck={canAddIngredientCheck}
           addIngredient={() => {
-            let month, day, year;
-            [month, day, year] = date.split("-");
-            let newDate =
-              date == "" || date == emptyDate
-                ? null
-                : new Date(
-                    2000 + parseInt(year),
-                    parseInt(month) - 1,
-                    parseInt(day)
-                  );
+            let newDate = string_to_date(date);
             let c = { ...categories };
             c[category].push({
               name: name,
