@@ -36,7 +36,7 @@ export default function QuantitySetter({
       <Text className={inList ? "px-1" : "text-xl px-4"}>{`Qty: ${qty}`}</Text>
       <Pressable
         className={inList ? "pr-1" : "px-1"}
-        hitSlop={inList ? 15 : 30}
+        hitSlop={inList ? 10 : 30}
         onPress={() => {
           setQty(qty + 1);
           Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft);

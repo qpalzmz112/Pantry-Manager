@@ -4,8 +4,9 @@ import { useState } from "react";
 interface props {
   text: any;
   textClass: string;
-  pressableClass: string;
-  pressedClass: string;
+  pressedTextClass?: string;
+  pressableClass?: string;
+  pressedClass?: string;
   onPress: () => void;
   disabled?: boolean;
 }
@@ -13,6 +14,7 @@ interface props {
 export default function Button({
   text,
   textClass,
+  pressedTextClass,
   pressableClass,
   pressedClass,
   onPress,
@@ -27,7 +29,9 @@ export default function Button({
       onPressIn={() => setPressed(true)}
       onPressOut={() => setPressed(false)}
     >
-      <Text className={textClass}>{text}</Text>
+      <Text className={textClass + ` ${pressed ? pressedTextClass : ""}`}>
+        {text}
+      </Text>
     </Pressable>
   );
 }

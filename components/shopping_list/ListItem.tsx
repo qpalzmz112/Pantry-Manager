@@ -1,6 +1,5 @@
 import { Text, View, Pressable } from "react-native";
 import { useState } from "react";
-import * as Haptics from "expo-haptics";
 import { AntDesign } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import CheckBox from "./CheckBox";
@@ -8,7 +7,9 @@ import ListItemDate from "../ListItemDate";
 import { Item } from "@/types/shopping_list";
 import DeleteSomethingModal from "../DeleteSomethingModal";
 import ChangeDateModal from "../ChangeDateModal";
+import ChangeCategoryModal from "../ChangeCategoryModal";
 import QuantitySetter from "../ingredients_page/add_ingredient_modal/QuantitySetter";
+import ListItemCategory from "./ListItemCategory";
 
 export default function ListItem({
   item,
@@ -21,6 +22,7 @@ export default function ListItem({
 
   const [showingDelete, setShowingDelete] = useState(false);
   const [showDateModal, setShowDateModal] = useState(false);
+  const [showCategoryModal, setShowCategoryModal] = useState(false);
 
   return (
     <Pressable
@@ -39,7 +41,12 @@ export default function ListItem({
             )}
           </View>
 
-          <View className="flex-row">
+          <ListItemCategory
+            name={item.category}
+            onPress={() => setShowCategoryModal(true)}
+          />
+
+          <View className={`flex-row ${item.date ? "mt-1" : ""}`}>
             <QuantitySetter
               qty={item.qty}
               setQty={(n) => updateItem(item.name, "qty", n)}
@@ -78,6 +85,13 @@ export default function ListItem({
             updateItem(item.name, "date", d);
           }}
           close={() => setShowDateModal(false)}
+        />
+      )}
+
+      {showCategoryModal && (
+        <ChangeCategoryModal
+          save={(c) => updateItem(item.name, "category", c)}
+          close={() => setShowCategoryModal(false)}
         />
       )}
 

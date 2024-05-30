@@ -1,55 +1,66 @@
 import { Text, View, Pressable } from "react-native";
 import { useState } from "react";
-import * as Haptics from "expo-haptics";
 import { AntDesign } from "@expo/vector-icons";
 import { Ingredient } from "@/types/ingredients";
 import string_to_date, { date_to_string } from "@/code/string_and_date";
 import DeleteSomethingModal from "../DeleteSomethingModal";
 import ChangeDateModal from "../ChangeDateModal";
+import ChangeCategoryModal from "../ChangeCategoryModal";
 import QuantitySetter from "./add_ingredient_modal/QuantitySetter";
 import ListItemDate from "../ListItemDate";
+import * as Haptics from "expo-haptics";
 
 export default function ListItem({
   ingredient,
+  updateCategory,
   updateQty,
   updateDate,
   deleteIngredient,
 }: {
   ingredient: Ingredient;
+  updateCategory: (c: string) => void;
   updateQty: (n: number) => void;
   updateDate: (d: Date | null) => void;
   deleteIngredient: (n: string) => void;
 }) {
   const [showingDelete, setShowingDelete] = useState(false);
   const [showDateModal, setShowDateModal] = useState(false);
+  const [showCategoryModal, setShowCategoryModal] = useState(false);
 
   let { useByDate } = ingredient;
   let useByText = useByDate ? date_to_string(useByDate) : "";
 
   return (
     <>
-      <View className="flex-row items-center p-2 mx-1 mb-2 rounded-xl bg-white">
-        <View className="flex-col">
-          <Text className="text-xl">{ingredient.name}</Text>
+      <Pressable
+        onLongPress={() => {
+          Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+          setShowCategoryModal(true);
+        }}
+      >
+        <View className="flex-row items-center p-2 mx-1 mb-2 rounded-xl bg-white">
+          <View className="flex-col">
+            <Text className="text-xl">{ingredient.name}</Text>
 
-          <View className="flex-row pt-1 items-center">
-            <QuantitySetter
-              qty={ingredient.qty}
-              setQty={(n) => updateQty(n)}
-              inList={true}
-            />
+            <View className="flex-row pt-1 items-center">
+              <QuantitySetter
+                qty={ingredient.qty}
+                setQty={(n) => updateQty(n)}
+                inList={true}
+              />
 
-            <ListItemDate date={useByText} showModal={setShowDateModal} />
+              <ListItemDate date={useByText} showModal={setShowDateModal} />
+            </View>
           </View>
-        </View>
 
-        <Pressable
-          className="absolute right-4"
-          onPress={() => setShowingDelete(!showingDelete)}
-        >
-          <AntDesign name="delete" size={22} color="black" />
-        </Pressable>
-      </View>
+          <Pressable
+            className="absolute right-4"
+            onPress={() => setShowingDelete(!showingDelete)}
+          >
+            <AntDesign name="delete" size={22} color="black" />
+          </Pressable>
+        </View>
+      </Pressable>
 
       {showDateModal && (
         <ChangeDateModal
@@ -58,6 +69,13 @@ export default function ListItem({
             updateDate(string_to_date(date));
           }}
           close={() => setShowDateModal(false)}
+        />
+      )}
+
+      {showCategoryModal && (
+        <ChangeCategoryModal
+          save={(c) => updateCategory(c)}
+          close={() => setShowCategoryModal(false)}
         />
       )}
 

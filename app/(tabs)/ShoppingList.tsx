@@ -62,10 +62,10 @@ export default function ShoppingList() {
         newItems = [...newItems];
         newItems.sort(sortItemsByPurchased);
         updateItems(newItems);
-      }, 100);
+      }, 200);
     }
   };
-
+  // sort items by category
   return (
     <View className="h-[85vh]">
       <StatusBar hidden={false} style="dark" />
@@ -83,6 +83,7 @@ export default function ShoppingList() {
       />
 
       <SectionList
+        keyboardShouldPersistTaps="always"
         sections={[
           {
             title: "Groceries",
@@ -137,7 +138,7 @@ export default function ShoppingList() {
         )}
       />
 
-      <View className="fixed top-0 w-[100vw] flex-row justify-center">
+      <View className="w-[100vw] flex-row justify-center">
         <Button
           text={<Entypo name="plus" size={24} color="black" />}
           pressableClass="m-1 bg-gray-300 rounded-3xl border-gray-500 border-2 w-[45vw]"

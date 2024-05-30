@@ -1,4 +1,4 @@
-import { Modal, View, Pressable, Text } from "react-native";
+import { Modal, ScrollView, View, Pressable, Text } from "react-native";
 import { useState } from "react";
 import DateInput from "./ingredients_page/add_ingredient_modal/DateInput";
 import CloseButton from "./CloseButton";
