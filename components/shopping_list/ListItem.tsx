@@ -4,6 +4,7 @@ import * as Haptics from "expo-haptics";
 import { AntDesign } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import CheckBox from "./CheckBox";
+import ListItemDate from "../ListItemDate";
 import { Item } from "@/types/shopping_list";
 import DeleteSomethingModal from "../DeleteSomethingModal";
 import ChangeDateModal from "../ChangeDateModal";
@@ -20,6 +21,7 @@ export default function ListItem({
 
   const [showingDelete, setShowingDelete] = useState(false);
   const [showDateModal, setShowDateModal] = useState(false);
+
   return (
     <Pressable
       onPress={() => updateItem(item.name, "isPurchased", !isPurchased)}
@@ -44,24 +46,15 @@ export default function ListItem({
               inList={true}
             />
 
-            {item.date ? (
-              <Text
-                onLongPress={() => {
-                  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
-                  setShowDateModal(true);
-                }}
-                className="mx-4"
-              >
-                Use by: {item.date}
-              </Text>
-            ) : item.isGrocery ? (
-              <Pressable
-                className="mx-4 bg-gray-200 rounded-lg p-1"
-                onPress={() => setShowDateModal(true)}
-              >
-                <Text className="text-center">Add use by date</Text>
-              </Pressable>
-            ) : null}
+            <ListItemDate
+              date={
+                item.date == ""
+                  ? ""
+                  : item.date.slice(0, 6) + "20" + item.date.slice(6, 8)
+              }
+              showModal={setShowDateModal}
+              isGrocery={item.isGrocery}
+            />
           </View>
         </View>
         <View className="absolute right-2 flex-row items-center">
@@ -80,17 +73,9 @@ export default function ListItem({
 
       {showDateModal && (
         <ChangeDateModal
-          givenDate={
-            item.date
-              ? item.date.slice(0, 6) + item.date.slice(8, 10)
-              : undefined
-          }
+          givenDate={item.date}
           addDate={(d) => {
-            updateItem(
-              item.name,
-              "date",
-              d == "" ? "" : d.slice(0, 6) + "20" + d.slice(6, 8)
-            );
+            updateItem(item.name, "date", d);
           }}
           close={() => setShowDateModal(false)}
         />

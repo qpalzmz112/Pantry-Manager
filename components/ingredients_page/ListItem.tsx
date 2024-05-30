@@ -7,6 +7,7 @@ import string_to_date, { date_to_string } from "@/code/string_and_date";
 import DeleteSomethingModal from "../DeleteSomethingModal";
 import ChangeDateModal from "../ChangeDateModal";
 import QuantitySetter from "./add_ingredient_modal/QuantitySetter";
+import ListItemDate from "../ListItemDate";
 
 export default function ListItem({
   ingredient,
@@ -23,7 +24,7 @@ export default function ListItem({
   const [showDateModal, setShowDateModal] = useState(false);
 
   let { useByDate } = ingredient;
-  let useByText = date_to_string(useByDate);
+  let useByText = useByDate ? date_to_string(useByDate) : "";
 
   return (
     <>
@@ -38,24 +39,7 @@ export default function ListItem({
               inList={true}
             />
 
-            {useByText ? (
-              <Text
-                onLongPress={() => {
-                  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
-                  setShowDateModal(true);
-                }}
-                className="mx-4"
-              >
-                Use by: {useByText}
-              </Text>
-            ) : (
-              <Pressable
-                className="mx-4 bg-gray-200 rounded-lg p-1"
-                onPress={() => setShowDateModal(true)}
-              >
-                <Text className="text-center">Add use by date</Text>
-              </Pressable>
-            )}
+            <ListItemDate date={useByText} showModal={setShowDateModal} />
           </View>
         </View>
 
