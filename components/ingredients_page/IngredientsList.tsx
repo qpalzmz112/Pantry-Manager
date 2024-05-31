@@ -6,6 +6,7 @@ import { AntDesign } from "@expo/vector-icons";
 import ListItem from "./ListItem";
 import Button from "../Button";
 import { Categories } from "@/types/ingredients";
+import { filterBySearch } from "@/code/sort_ingredients";
 
 export default function IngredientsList({
   categories,
@@ -20,19 +21,6 @@ export default function IngredientsList({
     Object.fromEntries(Object.entries(categories).map((key) => [key, false]))
   );
   const [search, setSearch] = useState("");
-
-  let filteredCategories = Object.keys(categories).map((category) => {
-    let ingredients = categories[category].filter(({ name }) =>
-      name.toLowerCase().includes(search.toLowerCase())
-    );
-    return {
-      title: category,
-      data: collapsedCategories[category] ? [] : ingredients,
-    };
-  });
-  filteredCategories = filteredCategories.filter(
-    ({ title, data }) => collapsedCategories[title] || data.length > 0
-  );
 
   return (
     <View className="h-[86vh]">
@@ -69,7 +57,7 @@ export default function IngredientsList({
 
       <SectionList
         keyboardShouldPersistTaps="always"
-        sections={filteredCategories}
+        sections={filterBySearch(search, categories, collapsedCategories)}
         renderItem={({ item }) => (
           <ListItem
             ingredient={item}
@@ -106,6 +94,12 @@ export default function IngredientsList({
         )}
         renderSectionHeader={({ section: { title } }) => (
           <Pressable
+            onPress={() => {
+              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+              let c = { ...collapsedCategories };
+              c[title] = !c[title];
+              setCollapsedCategories(c);
+            }}
             onLongPress={() => {
               Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
               setDeletingCategory(title);

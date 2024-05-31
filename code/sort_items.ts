@@ -47,4 +47,4 @@ const sortItems = (items: Item[]) => {
   return sorted.concat(uncategorized).concat(purchased);
 };
 
-export { sortItems };
+export { sortItems, sortByName };

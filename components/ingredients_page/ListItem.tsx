@@ -30,6 +30,16 @@ export default function ListItem({
   let { useByDate } = ingredient;
   let useByText = useByDate ? date_to_string(useByDate) : "";
 
+  let bgColor = "bg-white";
+  if (useByDate) {
+    let num = new Date(useByDate).valueOf();
+    if (num < Date.now()) {
+      bgColor = "bg-red-300";
+    } else if (num < Date.now() + 7 * 24 * 60 * 60 * 1000) {
+      bgColor = "bg-amber-200";
+    }
+  }
+
   return (
     <>
       <Pressable
@@ -38,7 +48,9 @@ export default function ListItem({
           setShowCategoryModal(true);
         }}
       >
-        <View className="flex-row items-center p-2 mx-1 mb-2 rounded-xl bg-white">
+        <View
+          className={`flex-row items-center p-2 mx-1 mb-2 rounded-xl ${bgColor}`}
+        >
           <View className="flex-col">
             <Text className="text-xl">{ingredient.name}</Text>
 
