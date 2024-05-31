@@ -53,7 +53,7 @@ export default function ChangeCategoryModal({ save, close }: props) {
         )}
 
         <Button
-          text="Update Item"
+          text="Save"
           textClass="text-xl"
           pressableClass="bg-gray-300 p-2 mt-6 rounded-lg"
           pressedClass="bg-gray-400"

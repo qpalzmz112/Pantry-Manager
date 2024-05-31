@@ -2,6 +2,7 @@ import { Text, View, Pressable } from "react-native";
 import { useState } from "react";
 import { AntDesign } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
+import * as Haptics from "expo-haptics";
 import CheckBox from "./CheckBox";
 import ListItemDate from "../ListItemDate";
 import { Item } from "@/types/shopping_list";
@@ -9,7 +10,6 @@ import DeleteSomethingModal from "../DeleteSomethingModal";
 import ChangeDateModal from "../ChangeDateModal";
 import ChangeCategoryModal from "../ChangeCategoryModal";
 import QuantitySetter from "../ingredients_page/add_ingredient_modal/QuantitySetter";
-import ListItemCategory from "./ListItemCategory";
 
 export default function ListItem({
   item,
@@ -27,6 +27,10 @@ export default function ListItem({
   return (
     <Pressable
       onPress={() => updateItem(item.name, "isPurchased", !isPurchased)}
+      onLongPress={() => {
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+        setShowCategoryModal(true);
+      }}
     >
       <View
         className={`flex-row items-center p-2 mx-1 mb-2 rounded-xl ${
@@ -35,16 +39,15 @@ export default function ListItem({
       >
         <View className="flex-col">
           <View className="flex-row">
-            <Text className="text-xl mr-3 pb-1">{item.name}</Text>
+            <Text className="text-xl mr-3">{item.name}</Text>
             {item.isRecurring && (
               <MaterialIcons name="loop" size={22} color="black" />
             )}
           </View>
 
-          <ListItemCategory
-            name={item.category}
-            onPress={() => setShowCategoryModal(true)}
-          />
+          <Text className="text-gray-500">
+            {item.category ? item.category : "Uncategorized"}
+          </Text>
 
           <View className={`flex-row ${item.date ? "mt-1" : ""}`}>
             <QuantitySetter

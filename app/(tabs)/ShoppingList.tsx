@@ -16,16 +16,7 @@ import {
 import { Item } from "@/types/shopping_list";
 import { set_tab } from "@/code/data_functions";
 import { ItemContext } from "@/code/data_context";
-
-const sortItemsByPurchased = (item1: Item, item2: Item) => {
-  if (item1.isPurchased == item2.isPurchased) {
-    return 0;
-  } else if (item2.isPurchased) {
-    return -1;
-  } else {
-    return 1;
-  }
-};
+import { sortItems } from "@/code/sort_items";
 
 export default function ShoppingList() {
   const [addModalVisible, setAddModalVisible] = useState(false);
@@ -56,16 +47,16 @@ export default function ShoppingList() {
       return item;
     });
 
-    updateItems(newItems);
     if (fieldName == "isPurchased") {
+      updateItems(newItems);
       setTimeout(() => {
-        newItems = [...newItems];
-        newItems.sort(sortItemsByPurchased);
-        updateItems(newItems);
+        updateItems(sortItems(newItems));
       }, 200);
+    } else {
+      updateItems(sortItems(newItems));
     }
   };
-  // sort items by category
+
   return (
     <View className="h-[85vh]">
       <StatusBar hidden={false} style="dark" />
