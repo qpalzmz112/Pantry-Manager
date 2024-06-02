@@ -25,7 +25,6 @@ export default function ShoppingList() {
     Groceries: false,
     "Non-Grocery Items": false,
   });
-  const [callbacks, setCallbacks] = useState(0);
 
   const isFocused = useIsFocused();
   useEffect(() => {
@@ -33,14 +32,6 @@ export default function ShoppingList() {
       set_tab("ShoppingList");
     }
   });
-  console.log(callbacks);
-  const sortPurchasedItems = (newItems: Item[]) => {
-    setCallbacks(callbacks);
-    if (callbacks) {
-      return;
-    }
-    updateItems(sortItems(newItems));
-  };
 
   const updateItem = (itemName: string, fieldName: string, value: any) => {
     if (value == null) {
@@ -55,17 +46,7 @@ export default function ShoppingList() {
       return item;
     });
 
-    if (fieldName == "isPurchased") {
-      updateItems(newItems);
-      setTimeout(() => {
-        //updateItems(sortItems(newItems));
-        //}, 125);
-        setCallbacks(callbacks + 1);
-        sortPurchasedItems(newItems); // try setting last callback time, only sort when current time is that plus something
-      }, 250);
-    } else {
-      updateItems(sortItems(newItems));
-    }
+    updateItems(sortItems(newItems));
   };
 
   return (
