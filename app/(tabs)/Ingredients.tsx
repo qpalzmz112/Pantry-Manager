@@ -6,10 +6,10 @@ import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { Entypo } from "@expo/vector-icons";
 import {
-  CreateButton,
   AddIngredientModal,
   IngredientsList,
   DeleteSomethingModal,
+  Button,
 } from "@/components/index";
 import { set_tab } from "@/code/data_functions";
 
@@ -37,18 +37,7 @@ export default function Ingredients() {
   return (
     <View>
       <StatusBar hidden={false} style="dark" />
-      <Stack.Screen
-        options={{
-          headerRight: () => (
-            <CreateButton
-              text={<Entypo name="plus" size={24} color="black" />}
-              onPress={() => {
-                setModalVisible(true);
-              }}
-            />
-          ),
-        }}
-      />
+      <Stack.Screen />
 
       {modalVisible && (
         <AddIngredientModal
@@ -74,6 +63,18 @@ export default function Ingredients() {
         setCategories={setCategories}
         setDeletingCategory={setDeletingCategory}
       />
+
+      <View className="w-[100vw] flex-row justify-center">
+        <Button
+          text={<Entypo name="plus" size={24} color="black" />}
+          pressableClass="m-1 bg-gray-300 rounded-3xl w-[45vw]"
+          pressedClass="bg-gray-400"
+          textClass="text-center text-xl py-2 font-medium"
+          onPress={() => {
+            setModalVisible(true);
+          }}
+        />
+      </View>
     </View>
   );
 }

@@ -17,19 +17,27 @@ export default function IngredientsList({
   setCategories: (c: Categories) => void;
   setDeletingCategory: (c: string) => void;
 }) {
+  const defaultCollapsedCategories = Object.fromEntries(
+    Object.entries(categories).map((key) => [key, false])
+  );
   const [collapsedCategories, setCollapsedCategories] = useState(
-    Object.fromEntries(Object.entries(categories).map((key) => [key, false]))
+    defaultCollapsedCategories
   );
   const [search, setSearch] = useState("");
 
   return (
-    <View className="h-[86vh]">
+    <View className="h-[79vh]">
       <View>
         <View className="flex-row m-2">
           <AntDesign className="mr-2" name="search1" size={24} color="gray" />
           <TextInput
             value={search}
-            onChangeText={(t) => setSearch(t)}
+            onChangeText={(t) => {
+              if (search == "") {
+                setCollapsedCategories(defaultCollapsedCategories);
+              }
+              setSearch(t);
+            }}
             onPress={() => setSearch("")}
             className="w-screen"
             placeholder="Search"
@@ -45,11 +53,7 @@ export default function IngredientsList({
             pressedClass="bg-gray-400"
             onPress={() => {
               setSearch("");
-              setCollapsedCategories(
-                Object.fromEntries(
-                  Object.entries(categories).map((key) => [key, false])
-                )
-              );
+              setCollapsedCategories(defaultCollapsedCategories);
             }}
           />
         )}

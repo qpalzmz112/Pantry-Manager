@@ -1,4 +1,4 @@
-import { View, SectionList, Text, Pressable } from "react-native";
+import { View, SectionList, Text, Pressable, SafeAreaView } from "react-native";
 import { useState, useEffect, useContext } from "react";
 import { useIsFocused } from "@react-navigation/native";
 import { Stack } from "expo-router";
@@ -7,7 +7,6 @@ import * as Haptics from "expo-haptics";
 import { Entypo } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import {
-  CreateButton,
   AddItemModal,
   ClearListModal,
   ListItem,
@@ -26,6 +25,7 @@ export default function ShoppingList() {
     Groceries: false,
     "Non-Grocery Items": false,
   });
+  const [callbacks, setCallbacks] = useState(0);
 
   const isFocused = useIsFocused();
   useEffect(() => {
@@ -33,6 +33,14 @@ export default function ShoppingList() {
       set_tab("ShoppingList");
     }
   });
+  console.log(callbacks);
+  const sortPurchasedItems = (newItems: Item[]) => {
+    setCallbacks(callbacks);
+    if (callbacks) {
+      return;
+    }
+    updateItems(sortItems(newItems));
+  };
 
   const updateItem = (itemName: string, fieldName: string, value: any) => {
     if (value == null) {
@@ -50,28 +58,20 @@ export default function ShoppingList() {
     if (fieldName == "isPurchased") {
       updateItems(newItems);
       setTimeout(() => {
-        updateItems(sortItems(newItems));
-      }, 200);
+        //updateItems(sortItems(newItems));
+        //}, 125);
+        setCallbacks(callbacks + 1);
+        sortPurchasedItems(newItems); // try setting last callback time, only sort when current time is that plus something
+      }, 250);
     } else {
       updateItems(sortItems(newItems));
     }
   };
 
   return (
-    <View className="h-[85vh]">
+    <View className="h-[85.5vh]">
       <StatusBar hidden={false} style="dark" />
-      <Stack.Screen
-        options={{
-          headerRight: () => (
-            <CreateButton
-              text={<Entypo name="plus" size={24} color="black" />}
-              onPress={() => {
-                setAddModalVisible(true);
-              }}
-            />
-          ),
-        }}
-      />
+      <Stack.Screen />
 
       <SectionList
         keyboardShouldPersistTaps="always"
@@ -98,7 +98,17 @@ export default function ShoppingList() {
           <ListItem item={item} updateItem={updateItem} />
         )}
         renderSectionHeader={({ section: { title } }) => (
-          <View>
+          <Pressable
+            onPress={() => {
+              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+              let field = title as keyof typeof collapsedSections;
+              let newCollapsedSections = {
+                ...collapsedSections,
+              };
+              newCollapsedSections[field] = !collapsedSections[field];
+              setCollapsedSections(newCollapsedSections);
+            }}
+          >
             <Text className="text-xl text-white text-center py-2 mb-2 bg-indigo-600">
               {title}
             </Text>
@@ -106,7 +116,7 @@ export default function ShoppingList() {
               className="absolute right-3 top-2"
               hitSlop={15}
               onPress={() => {
-                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
                 let field = title as keyof typeof collapsedSections;
                 let newCollapsedSections = {
                   ...collapsedSections,
@@ -125,14 +135,14 @@ export default function ShoppingList() {
                 color="white"
               />
             </Pressable>
-          </View>
+          </Pressable>
         )}
       />
 
       <View className="w-[100vw] flex-row justify-center">
         <Button
           text={<Entypo name="plus" size={24} color="black" />}
-          pressableClass="m-1 bg-gray-300 rounded-3xl border-gray-500 border-2 w-[45vw]"
+          pressableClass="m-1 bg-gray-300 rounded-3xl w-[45vw]"
           pressedClass="bg-gray-400"
           textClass="text-center text-xl py-2 font-medium"
           onPress={() => {
@@ -141,7 +151,7 @@ export default function ShoppingList() {
         />
         <Button
           text={<AntDesign name="delete" size={24} color="black" />}
-          pressableClass="m-1 bg-gray-300 rounded-3xl border-gray-500 border-2 w-[45vw]"
+          pressableClass="m-1 bg-gray-300 rounded-3xl w-[45vw]"
           pressedClass="bg-gray-400"
           textClass={`${
             items.length == 0 ? "text-gray-500" : ""

@@ -1,4 +1,3 @@
-export { default as CreateButton } from "./CreateButton";
 export { default as AddItemModal } from "./shopping_list/add_item_modal/AddItemModal";
 export { default as ClearListModal } from "./shopping_list/ClearListModal";
 export { default as CheckBox } from "./shopping_list/CheckBox";
