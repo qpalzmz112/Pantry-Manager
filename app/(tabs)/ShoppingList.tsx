@@ -148,7 +148,7 @@ export default function ShoppingList() {
             setAddModalVisible(false);
           }}
           addItem={(item: Item) => {
-            updateItems([...items, item]);
+            updateItems(sortItems([...items, item]));
           }}
           nameAlreadyExists={(name) =>
             items.map((item) => item.name).includes(name, 0)

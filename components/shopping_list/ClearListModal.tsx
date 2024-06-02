@@ -24,12 +24,9 @@ export default function AddItemModal({ close }: { close: () => void }) {
     return res;
   };
 
-  const itemToIngredient = (item: Item) => {
-    if (!item.isPurchased) {
-      return;
-    }
-    if (item.isGrocery) {
-      let newCategories = { ...categories };
+  const addPurchased = (i: Item[]) => {
+    let newCategories = { ...categories };
+    i.map((item) => {
       let x = ingredientNameExists(item.name);
       if (x != null) {
         newCategories[x[0]][x[1]].qty += item.qty;
@@ -42,13 +39,16 @@ export default function AddItemModal({ close }: { close: () => void }) {
           category: item.category,
         });
       }
-      setCategories(newCategories);
-    }
+    });
+    setCategories(newCategories);
+  };
 
+  const updateItems = (toRemove: Item[], toUpdate: Item[]) => {
     let newItems = [...items];
-    if (!item.isRecurring) {
-      newItems = newItems.filter((i) => i.name != item.name);
-    } else {
+    toRemove.map(
+      (item) => (newItems = newItems.filter((i) => i.name != item.name))
+    );
+    toUpdate.map((item) => {
       newItems = newItems.map((i) => {
         if (i.name == item.name) {
           return {
@@ -64,12 +64,18 @@ export default function AddItemModal({ close }: { close: () => void }) {
           return i;
         }
       });
-    }
+    });
     setItems(newItems);
   };
 
   const clearList = () => {
-    items.map((i) => itemToIngredient(i));
+    let purchased = items.filter((i) => i.isPurchased && i.isGrocery); // all of these are getting added to categories
+    let toRemove = purchased.filter((i) => !i.isRecurring); // all of these are getting removed from items
+    let toUpdate = purchased.filter((i) => i.isRecurring); // all of these are staying but getting updated
+
+    addPurchased(purchased);
+    updateItems(toRemove, toUpdate);
+
     setStatus("Success!");
     setTimeout(() => close(), 1000);
   };
