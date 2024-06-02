@@ -1,5 +1,6 @@
 import { Text, View, Modal } from "react-native";
 import { useState, useContext } from "react";
+import toast from "@/code/toast";
 import { ItemContext, CategoryContext } from "@/code/data_context";
 import string_to_date from "@/code/string_and_date";
 import { Item } from "@/types/shopping_list";
@@ -76,8 +77,8 @@ export default function AddItemModal({ close }: { close: () => void }) {
     addPurchased(purchased);
     updateItems(toRemove, toUpdate);
 
-    setStatus("Success!");
-    setTimeout(() => close(), 1000);
+    close();
+    toast("Success!");
   };
 
   return (

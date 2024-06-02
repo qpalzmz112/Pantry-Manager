@@ -5,13 +5,19 @@ import LabelledTextInput from "./ingredients_page/add_ingredient_modal/LabelledT
 import Button from "./Button";
 import CloseButton from "./CloseButton";
 import CategoryList from "./ingredients_page/add_ingredient_modal/CategoryList";
+import toast from "@/code/toast";
 
 interface props {
+  placeholder?: string;
   save: (c: string) => void;
   close: () => void;
 }
 
-export default function ChangeCategoryModal({ save, close }: props) {
+export default function ChangeCategoryModal({
+  placeholder = "",
+  save,
+  close,
+}: props) {
   const { data: categories, update: setCategories } =
     useContext(CategoryContext);
   const [category, setCategory] = useState("");
@@ -31,6 +37,7 @@ export default function ChangeCategoryModal({ save, close }: props) {
         <LabelledTextInput
           labelText="Category:"
           inputText={category}
+          placeholder={placeholder}
           onChangeText={setCategory}
           onPress={() => {
             setShowCategories(true);
@@ -65,6 +72,7 @@ export default function ChangeCategoryModal({ save, close }: props) {
               return;
             }
             save(category);
+            toast("Category updated!");
             close();
           }}
         />

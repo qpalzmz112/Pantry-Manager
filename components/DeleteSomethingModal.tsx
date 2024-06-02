@@ -4,6 +4,7 @@ import { ItemContext } from "@/code/data_context";
 import { Item } from "@/types/shopping_list";
 import DeleteSomethingButton from "./DeleteSomethingButton";
 import CloseButton from "./CloseButton";
+import toast from "@/code/toast";
 
 interface props {
   name: string;
@@ -32,6 +33,7 @@ export default function DeleteSomethingModal({
             text="Yes"
             onPress={() => {
               deleteThing();
+              toast(`${type[0].toLocaleUpperCase()}${type.slice(1)} deleted.`);
               close();
             }}
           />
@@ -58,6 +60,7 @@ export default function DeleteSomethingModal({
                 ) {
                   update([...Items, shoppingListItem!]);
                 }
+                toast("Ingredient deleted.");
                 close();
               }}
             />

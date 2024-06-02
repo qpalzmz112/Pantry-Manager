@@ -131,12 +131,16 @@ export default function ShoppingList() {
           }}
         />
         <Button
-          text={<AntDesign name="delete" size={24} color="black" />}
+          text={
+            <AntDesign
+              name="delete"
+              size={24}
+              color={items.length == 0 ? "gray" : "black"}
+            />
+          }
           pressableClass="m-1 bg-gray-300 rounded-3xl w-[45vw]"
           pressedClass="bg-gray-400"
-          textClass={`${
-            items.length == 0 ? "text-gray-500" : ""
-          } text-center text-xl py-2 font-medium`}
+          textClass="text-center text-xl py-2 font-medium"
           onPress={() => setClearModalVisible(true)}
           disabled={items.length == 0}
         />

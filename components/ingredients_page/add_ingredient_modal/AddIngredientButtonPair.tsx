@@ -1,5 +1,6 @@
 import { View, Text } from "react-native";
 import AddIngredientButton from "./AddIngredientButton";
+import toast from "@/code/toast";
 
 export default function AddIngredientButtonPair({
   errorMessage,
@@ -28,6 +29,7 @@ export default function AddIngredientButtonPair({
           addIngredient={() => {
             addIngredient();
             close();
+            toast("Success!");
           }}
         />
       </View>

@@ -1,7 +1,8 @@
-import { Modal, ScrollView, View, Pressable, Text } from "react-native";
+import { Modal, View, Pressable, Text } from "react-native";
 import { useState } from "react";
 import DateInput from "./ingredients_page/add_ingredient_modal/DateInput";
 import CloseButton from "./CloseButton";
+import toast from "@/code/toast";
 
 interface props {
   givenDate?: string;
@@ -36,6 +37,7 @@ export default function ChangeDateModal({ givenDate, addDate, close }: props) {
               return;
             }
             addDate(date);
+            toast("Date saved!");
             close();
           }}
           onPressIn={() => setPressed(true)}
