@@ -10,6 +10,7 @@ import AddIngredientButtonPair from "./AddIngredientButtonPair";
 import CloseButton from "../../CloseButton";
 import string_to_date from "@/code/string_and_date";
 import toast from "@/code/toast";
+import { useTranslation } from "react-i18next";
 
 export default function AddIngredientModal({
   close,
@@ -20,6 +21,7 @@ export default function AddIngredientModal({
   categories: Categories;
   setCategories: (c: Categories) => void;
 }) {
+  const { t } = useTranslation();
   const [name, onChangeName] = useState("");
   const [category, onChangeCategory] = useState("");
   const [showCategories, setShowCategories] = useState(false);
@@ -51,18 +53,16 @@ export default function AddIngredientModal({
 
   const canAddIngredientCheck = () => {
     if (name == "") {
-      setErrorMessage("Please enter a name.");
+      setErrorMessage(t("error_ingredient_no_name"));
       return false;
     } else if (ingredientNameExists()) {
-      setErrorMessage("You've already added an ingredient with this name.");
+      setErrorMessage(t("error_ingredient_name_exists"));
       return false;
     } else if (category != "" && !Object.keys(categories).includes(category)) {
-      setErrorMessage(
-        "Please enter the name of an existing category or leave the category field blank."
-      );
+      setErrorMessage(t("error_category"));
       return false;
     } else if (date.length > 0 && date.length < 8) {
-      setErrorMessage("Please enter a full date or no date.");
+      setErrorMessage(t("error_date"));
       return false;
     }
     return true;
@@ -72,7 +72,7 @@ export default function AddIngredientModal({
   const [rootActive, setRootActive] = useState(0);
   useEffect(() => {
     if (rootActive != 0) {
-      toast("Ingredient added!");
+      toast(t("toast_ingredient_added"));
       if (rootActive == 1) {
         close();
       }
@@ -93,7 +93,7 @@ export default function AddIngredientModal({
           keyboardShouldPersistTaps="always"
         >
           <LabelledTextInput
-            labelText="Item name:"
+            labelText={t("item_name")}
             inputText={name}
             onChangeText={(text) => {
               onChangeName(text);
@@ -102,7 +102,7 @@ export default function AddIngredientModal({
           />
 
           <LabelledTextInput
-            labelText="Category (optional):"
+            labelText={t("category_optional")}
             inputText={category}
             onChangeText={(text) => {
               onChangeCategory(text);
@@ -154,7 +154,6 @@ export default function AddIngredientModal({
               setQty(1);
               onChangeDate("");
             }}
-            close={close}
             doToast={(n: number) => {
               setRootActive(n);
             }}

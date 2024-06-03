@@ -1,4 +1,5 @@
 import LabelledTextInput from "./LabelledTextInput";
+import { useTranslation } from "react-i18next";
 
 export default function DateInput({
   date,
@@ -9,9 +10,10 @@ export default function DateInput({
   onChangeDate: (d: string) => void;
   setErrorMessage: (e: string) => void;
 }) {
+  const { t } = useTranslation();
   return (
     <LabelledTextInput
-      labelText="Use by Date (optional):"
+      labelText={t("date_input_label")}
       inputText={date}
       placeholder="MM-DD-YY"
       keyboardType="number-pad"

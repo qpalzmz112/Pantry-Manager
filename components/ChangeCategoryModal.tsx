@@ -6,6 +6,7 @@ import Button from "./Button";
 import CloseButton from "./CloseButton";
 import CategoryList from "./ingredients_page/add_ingredient_modal/CategoryList";
 import toast from "@/code/toast";
+import { useTranslation } from "react-i18next";
 
 interface props {
   placeholder?: string;
@@ -18,6 +19,7 @@ export default function ChangeCategoryModal({
   save,
   close,
 }: props) {
+  const { t } = useTranslation();
   const { data: categories, update: setCategories } =
     useContext(CategoryContext);
   const [category, setCategory] = useState("");
@@ -35,7 +37,7 @@ export default function ChangeCategoryModal({
     <Modal animationType="slide" onRequestClose={close}>
       <View className="h-[100vh] w-[100vw] flex-col items-center justify-center">
         <LabelledTextInput
-          labelText="Category:"
+          labelText={t("category")}
           inputText={category}
           placeholder={placeholder}
           onChangeText={setCategory}
@@ -60,19 +62,17 @@ export default function ChangeCategoryModal({
         )}
 
         <Button
-          text="Save"
+          text={t("save")}
           textClass="text-xl"
           pressableClass="bg-gray-300 p-2 mt-6 rounded-lg"
           pressedClass="bg-gray-400"
           onPress={() => {
             if (category != "" && !Object.keys(categories).includes(category)) {
-              setError(
-                "Please enter the name of an existing category or leave the category field blank."
-              );
+              setError(t("error_category"));
               return;
             }
             save(category);
-            toast("Category updated!");
+            toast(t("category_updated"));
             close();
           }}
         />

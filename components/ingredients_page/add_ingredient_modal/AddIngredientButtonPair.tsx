@@ -1,24 +1,24 @@
 import { View, Text } from "react-native";
 import AddIngredientButton from "./AddIngredientButton";
+import { useTranslation } from "react-i18next";
 
 export default function AddIngredientButtonPair({
   errorMessage,
   canAddCheck,
   addIngredient,
-  close,
   doToast,
 }: {
   errorMessage: string;
   canAddCheck: () => boolean;
   addIngredient: () => void;
-  close: () => void;
   doToast: (n: number) => void;
 }) {
+  const { t } = useTranslation();
   return (
     <View className="flex-col items-center">
       <View className="flex-row">
         <AddIngredientButton
-          text="Add Ingredient"
+          text={t("add_ingredient")}
           errorMessage={errorMessage}
           canAddCheck={canAddCheck}
           addIngredient={() => {
@@ -27,7 +27,7 @@ export default function AddIngredientButtonPair({
           }}
         />
         <AddIngredientButton
-          text="Add Ingredient and Return to List"
+          text={t("add_ingredient_return")}
           errorMessage={errorMessage}
           canAddCheck={canAddCheck}
           addIngredient={() => {

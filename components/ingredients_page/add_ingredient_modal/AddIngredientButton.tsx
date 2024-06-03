@@ -16,7 +16,7 @@ export default function AddIngredientButton({
   return (
     <>
       <Pressable
-        className={`p-2 mx-4 mt-10 ${
+        className={`p-2 mx-2 mt-10 ${
           errorMessage == "" ? "bg-gray-100" : "bg-gray-200"
         } border-2 ${
           pressed ? "border-gray-300" : "border-gray-400"

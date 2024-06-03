@@ -10,6 +10,7 @@ import DeleteSomethingModal from "../DeleteSomethingModal";
 import ChangeDateModal from "../ChangeDateModal";
 import ChangeCategoryModal from "../ChangeCategoryModal";
 import QuantitySetter from "../ingredients_page/add_ingredient_modal/QuantitySetter";
+import { useTranslation } from "react-i18next";
 
 export default function ListItem({
   item,
@@ -18,6 +19,7 @@ export default function ListItem({
   item: Item;
   updateItem: (itemName: string, field: string, value: any) => void;
 }) {
+  const { t } = useTranslation();
   let { isPurchased } = item;
 
   const [showingDelete, setShowingDelete] = useState(false);
@@ -46,7 +48,7 @@ export default function ListItem({
           </View>
 
           <Text className="text-gray-500">
-            {item.category ? item.category : "Uncategorized"}
+            {item.category ? item.category : t("uncategorized")}
           </Text>
 
           <View className={`flex-row ${item.date ? "mt-1" : ""}`}>

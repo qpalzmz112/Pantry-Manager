@@ -12,6 +12,7 @@ import QuantitySetter from "@/components/ingredients_page/add_ingredient_modal/Q
 import CloseButton from "@/components/CloseButton";
 import toast from "@/code/toast";
 import { RootSiblingParent } from "react-native-root-siblings";
+import { useTranslation } from "react-i18next";
 
 export default function AddItemModal({
   close,
@@ -22,6 +23,7 @@ export default function AddItemModal({
   addItem: (item: Item) => void;
   nameAlreadyExists: (name: string) => boolean;
 }) {
+  const { t } = useTranslation();
   const [itemName, onChangeItemName] = useState("");
 
   const [category, setCategory] = useState("");
@@ -46,10 +48,13 @@ export default function AddItemModal({
 
   const canAddItemCheck = () => {
     if (nameAlreadyExists(itemName)) {
-      setErrorMessage("An item with this name already exists.");
+      setErrorMessage(t("error_name_exists"));
       return false;
     } else if (itemName.length == 0) {
-      setErrorMessage("Item name cannot be empty.");
+      setErrorMessage(t("error_empty_name"));
+      return false;
+    } else if (category != "" && !Object.keys(categories).includes(category)) {
+      setErrorMessage(t("error_category"));
       return false;
     }
     return true;
@@ -59,7 +64,7 @@ export default function AddItemModal({
   const [rootActive, setRootActive] = useState(0);
   useEffect(() => {
     if (rootActive != 0) {
-      toast("Item added!");
+      toast(t("item_added"));
       if (rootActive == 1) {
         close();
       }
@@ -72,7 +77,7 @@ export default function AddItemModal({
       <RootSiblingParent inactive={rootActive == 2 ? false : true}>
         <View className="w-[100vw] h-[100vh] bg-gray-100 flex-col justify-center items-center">
           <LabelledTextInput
-            labelText="Item name: "
+            labelText={t("item_name")}
             inputText={itemName}
             onChangeText={(text) => {
               onChangeItemName(text);
@@ -81,7 +86,7 @@ export default function AddItemModal({
           />
 
           <LabelledTextInput
-            labelText="Category (optional):"
+            labelText={t("category_optional")}
             inputText={category}
             onChangeText={(text) => {
               setCategory(text);
@@ -107,7 +112,7 @@ export default function AddItemModal({
           )}
 
           <View className="w-[80vw] flex items-left mt-4">
-            <Text>Grocery Item?</Text>
+            <Text>{t("is_grocery")}</Text>
             <CheckBox
               onPress={() => {
                 setIsGrocery(!isGrocery);
@@ -118,7 +123,7 @@ export default function AddItemModal({
 
           <View className="w-[80vw] flex items-left mt-4">
             <View className="flex-row">
-              <Text>Recurring Purchase?</Text>
+              <Text>{t("is_recurring")}</Text>
               <Pressable onPress={() => setShowingInfo(!showingInfo)}>
                 <Feather name="info" size={20} color="black" className="pl-2" />
               </Pressable>
@@ -131,9 +136,8 @@ export default function AddItemModal({
                   setShowingInfo(false);
                 }}
               >
-                Recurring purchases will stay on your shopping list when you
-                clear it and they will be marked with this icon:{" "}
-                {<MaterialIcons name="loop" size={22} color="black" />}.
+                {t("recurring_info")}
+                {<MaterialIcons name="loop" size={22} color="black" />}
               </Text>
             )}
 

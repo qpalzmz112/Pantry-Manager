@@ -1,7 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Tabs } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { Entypo } from "@expo/vector-icons";
@@ -9,8 +8,10 @@ import { get_data, store_data } from "@/code/data_functions";
 import { ItemContext, CategoryContext } from "@/code/data_context";
 import { Item } from "@/types/shopping_list";
 import { Categories } from "@/types/ingredients";
+import { useTranslation } from "react-i18next";
 
 export default function TabLayout() {
+  const { t } = useTranslation();
   const { data: Items } = useContext(ItemContext);
   const [items, updateItems] = useState<Item[]>(Items);
   const [loadedItems, setLoadedItems] = useState(false);
@@ -71,7 +72,7 @@ export default function TabLayout() {
           <Tabs.Screen
             name="ShoppingList"
             options={{
-              title: "Shopping List",
+              title: t("shopping_list_title"),
               tabBarIcon: ({ color }) => (
                 <FontAwesome5 name="sticky-note" size={24} color={color} />
               ),
@@ -80,6 +81,7 @@ export default function TabLayout() {
           <Tabs.Screen
             name="Ingredients"
             options={{
+              title: t("ingredients_title"),
               tabBarIcon: ({ color }) => (
                 <Entypo name="list" size={24} color={color} />
               ),
@@ -88,6 +90,7 @@ export default function TabLayout() {
           <Tabs.Screen
             name="Recipes"
             options={{
+              title: t("recipes_title"),
               tabBarIcon: ({ color }) => (
                 <AntDesign name="book" size={24} color={color} />
               ),

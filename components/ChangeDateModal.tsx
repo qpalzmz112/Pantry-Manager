@@ -3,6 +3,7 @@ import { useState } from "react";
 import DateInput from "./ingredients_page/add_ingredient_modal/DateInput";
 import CloseButton from "./CloseButton";
 import toast from "@/code/toast";
+import { useTranslation } from "react-i18next";
 
 interface props {
   givenDate?: string;
@@ -11,6 +12,7 @@ interface props {
 }
 
 export default function ChangeDateModal({ givenDate, addDate, close }: props) {
+  const { t } = useTranslation();
   const [pressed, setPressed] = useState(false);
   const [date, setDate] = useState(givenDate ? givenDate : "");
   const [error, setError] = useState("");
@@ -25,19 +27,17 @@ export default function ChangeDateModal({ givenDate, addDate, close }: props) {
         />
 
         {date == "" && (
-          <Text className="w-[80vw] mt-8 text-center">
-            After adding a date, you can change it by tapping and holding it.
-          </Text>
+          <Text className="w-[80vw] mt-8 text-center">{t("date_info")}</Text>
         )}
 
         <Pressable
           onPress={() => {
             if (date.length > 0 && date.length < 8) {
-              setError("Please enter a valid date or no date.");
+              setError(t("error_date"));
               return;
             }
             addDate(date);
-            toast("Date saved!");
+            toast(t("date_saved"));
             close();
           }}
           onPressIn={() => setPressed(true)}
@@ -46,7 +46,7 @@ export default function ChangeDateModal({ givenDate, addDate, close }: props) {
             pressed ? "bg-gray-300" : "bg-gray-200"
           } p-3 mt-10 mb-4 rounded-lg`}
         >
-          <Text className="text-lg">Save date to item</Text>
+          <Text className="text-lg">{t("save_date")}</Text>
         </Pressable>
 
         {error && <Text>{error}</Text>}

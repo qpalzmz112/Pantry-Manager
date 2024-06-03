@@ -6,8 +6,10 @@ import string_to_date from "@/code/string_and_date";
 import { Item } from "@/types/shopping_list";
 import CloseButton from "../CloseButton";
 import Button from "../Button";
+import { useTranslation } from "react-i18next";
 
 export default function AddItemModal({ close }: { close: () => void }) {
+  const { t } = useTranslation();
   const [status, setStatus] = useState("");
   const { data: items, update: setItems } = useContext(ItemContext);
   const { data: categories, update: setCategories } =
@@ -78,27 +80,25 @@ export default function AddItemModal({ close }: { close: () => void }) {
     updateItems(toRemove, toUpdate);
 
     close();
-    toast("Success!");
+    toast(t("clear_list_success"));
   };
 
   return (
     <Modal transparent={false} onRequestClose={close}>
       <View className="w-[100vw] h-[100vh] bg-gray-100 flex-col justify-center items-center">
         <Text className="w-[80vw] text-lg text-center mb-6">
-          Clear your shopping list? {"\n\n"} Your purchased grocery items will
-          be moved to your ingredients list, but unpurchased items and recurring
-          purchases will remain.
+          {t("clear_list_info_start")} {"\n\n"} {t("clear_list_info_end")}
         </Text>
         <View className="flex-row">
           <Button
-            text="Yes"
+            text={t("yes")}
             pressableClass="bg-gray-300 p-3 m-3 rounded-2xl"
             pressedClass="bg-gray-400"
             textClass="text-xl"
             onPress={() => clearList()}
           />
           <Button
-            text="No"
+            text={t("no")}
             pressableClass="bg-gray-300 p-3 m-3 rounded-2xl"
             pressedClass="bg-gray-400"
             textClass="text-xl"

@@ -1,5 +1,6 @@
 import { View, Text } from "react-native";
 import AddItemButton from "./AddItemButton";
+import { useTranslation } from "react-i18next";
 
 export default function AddItemButtonPair({
   errorMessage,
@@ -16,11 +17,12 @@ export default function AddItemButtonPair({
   close: () => void;
   doToast: (n: number) => void;
 }) {
+  const { t } = useTranslation();
   return (
     <View className="flex-col items-center mt-10">
       <View className="flex-row">
         <AddItemButton
-          text="Add Item"
+          text={t("add_item")}
           errorMessage={errorMessage}
           canAddItemCheck={canAddItemCheck}
           addItem={() => {
@@ -30,7 +32,7 @@ export default function AddItemButtonPair({
           }}
         />
         <AddItemButton
-          text="Add Item and Return to List"
+          text={t("add_item_return")}
           errorMessage={errorMessage}
           canAddItemCheck={canAddItemCheck}
           addItem={() => {

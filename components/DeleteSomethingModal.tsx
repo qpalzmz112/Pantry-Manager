@@ -5,6 +5,8 @@ import { Item } from "@/types/shopping_list";
 import DeleteSomethingButton from "./DeleteSomethingButton";
 import CloseButton from "./CloseButton";
 import toast from "@/code/toast";
+import { sortItems } from "@/code/sort_items";
+import { useTranslation } from "react-i18next";
 
 interface props {
   name: string;
@@ -21,36 +23,36 @@ export default function DeleteSomethingModal({
   deleteThing,
   close,
 }: props) {
+  const { t } = useTranslation();
   const { data: Items, update } = useContext(ItemContext);
   return (
     <Modal animationType="slide" onRequestClose={close}>
       <View className="h-[100vh] w-[100vw] flex-col items-center justify-center">
         <Text className="text-2xl">
-          Delete {type} {name}?
+          {t("delete")} {t(type).toLocaleLowerCase()} {name}?
         </Text>
         <View className="flex-row">
           <DeleteSomethingButton
-            text="Yes"
+            text={t("yes")}
             onPress={() => {
               deleteThing();
-              toast(`${type[0].toLocaleUpperCase()}${type.slice(1)} deleted.`);
+              toast(`${t(type)} ${t("toast_deleted")}`);
               close();
             }}
           />
-          <DeleteSomethingButton text="No" onPress={close} />
+          <DeleteSomethingButton text={t("no")} onPress={close} />
         </View>
 
         {type == "category" && (
           <Text className="max-w-[80vw] mt-4 text-xl text-center">
-            The ingredients in this category will remain, but will be
-            uncategorized.
+            {t("delete_category_info")}
           </Text>
         )}
 
         {type == "ingredient" && (
           <View className="max-w-[75vw]">
             <DeleteSomethingButton
-              text="Yes, and add to shopping list."
+              text={t("yes_add_to_shopping_list")}
               onPress={() => {
                 deleteThing();
                 if (
@@ -58,9 +60,9 @@ export default function DeleteSomethingModal({
                     shoppingListItem!.name
                   )
                 ) {
-                  update([...Items, shoppingListItem!]);
+                  update(sortItems([...Items, shoppingListItem!]));
                 }
-                toast("Ingredient deleted and added to shopping list.");
+                toast(t("toast_deleted_added_to_shopping_list"));
                 close();
               }}
             />

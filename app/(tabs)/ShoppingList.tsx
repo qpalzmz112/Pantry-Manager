@@ -16,8 +16,10 @@ import { Item } from "@/types/shopping_list";
 import { set_tab } from "@/code/data_functions";
 import { ItemContext } from "@/code/data_context";
 import { sortItems } from "@/code/sort_items";
+import { useTranslation } from "react-i18next";
 
 export default function ShoppingList() {
+  const { t } = useTranslation();
   const [addModalVisible, setAddModalVisible] = useState(false);
   const [clearModalVisible, setClearModalVisible] = useState(false);
   const { data: items, update: updateItems } = useContext(ItemContext);
@@ -91,7 +93,7 @@ export default function ShoppingList() {
             }}
           >
             <Text className="text-xl text-white text-center py-2 mb-2 bg-indigo-600">
-              {title}
+              {t(title)}
             </Text>
             <Pressable
               className="absolute right-3 top-2"

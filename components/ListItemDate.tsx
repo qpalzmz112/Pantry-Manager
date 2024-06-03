@@ -2,6 +2,7 @@ import { Text } from "react-native";
 import * as Haptics from "expo-haptics";
 import Button from "./Button";
 import { AntDesign } from "@expo/vector-icons";
+import { useTranslation } from "react-i18next";
 
 interface props {
   date: string;
@@ -14,6 +15,7 @@ export default function ListItemDate({
   isGrocery = true,
   showModal,
 }: props) {
+  const { t } = useTranslation();
   return date ? (
     <Text
       onPress={() => {
@@ -22,7 +24,8 @@ export default function ListItemDate({
       }}
       className="mx-4"
     >
-      Use by: {date}
+      {t("use_by")}
+      {date}
     </Text>
   ) : (
     isGrocery && (

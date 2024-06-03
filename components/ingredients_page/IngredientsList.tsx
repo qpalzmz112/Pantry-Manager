@@ -7,6 +7,7 @@ import ListItem from "./ListItem";
 import Button from "../Button";
 import { Categories } from "@/types/ingredients";
 import { filterBySearch } from "@/code/sort_ingredients";
+import { useTranslation } from "react-i18next";
 
 export default function IngredientsList({
   categories,
@@ -17,6 +18,7 @@ export default function IngredientsList({
   setCategories: (c: Categories) => void;
   setDeletingCategory: (c: string) => void;
 }) {
+  const { t } = useTranslation();
   const defaultCollapsedCategories = Object.fromEntries(
     Object.entries(categories).map((key) => [key, false])
   );
@@ -24,7 +26,6 @@ export default function IngredientsList({
     defaultCollapsedCategories
   );
   const [search, setSearch] = useState("");
-
   return (
     <View className="h-[79vh]">
       <View>
@@ -40,14 +41,14 @@ export default function IngredientsList({
             }}
             onPress={() => setSearch("")}
             className="w-screen"
-            placeholder="Search"
+            placeholder={t("search")}
             cursorColor="gray"
           />
         </View>
 
         {search && (
           <Button
-            text="Clear Search"
+            text={t("clear_search")}
             textClass="text-lg text-center"
             pressableClass="w-[80vw] mx-auto bg-gray-300 rounded-lg p-1 mb-2"
             pressedClass="bg-gray-400"
@@ -110,7 +111,7 @@ export default function IngredientsList({
             }}
           >
             <Text className="text-xl text-white text-center py-2 mb-2 bg-indigo-600">
-              {title == "" ? "Uncategorized" : title}
+              {title == "" ? t("uncategorized") : title}
             </Text>
             <Pressable
               className="absolute right-3 top-2"
