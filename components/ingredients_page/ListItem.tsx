@@ -2,13 +2,19 @@ import { Text, View, Pressable } from "react-native";
 import { useState } from "react";
 import { AntDesign } from "@expo/vector-icons";
 import { Ingredient } from "@/types/ingredients";
-import string_to_date, { date_to_string } from "@/code/string_and_date";
+import {
+  date_to_display_string,
+  string_to_date,
+  date_to_Date,
+  date_to_input_text,
+} from "@/code/date_utils";
 import DeleteSomethingModal from "../DeleteSomethingModal";
 import ChangeDateModal from "../ChangeDateModal";
 import ChangeCategoryModal from "../ChangeCategoryModal";
 import QuantitySetter from "./add_ingredient_modal/QuantitySetter";
 import ListItemDate from "../ListItemDate";
 import * as Haptics from "expo-haptics";
+import { useTranslation } from "react-i18next";
 
 export default function ListItem({
   ingredient,
@@ -20,19 +26,21 @@ export default function ListItem({
   ingredient: Ingredient;
   updateCategory: (c: string) => void;
   updateQty: (n: number) => void;
-  updateDate: (d: Date | null) => void;
+  updateDate: (d: any) => void;
   deleteIngredient: (n: string) => void;
 }) {
+  const { t } = useTranslation();
   const [showingDelete, setShowingDelete] = useState(false);
   const [showDateModal, setShowDateModal] = useState(false);
   const [showCategoryModal, setShowCategoryModal] = useState(false);
 
   let { useByDate } = ingredient;
-  let useByText = useByDate ? date_to_string(useByDate) : "";
+  let dateDisplay = date_to_display_string(useByDate);
+  const dateInputDate = date_to_input_text(useByDate);
 
   let bgColor = "bg-white";
   if (useByDate) {
-    let num = new Date(useByDate).valueOf();
+    let num = date_to_Date(useByDate).valueOf();
     if (num < Date.now()) {
       bgColor = "bg-red-300";
     } else if (num < Date.now() + 7 * 24 * 60 * 60 * 1000) {
@@ -61,7 +69,7 @@ export default function ListItem({
                 inList={true}
               />
 
-              <ListItemDate date={useByText} showModal={setShowDateModal} />
+              <ListItemDate date={dateDisplay} showModal={setShowDateModal} />
             </View>
           </View>
 
@@ -76,9 +84,9 @@ export default function ListItem({
 
       {showDateModal && (
         <ChangeDateModal
-          givenDate={useByText.slice(0, 6) + useByText.slice(8, 10)}
+          givenDate={dateInputDate}
           addDate={(date) => {
-            updateDate(string_to_date(date));
+            updateDate(date);
           }}
           close={() => setShowDateModal(false)}
         />
@@ -101,7 +109,7 @@ export default function ListItem({
           }}
           shoppingListItem={{
             name: ingredient.name,
-            date: "",
+            date: null,
             category: ingredient.category,
             qty: 1,
             isGrocery: true,

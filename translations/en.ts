@@ -37,6 +37,8 @@ const en = {
 
   // Date input
   date_input_label: "Use by Date (optional):",
+  date_placeholder: "MM-DD-YY",
+  intlDateTime: "{{val, datetime}}",
 
   // Clear list modal
   clear_list_info_start: "Clear your shopping list?",

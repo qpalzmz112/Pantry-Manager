@@ -37,6 +37,8 @@ const es = {
 
   // Date input
   date_input_label: "Utilizar por fecha (opcional):",
+  date_placeholder: "DD-MM-AA",
+  intlDateTime: "{{val, datetime}}",
 
   // Clear list modal
   clear_list_info_start: "¿Borre su lista de compras?",

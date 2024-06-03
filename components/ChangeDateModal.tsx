@@ -3,11 +3,12 @@ import { useState } from "react";
 import DateInput from "./ingredients_page/add_ingredient_modal/DateInput";
 import CloseButton from "./CloseButton";
 import toast from "@/code/toast";
+import { string_to_date } from "@/code/date_utils";
 import { useTranslation } from "react-i18next";
 
 interface props {
   givenDate?: string;
-  addDate: (d: string) => void;
+  addDate: (d: any) => void;
   close: () => void;
 }
 
@@ -36,7 +37,8 @@ export default function ChangeDateModal({ givenDate, addDate, close }: props) {
               setError(t("error_date"));
               return;
             }
-            addDate(date);
+            let dateObj = string_to_date(date);
+            addDate(dateObj);
             toast(t("date_saved"));
             close();
           }}

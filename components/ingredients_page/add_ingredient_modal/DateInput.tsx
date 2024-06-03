@@ -15,7 +15,7 @@ export default function DateInput({
     <LabelledTextInput
       labelText={t("date_input_label")}
       inputText={date}
-      placeholder="MM-DD-YY"
+      placeholder={t("date_placeholder")}
       keyboardType="number-pad"
       maxLength={8}
       onChangeText={(text) => {

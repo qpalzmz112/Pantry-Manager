@@ -2,7 +2,7 @@ import { Text, View, Modal } from "react-native";
 import { useState, useContext } from "react";
 import toast from "@/code/toast";
 import { ItemContext, CategoryContext } from "@/code/data_context";
-import string_to_date from "@/code/string_and_date";
+import {} from "@/code/date_utils";
 import { Item } from "@/types/shopping_list";
 import CloseButton from "../CloseButton";
 import Button from "../Button";
@@ -34,11 +34,10 @@ export default function AddItemModal({ close }: { close: () => void }) {
       if (x != null) {
         newCategories[x[0]][x[1]].qty += item.qty;
       } else {
-        let date = string_to_date(item.date);
         newCategories[item.category].push({
           name: item.name,
           qty: item.qty,
-          useByDate: date,
+          useByDate: item.date,
           category: item.category,
         });
       }
@@ -60,7 +59,7 @@ export default function AddItemModal({ close }: { close: () => void }) {
             isPurchased: false,
             isGrocery: i.isGrocery,
             isRecurring: true,
-            date: "",
+            date: null,
             qty: i.qty,
           };
         } else {

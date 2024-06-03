@@ -8,7 +8,7 @@ import CategoryList from "./CategoryList";
 import QuantitySetter from "./QuantitySetter";
 import AddIngredientButtonPair from "./AddIngredientButtonPair";
 import CloseButton from "../../CloseButton";
-import string_to_date from "@/code/string_and_date";
+import { string_to_date } from "@/code/date_utils";
 import toast from "@/code/toast";
 import { useTranslation } from "react-i18next";
 

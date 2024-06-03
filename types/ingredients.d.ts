@@ -1,3 +1,5 @@
+import { date } from "./shopping_list";
+
 interface Categories {
   [name: string]: Ingredient[];
 }
@@ -5,7 +7,7 @@ interface Categories {
 interface Ingredient {
   name: string;
   qty: number;
-  useByDate: Date | null;
+  useByDate: date | null;
   category: string;
 }
 

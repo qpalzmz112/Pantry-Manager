@@ -158,7 +158,7 @@ export default function AddItemModal({
               addItem({
                 name: itemName,
                 category: category,
-                date: "",
+                date: null,
                 qty: qty,
                 isGrocery: isGrocery,
                 isRecurring: isRecurring,
