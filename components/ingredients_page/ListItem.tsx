@@ -9,7 +9,6 @@ import ChangeCategoryModal from "../ChangeCategoryModal";
 import QuantitySetter from "./add_ingredient_modal/QuantitySetter";
 import ListItemDate from "../ListItemDate";
 import * as Haptics from "expo-haptics";
-import { useTranslation } from "react-i18next";
 
 export default function ListItem({
   ingredient,
@@ -24,7 +23,6 @@ export default function ListItem({
   updateDate: (d: any) => void;
   deleteIngredient: (n: string) => void;
 }) {
-  const { t } = useTranslation();
   const [showingDelete, setShowingDelete] = useState(false);
   const [showDateModal, setShowDateModal] = useState(false);
   const [showCategoryModal, setShowCategoryModal] = useState(false);
