@@ -17,16 +17,16 @@ export default function ListItemDate({
 }: props) {
   const { t } = useTranslation();
   return date ? (
-    <Text
+    <Button
+      text={t("use_by") + date}
+      textClass=""
+      pressableClass="py-1 px-2 mx-2 bg-gray-200 rounded-lg"
+      pressedClass="bg-gray-400"
       onPress={() => {
         Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
         showModal(true);
       }}
-      className="mx-4"
-    >
-      {t("use_by")}
-      {date}
-    </Text>
+    />
   ) : (
     isGrocery && (
       <Button
