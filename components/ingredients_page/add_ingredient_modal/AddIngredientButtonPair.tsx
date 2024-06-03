@@ -1,17 +1,18 @@
 import { View, Text } from "react-native";
 import AddIngredientButton from "./AddIngredientButton";
-import toast from "@/code/toast";
 
 export default function AddIngredientButtonPair({
   errorMessage,
   canAddCheck,
   addIngredient,
   close,
+  doToast,
 }: {
   errorMessage: string;
   canAddCheck: () => boolean;
   addIngredient: () => void;
   close: () => void;
+  doToast: (n: number) => void;
 }) {
   return (
     <View className="flex-col items-center">
@@ -20,7 +21,10 @@ export default function AddIngredientButtonPair({
           text="Add Ingredient"
           errorMessage={errorMessage}
           canAddCheck={canAddCheck}
-          addIngredient={addIngredient}
+          addIngredient={() => {
+            addIngredient();
+            doToast(2);
+          }}
         />
         <AddIngredientButton
           text="Add Ingredient and Return to List"
@@ -28,8 +32,7 @@ export default function AddIngredientButtonPair({
           canAddCheck={canAddCheck}
           addIngredient={() => {
             addIngredient();
-            close();
-            toast("Success!");
+            doToast(1);
           }}
         />
       </View>

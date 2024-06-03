@@ -6,7 +6,7 @@ const toast = (text: string) => {
     backgroundColor: "#4f46e5",
     textColor: "white",
     textStyle: { padding: 2, fontSize: 18 },
-    opacity: 1,
+    opacity: 0.9,
     duration: 1000,
   });
 };

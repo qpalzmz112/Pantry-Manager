@@ -7,12 +7,14 @@ export default function AddItemButtonPair({
   addItem,
   success,
   close,
+  doToast,
 }: {
   errorMessage: string;
   canAddItemCheck: () => boolean;
   addItem: () => void;
   success: () => void;
   close: () => void;
+  doToast: (n: number) => void;
 }) {
   return (
     <View className="flex-col items-center mt-10">
@@ -23,6 +25,7 @@ export default function AddItemButtonPair({
           canAddItemCheck={canAddItemCheck}
           addItem={() => {
             addItem();
+            doToast(2);
             success();
           }}
         />
@@ -32,7 +35,7 @@ export default function AddItemButtonPair({
           canAddItemCheck={canAddItemCheck}
           addItem={() => {
             addItem();
-            close();
+            doToast(1);
           }}
         />
       </View>

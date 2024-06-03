@@ -1,5 +1,6 @@
 import { Modal, ScrollView } from "react-native";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { RootSiblingParent } from "react-native-root-siblings";
 import { Categories } from "@/types/ingredients";
 import LabelledTextInput from "./LabelledTextInput";
 import DateInput from "./DateInput";
@@ -8,6 +9,7 @@ import QuantitySetter from "./QuantitySetter";
 import AddIngredientButtonPair from "./AddIngredientButtonPair";
 import CloseButton from "../../CloseButton";
 import string_to_date from "@/code/string_and_date";
+import toast from "@/code/toast";
 
 export default function AddIngredientModal({
   close,
@@ -66,85 +68,101 @@ export default function AddIngredientModal({
     return true;
   };
 
+  // 0: inactive, 1: inactive but show toast after closing modal, 2: active and show toast over modal
+  const [rootActive, setRootActive] = useState(0);
+  useEffect(() => {
+    if (rootActive != 0) {
+      toast("Ingredient added!");
+      if (rootActive == 1) {
+        close();
+      }
+      setRootActive(0);
+    }
+  }, [rootActive]);
+
   return (
     <Modal transparent={false} onRequestClose={close}>
-      <ScrollView
-        className="w-[100vw] h-[100vh] bg-gray-100 flex-col"
-        contentContainerStyle={{
-          paddingTop: 175,
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-        keyboardShouldPersistTaps="always"
-      >
-        <LabelledTextInput
-          labelText="Item name:"
-          inputText={name}
-          onChangeText={(text) => {
-            onChangeName(text);
-            setErrorMessage("");
+      <RootSiblingParent inactive={rootActive == 2 ? false : true}>
+        <ScrollView
+          className="w-[100vw] h-[100vh] bg-gray-100 flex-col"
+          contentContainerStyle={{
+            paddingTop: 175,
+            alignItems: "center",
+            justifyContent: "center",
           }}
-        />
-
-        <LabelledTextInput
-          labelText="Category (optional):"
-          inputText={category}
-          onChangeText={(text) => {
-            onChangeCategory(text);
-            setErrorMessage("");
-          }}
-          onPress={() => {
-            setShowCategories(true);
-            onChangeCategory("");
-            setErrorMessage("");
-          }}
-          onEndEditing={() => {
-            setShowCategories(false);
-          }}
-        />
-
-        {showCategories && (
-          <CategoryList
-            category={category}
-            categories={categories}
-            matching_categories={matching_categories}
-            onChangeCategory={onChangeCategory}
-            setCategories={setCategories}
+          keyboardShouldPersistTaps="always"
+        >
+          <LabelledTextInput
+            labelText="Item name:"
+            inputText={name}
+            onChangeText={(text) => {
+              onChangeName(text);
+              setErrorMessage("");
+            }}
           />
-        )}
 
-        <DateInput
-          date={date}
-          onChangeDate={onChangeDate}
-          setErrorMessage={setErrorMessage}
-        />
+          <LabelledTextInput
+            labelText="Category (optional):"
+            inputText={category}
+            onChangeText={(text) => {
+              onChangeCategory(text);
+              setErrorMessage("");
+            }}
+            onPress={() => {
+              setShowCategories(true);
+              onChangeCategory("");
+              setErrorMessage("");
+            }}
+            onEndEditing={() => {
+              setShowCategories(false);
+            }}
+          />
 
-        <QuantitySetter qty={qty} setQty={setQty} inList={false} />
+          {showCategories && (
+            <CategoryList
+              category={category}
+              categories={categories}
+              matching_categories={matching_categories}
+              onChangeCategory={onChangeCategory}
+              setCategories={setCategories}
+            />
+          )}
 
-        <AddIngredientButtonPair
-          errorMessage={errorMessage}
-          canAddCheck={canAddIngredientCheck}
-          addIngredient={() => {
-            let newDate = string_to_date(date);
-            let c = { ...categories };
-            c[category].push({
-              name: name,
-              qty: qty,
-              useByDate: newDate,
-              category: category,
-            });
-            setCategories(c);
-            onChangeName("");
-            onChangeCategory("");
-            setQty(1);
-            onChangeDate("");
-            setErrorMessage("Success!");
-          }}
-          close={close}
-        />
+          <DateInput
+            date={date}
+            onChangeDate={onChangeDate}
+            setErrorMessage={setErrorMessage}
+          />
 
-        <CloseButton close={close} />
-      </ScrollView>
+          <QuantitySetter qty={qty} setQty={setQty} inList={false} />
+
+          <AddIngredientButtonPair
+            errorMessage={errorMessage}
+            canAddCheck={canAddIngredientCheck}
+            addIngredient={() => {
+              let newDate = string_to_date(date);
+              let c = { ...categories };
+              c[category].push({
+                name: name,
+                qty: qty,
+                useByDate: newDate,
+                category: category,
+              });
+              setCategories(c);
+              onChangeName("");
+              onChangeCategory("");
+              setQty(1);
+              onChangeDate("");
+            }}
+            close={close}
+            doToast={(n: number) => {
+              setRootActive(n);
+            }}
+          />
+
+          <CloseButton close={close} />
+        </ScrollView>
+      </RootSiblingParent>
     </Modal>
   );
 }

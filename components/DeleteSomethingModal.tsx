@@ -60,7 +60,7 @@ export default function DeleteSomethingModal({
                 ) {
                   update([...Items, shoppingListItem!]);
                 }
-                toast("Ingredient deleted.");
+                toast("Ingredient deleted and added to shopping list.");
                 close();
               }}
             />
