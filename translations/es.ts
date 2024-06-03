@@ -32,11 +32,11 @@ const es = {
   // Change date modal
   save_date: "Confirmar Fecha",
   date_info: "Después de agregar una fecha, puedes cambiarla tocándola.",
-  error_date: "Por favor ingrese una fecha válida o ninguna fecha.",
   date_saved: "¡Fecha actualizada!",
 
   // Date input
   date_input_label: "Utilizar por fecha (opcional):",
+  choose_date: "Elegir una Fecha de Vencimiento",
   date_placeholder: "DD-MM-AA",
   intlDateTime: "{{val, datetime}}",
 

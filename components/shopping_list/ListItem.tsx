@@ -11,7 +11,7 @@ import ChangeDateModal from "../ChangeDateModal";
 import ChangeCategoryModal from "../ChangeCategoryModal";
 import QuantitySetter from "../ingredients_page/add_ingredient_modal/QuantitySetter";
 import { useTranslation } from "react-i18next";
-import { date_to_display_string, date_to_input_text } from "@/code/date_utils";
+import { date_to_display_string } from "@/code/date_utils";
 
 export default function ListItem({
   item,
@@ -22,7 +22,6 @@ export default function ListItem({
 }) {
   const { t } = useTranslation();
   const displayDate = date_to_display_string(item.date);
-  const dateInputDate = date_to_input_text(item.date);
 
   let { isPurchased } = item;
 
@@ -85,7 +84,7 @@ export default function ListItem({
 
       {showDateModal && (
         <ChangeDateModal
-          givenDate={dateInputDate}
+          givenDate={item.date}
           addDate={(d) => {
             updateItem(item.name, "date", d);
           }}

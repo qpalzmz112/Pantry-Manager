@@ -32,11 +32,11 @@ const en = {
   // Change date modal
   save_date: "Save Date to Item",
   date_info: "After adding a date, you can change it by tapping it.",
-  error_date: "Please enter a valid date or no date.",
   date_saved: "Date saved!",
 
   // Date input
   date_input_label: "Use by Date (optional):",
+  choose_date: "Choose an Expiration Date",
   date_placeholder: "MM-DD-YY",
   intlDateTime: "{{val, datetime}}",
 

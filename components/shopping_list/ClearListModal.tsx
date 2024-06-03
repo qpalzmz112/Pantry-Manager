@@ -2,7 +2,6 @@ import { Text, View, Modal } from "react-native";
 import { useState, useContext } from "react";
 import toast from "@/code/toast";
 import { ItemContext, CategoryContext } from "@/code/data_context";
-import {} from "@/code/date_utils";
 import { Item } from "@/types/shopping_list";
 import CloseButton from "../CloseButton";
 import Button from "../Button";

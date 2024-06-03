@@ -1,43 +1,50 @@
-import LabelledTextInput from "./LabelledTextInput";
+import { View } from "react-native";
+import { useState } from "react";
+import Button from "@/components/Button";
 import { useTranslation } from "react-i18next";
+import DateTimePicker from "@react-native-community/datetimepicker";
+import {
+  Date_to_date,
+  date_to_display_string,
+  date_to_Date,
+} from "@/code/date_utils";
+import { date } from "@/types/shopping_list";
 
 export default function DateInput({
   date,
   onChangeDate,
-  setErrorMessage,
 }: {
-  date: string;
-  onChangeDate: (d: string) => void;
-  setErrorMessage: (e: string) => void;
+  date: date | null;
+  onChangeDate: (d: date) => void;
 }) {
   const { t } = useTranslation();
+  const [showInput, setShowInput] = useState(false);
+
   return (
-    <LabelledTextInput
-      labelText={t("date_input_label")}
-      inputText={date}
-      placeholder={t("date_placeholder")}
-      keyboardType="number-pad"
-      maxLength={8}
-      onChangeText={(text) => {
-        setErrorMessage("");
-        if (text[text.length - 1] < "0" || text[text.length - 1] > "9") {
-          if (text.length == 3 || text.length == 6) {
-            onChangeDate(text);
-            return; // don't want to cause problems with the auto-inserted hyphens
-          }
-          // only allow digits to be entered
-          text = text.slice(0, -1);
-          return;
+    <View>
+      <Button
+        text={
+          date ? t("use_by") + date_to_display_string(date) : t("choose_date")
         }
-        if (text.length == 2 || text.length == 5) {
-          if (text.length < date.length) {
-            text = text.slice(0, -1);
-          } else {
-            text += "-";
-          }
-        }
-        onChangeDate(text);
-      }}
-    />
+        textClass="text-lg"
+        pressableClass="p-2 mt-6 bg-gray-200 rounded-lg"
+        pressedClass="bg-gray-400"
+        onPress={() => setShowInput(true)}
+      />
+      {showInput && (
+        <DateTimePicker
+          mode="date"
+          value={date_to_Date(date)}
+          onChange={(e, date) => {
+            if (e.type == "dismissed") {
+              setShowInput(false);
+            } else if (e.type == "set") {
+              setShowInput(false);
+              onChangeDate(Date_to_date(date!));
+            }
+          }}
+        />
+      )}
+    </View>
   );
 }

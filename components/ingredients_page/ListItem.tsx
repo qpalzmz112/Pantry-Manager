@@ -2,12 +2,7 @@ import { Text, View, Pressable } from "react-native";
 import { useState } from "react";
 import { AntDesign } from "@expo/vector-icons";
 import { Ingredient } from "@/types/ingredients";
-import {
-  date_to_display_string,
-  string_to_date,
-  date_to_Date,
-  date_to_input_text,
-} from "@/code/date_utils";
+import { date_to_display_string, date_to_Date } from "@/code/date_utils";
 import DeleteSomethingModal from "../DeleteSomethingModal";
 import ChangeDateModal from "../ChangeDateModal";
 import ChangeCategoryModal from "../ChangeCategoryModal";
@@ -36,7 +31,6 @@ export default function ListItem({
 
   let { useByDate } = ingredient;
   let dateDisplay = date_to_display_string(useByDate);
-  const dateInputDate = date_to_input_text(useByDate);
 
   let bgColor = "bg-white";
   if (useByDate) {
@@ -84,7 +78,7 @@ export default function ListItem({
 
       {showDateModal && (
         <ChangeDateModal
-          givenDate={dateInputDate}
+          givenDate={useByDate}
           addDate={(date) => {
             updateDate(date);
           }}

@@ -8,9 +8,9 @@ import CategoryList from "./CategoryList";
 import QuantitySetter from "./QuantitySetter";
 import AddIngredientButtonPair from "./AddIngredientButtonPair";
 import CloseButton from "../../CloseButton";
-import { string_to_date } from "@/code/date_utils";
 import toast from "@/code/toast";
 import { useTranslation } from "react-i18next";
+import { date } from "@/types/shopping_list";
 
 export default function AddIngredientModal({
   close,
@@ -26,7 +26,7 @@ export default function AddIngredientModal({
   const [category, onChangeCategory] = useState("");
   const [showCategories, setShowCategories] = useState(false);
 
-  const [date, onChangeDate] = useState("");
+  const [date, setDate] = useState<date | null>(null);
 
   const [qty, setQty] = useState(1);
 
@@ -60,9 +60,6 @@ export default function AddIngredientModal({
       return false;
     } else if (category != "" && !Object.keys(categories).includes(category)) {
       setErrorMessage(t("error_category"));
-      return false;
-    } else if (date.length > 0 && date.length < 8) {
-      setErrorMessage(t("error_date"));
       return false;
     }
     return true;
@@ -128,11 +125,7 @@ export default function AddIngredientModal({
             />
           )}
 
-          <DateInput
-            date={date}
-            onChangeDate={onChangeDate}
-            setErrorMessage={setErrorMessage}
-          />
+          <DateInput date={date} onChangeDate={setDate} />
 
           <QuantitySetter qty={qty} setQty={setQty} inList={false} />
 
@@ -140,19 +133,18 @@ export default function AddIngredientModal({
             errorMessage={errorMessage}
             canAddCheck={canAddIngredientCheck}
             addIngredient={() => {
-              let newDate = string_to_date(date);
               let c = { ...categories };
               c[category].push({
                 name: name,
                 qty: qty,
-                useByDate: newDate,
+                useByDate: date,
                 category: category,
               });
               setCategories(c);
               onChangeName("");
               onChangeCategory("");
               setQty(1);
-              onChangeDate("");
+              setDate(null);
             }}
             doToast={(n: number) => {
               setRootActive(n);
