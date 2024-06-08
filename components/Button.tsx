@@ -3,7 +3,7 @@ import { useState } from "react";
 
 interface props {
   text: any;
-  textClass: string;
+  textClass?: string;
   pressedTextClass?: string;
   pressableClass?: string;
   pressedClass?: string;

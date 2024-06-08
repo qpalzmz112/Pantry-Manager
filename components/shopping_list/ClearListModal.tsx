@@ -1,7 +1,9 @@
 import { Text, View, Modal } from "react-native";
-import { useState, useContext } from "react";
+import { useContext } from "react";
 import toast from "@/code/toast";
 import { ItemContext, CategoryContext } from "@/code/data_context";
+import { NotificationsContext } from "@/code/notifications_context";
+import { schedulePushNotification } from "@/code/notifications";
 import { Item } from "@/types/shopping_list";
 import CloseButton from "../CloseButton";
 import Button from "../Button";
@@ -9,10 +11,12 @@ import { useTranslation } from "react-i18next";
 
 export default function AddItemModal({ close }: { close: () => void }) {
   const { t } = useTranslation();
-  const [status, setStatus] = useState("");
   const { data: items, update: setItems } = useContext(ItemContext);
   const { data: categories, update: setCategories } =
     useContext(CategoryContext);
+
+  const { data: notifications, update: setNotifications } =
+    useContext(NotificationsContext);
 
   const ingredientNameExists = (name: string) => {
     let res = null;
@@ -39,6 +43,18 @@ export default function AddItemModal({ close }: { close: () => void }) {
           useByDate: item.date,
           category: item.category,
         });
+        // add notification
+        if (item.date) {
+          schedulePushNotification(item.name, item.date).then((val) => {
+            if (val == null) {
+              return;
+            }
+            setNotifications({
+              ...notifications,
+              [item.name]: [val[0], `${val[1]}`],
+            });
+          });
+        }
       }
     });
     setCategories(newCategories);
@@ -103,7 +119,6 @@ export default function AddItemModal({ close }: { close: () => void }) {
             onPress={close}
           />
         </View>
-        {status && <Text className="text-xl">{status}</Text>}
         <CloseButton close={close} />
       </View>
     </Modal>

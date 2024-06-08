@@ -17,6 +17,7 @@ import { set_tab } from "@/code/data_functions";
 import { ItemContext } from "@/code/data_context";
 import { sortItems } from "@/code/sort_items";
 import { useTranslation } from "react-i18next";
+import { SettingsButton } from "@/components/index";
 
 export default function ShoppingList() {
   const { t } = useTranslation();
@@ -36,7 +37,7 @@ export default function ShoppingList() {
   });
 
   const updateItem = (itemName: string, fieldName: string, value: any) => {
-    if (value == null) {
+    if (value == null && fieldName != "date") {
       updateItems(items.filter((item) => item.name != itemName));
       return;
     }
@@ -54,7 +55,7 @@ export default function ShoppingList() {
   return (
     <View className="h-[85.5vh]">
       <StatusBar hidden={false} style="dark" />
-      <Stack.Screen />
+      <Stack.Screen options={{ headerRight: () => <SettingsButton /> }} />
 
       <SectionList
         keyboardShouldPersistTaps="always"

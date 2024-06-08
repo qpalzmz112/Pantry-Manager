@@ -6,3 +6,5 @@ export { default as AddIngredientModal } from "./ingredients_page/add_ingredient
 export { default as IngredientsList } from "./ingredients_page/IngredientsList";
 export { default as DeleteSomethingModal } from "./DeleteSomethingModal";
 export { default as Button } from "./Button";
+export { default as SettingsButton } from "./SettingsButton";
+export { default as AddRecipeModal } from "./recipes_page/add_recipe_modal/AddRecipeModal";

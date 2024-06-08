@@ -1,4 +1,4 @@
-import { View } from "react-native";
+import { View, Keyboard } from "react-native";
 import { useState } from "react";
 import Button from "@/components/Button";
 import { useTranslation } from "react-i18next";
@@ -15,7 +15,7 @@ export default function DateInput({
   onChangeDate,
 }: {
   date: date | null;
-  onChangeDate: (d: date) => void;
+  onChangeDate: (d: date | null) => void;
 }) {
   const { t } = useTranslation();
   const [showInput, setShowInput] = useState(false);
@@ -29,7 +29,10 @@ export default function DateInput({
         textClass="text-lg"
         pressableClass="p-2 mt-6 bg-gray-200 rounded-lg"
         pressedClass="bg-gray-400"
-        onPress={() => setShowInput(true)}
+        onPress={() => {
+          Keyboard.dismiss();
+          setShowInput(true);
+        }}
       />
       {showInput && (
         <DateTimePicker
@@ -43,6 +46,15 @@ export default function DateInput({
               onChangeDate(Date_to_date(date!));
             }
           }}
+        />
+      )}
+      {date && (
+        <Button
+          text={t("remove_date")}
+          textClass="text-lg text-center"
+          pressableClass="p-2 m-4 bg-gray-200 rounded-lg"
+          pressedClass="bg-gray-400"
+          onPress={() => onChangeDate(null)}
         />
       )}
     </View>

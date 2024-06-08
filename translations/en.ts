@@ -37,6 +37,7 @@ const en = {
   // Date input
   date_input_label: "Use by Date (optional):",
   choose_date: "Choose an Expiration Date",
+  remove_date: "Remove Date",
   date_placeholder: "MM-DD-YY",
   intlDateTime: "{{val, datetime}}",
 
@@ -69,6 +70,19 @@ const en = {
   toast_deleted: "deleted",
   toast_deleted_added_to_shopping_list:
     "Ingredient deleted and added to shopping list",
+
+  // Settings modal
+  notif_switch_label: "Notifications: ",
+  info_1:
+    "The number of days you will be notified before an ingredient expires:",
+  info_2: "The time of day you will be notified:",
+
+  // Notifications
+  notif_text_singular_one: "Your {{ingredient_name}} expires in 1 day.",
+  notif_text_singular_more:
+    "Your {{ingredient_name}} expires in {{count}} days.",
+  notif_text_plural_one: "Your {{ingredient_name}} expire in 1 day.",
+  notif_text_plural_more: "Your {{ingredient_name}} expire in {{count}} days.",
 
   ingredients_title: "Ingredients",
   recipes_title: "Recipes",

@@ -12,6 +12,7 @@ import {
   Button,
 } from "@/components/index";
 import { set_tab } from "@/code/data_functions";
+import { SettingsButton } from "@/components/index";
 
 export default function Ingredients() {
   const [modalVisible, setModalVisible] = useState(false);
@@ -37,7 +38,7 @@ export default function Ingredients() {
   return (
     <View>
       <StatusBar hidden={false} style="dark" />
-      <Stack.Screen />
+      <Stack.Screen options={{ headerRight: () => <SettingsButton /> }} />
 
       {modalVisible && (
         <AddIngredientModal

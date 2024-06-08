@@ -37,6 +37,7 @@ const es = {
   // Date input
   date_input_label: "Utilizar por fecha (opcional):",
   choose_date: "Elegir una Fecha de Vencimiento",
+  remove_date: "Eliminar Fecha",
   date_placeholder: "DD-MM-AA",
   intlDateTime: "{{val, datetime}}",
 
@@ -69,6 +70,18 @@ const es = {
   toast_deleted: "eliminado",
   toast_deleted_added_to_shopping_list:
     "Ingrediente eliminado y añadido a la lista de compras.",
+
+  // Settings modal
+  notif_switch_label: "Notificaciones: ",
+  info_1:
+    "El número de días que se le notificará antes de que caduque un ingrediente:",
+  info_2: "La hora del día en que se le notificará:",
+
+  // Notifications
+  notif_text_singular_one: "Tu {{ingredient_name}} caduca en 1 día.",
+  notif_text_singular_more: "Tu {{ingredient_name}} caduca en {{count}} días.",
+  notif_text_plural_one: "Tus {{ingredient_name}} caducan en 1 día.",
+  notif_text_plural_more: "Tus {{ingredient_name}} caducan en {{count}} días.",
 
   ingredients_title: "Ingredientes",
   recipes_title: "Recetas",

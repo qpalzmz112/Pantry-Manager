@@ -36,7 +36,11 @@ export default function DeleteSomethingModal({
             text={t("yes")}
             onPress={() => {
               deleteThing();
-              toast(`${t(type)} ${t("toast_deleted")}`);
+              toast(
+                `${t(type)[0].toLocaleUpperCase() + t(type).slice(1)} ${t(
+                  "toast_deleted"
+                )}`
+              );
               close();
             }}
           />

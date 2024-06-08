@@ -1,6 +1,6 @@
 import { Pressable, Platform } from "react-native";
 import { useState } from "react";
-import { Feather } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 
 export default function CloseButton({ close }: { close: () => void }) {
   const [pressed, setPressed] = useState(false);
@@ -8,7 +8,7 @@ export default function CloseButton({ close }: { close: () => void }) {
     <Pressable
       className={`absolute ${
         Platform.OS == "ios" ? "top-10" : "top-0"
-      } right-0 m-2`}
+      } left-0 m-2`}
       onPressIn={() => {
         setPressed(true);
       }}
@@ -19,7 +19,11 @@ export default function CloseButton({ close }: { close: () => void }) {
         close();
       }}
     >
-      <Feather name="x-square" size={36} color={pressed ? "gray" : "black"} />
+      <Ionicons
+        name="arrow-back"
+        size={36}
+        color={pressed ? "gray" : "black"}
+      />
     </Pressable>
   );
 }

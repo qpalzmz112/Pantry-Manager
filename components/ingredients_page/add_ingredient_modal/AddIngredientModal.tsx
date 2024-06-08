@@ -1,7 +1,9 @@
 import { Modal, ScrollView } from "react-native";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { RootSiblingParent } from "react-native-root-siblings";
 import { Categories } from "@/types/ingredients";
+import { date } from "@/types/shopping_list";
+import { NotificationsContext } from "@/code/notifications_context";
 import LabelledTextInput from "./LabelledTextInput";
 import DateInput from "./DateInput";
 import CategoryList from "./CategoryList";
@@ -10,7 +12,7 @@ import AddIngredientButtonPair from "./AddIngredientButtonPair";
 import CloseButton from "../../CloseButton";
 import toast from "@/code/toast";
 import { useTranslation } from "react-i18next";
-import { date } from "@/types/shopping_list";
+import { schedulePushNotification } from "@/code/notifications";
 
 export default function AddIngredientModal({
   close,
@@ -31,6 +33,9 @@ export default function AddIngredientModal({
   const [qty, setQty] = useState(1);
 
   const [errorMessage, setErrorMessage] = useState("");
+
+  const { data: notifications, update: setNotifications } =
+    useContext(NotificationsContext);
 
   let matching_categories = showCategories
     ? Object.keys(categories).filter(
@@ -140,6 +145,21 @@ export default function AddIngredientModal({
                 useByDate: date,
                 category: category,
               });
+              // make appropriate notification if date != null
+              if (date != null) {
+                schedulePushNotification(name, date).then((val) => {
+                  if (val == null) {
+                    return;
+                  }
+                  let id = val[0];
+                  let notif_date = val[1];
+                  setNotifications({
+                    ...notifications,
+                    [name]: [id, `${notif_date}`],
+                  });
+                });
+              }
+
               setCategories(c);
               onChangeName("");
               onChangeCategory("");

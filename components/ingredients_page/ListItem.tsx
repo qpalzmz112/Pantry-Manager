@@ -1,8 +1,13 @@
 import { Text, View, Pressable } from "react-native";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { AntDesign } from "@expo/vector-icons";
 import { Ingredient } from "@/types/ingredients";
 import { date_to_display_string, date_to_Date } from "@/code/date_utils";
+import { NotificationsContext } from "@/code/notifications_context";
+import {
+  schedulePushNotification,
+  cancelNotification,
+} from "@/code/notifications";
 import DeleteSomethingModal from "../DeleteSomethingModal";
 import ChangeDateModal from "../ChangeDateModal";
 import ChangeCategoryModal from "../ChangeCategoryModal";
@@ -26,6 +31,18 @@ export default function ListItem({
   const [showingDelete, setShowingDelete] = useState(false);
   const [showDateModal, setShowDateModal] = useState(false);
   const [showCategoryModal, setShowCategoryModal] = useState(false);
+
+  const { data: notifications, update: setNotifications } =
+    useContext(NotificationsContext);
+
+  const cancelIngredientNotification = () => {
+    if (notifications.hasOwnProperty(ingredient.name)) {
+      cancelNotification(notifications[ingredient.name][0]);
+      let newNotifs = { ...notifications };
+      delete newNotifs[ingredient.name];
+      setNotifications(newNotifs);
+    }
+  };
 
   let { useByDate } = ingredient;
   let dateDisplay = date_to_display_string(useByDate);
@@ -79,6 +96,38 @@ export default function ListItem({
           givenDate={useByDate}
           addDate={(date) => {
             updateDate(date);
+
+            if (date == null) {
+              // cancel the notification if there was one
+              cancelIngredientNotification();
+              return;
+            }
+
+            if (notifications.hasOwnProperty(ingredient.name)) {
+              // ingredient has a notification scheduled
+              cancelNotification(notifications[ingredient.name][0]).then(() => {
+                schedulePushNotification(ingredient.name, date).then((val) => {
+                  if (val == null) {
+                    return;
+                  }
+                  setNotifications({
+                    ...notifications,
+                    [ingredient.name]: [val[0], `${val[1]}`],
+                  });
+                });
+              });
+            } else {
+              // ingredient doesn't have a notification scheduled
+              schedulePushNotification(ingredient.name, date).then((val) => {
+                if (val == null) {
+                  return;
+                }
+                setNotifications({
+                  ...notifications,
+                  [ingredient.name]: [val[0], `${val[1]}`],
+                });
+              });
+            }
           }}
           close={() => setShowDateModal(false)}
         />
@@ -98,6 +147,7 @@ export default function ListItem({
           type="ingredient"
           deleteThing={() => {
             deleteIngredient(ingredient.name);
+            cancelIngredientNotification();
           }}
           shoppingListItem={{
             name: ingredient.name,
