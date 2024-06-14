@@ -94,6 +94,11 @@ const en = {
   recipe_ingredients: "Ingredients/Ingredient Categories:",
   add_recipe_ingredient: "Press Enter to Add",
   recipe_steps: "Instructions:",
+  add_recipe: "Add Recipe",
+  add_recipe_return: "Add Recipe and Return to List",
+  error_recipe_no_name: "Recipe name cannot be empty.",
+  error_recipe_name_exists: "A recipe with this name already exists.",
+  recipe_added: "Recipe added!",
 };
 
 export default en;

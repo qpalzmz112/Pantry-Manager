@@ -93,6 +93,11 @@ const es = {
   recipe_ingredients: "Ingredientes/Categorías de Ingredientes:",
   add_recipe_ingredient: "Presione Entrar para Agregar",
   recipe_steps: "Instrucciones:",
+  add_recipe: "Agregar Receta",
+  add_recipe_return: "Agregar Receta y Regresar a la Lista",
+  error_recipe_no_name: "El nombre de la receta no puede estar vacío.",
+  error_recipe_name_exists: "Ya existe una receta con este nombre.",
+  recipe_added: "¡Receta agregada!",
 };
 
 export default es;

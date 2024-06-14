@@ -56,7 +56,7 @@ export default function ChangeCategoryModal({
             category={category}
             categories={categories}
             matching_categories={matching_categories}
-            onChangeCategory={setCategory}
+            setCategory={setCategory}
             setCategories={setCategories}
           />
         )}

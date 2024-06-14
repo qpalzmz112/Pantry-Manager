@@ -9,6 +9,7 @@ import { useTranslation } from "react-i18next";
 import CategoryList from "@/components/ingredients_page/add_ingredient_modal/CategoryList";
 import { get_matching_categories } from "@/code/recipe_utils";
 import RecipeIngredientList from "./RecipeIngredientList";
+import AddButtonPair from "@/components/AddButtonPair";
 
 export default function AddRecipeModal({ close }: { close: () => void }) {
   const { t } = useTranslation();
@@ -34,13 +35,39 @@ export default function AddRecipeModal({ close }: { close: () => void }) {
   const [rootActive, setRootActive] = useState(0);
   useEffect(() => {
     if (rootActive != 0) {
-      toast(t("item_added"));
+      toast(t("recipe_added"));
       if (rootActive == 1) {
         close();
       }
       setRootActive(0);
     }
   }, [rootActive]);
+
+  const recipeNameExists = () => {
+    let res = false;
+    Object.keys(recipes).map((category) => {
+      recipes[category].map((recipe) => {
+        if (recipe.name == recipeName) {
+          res = true;
+        }
+      });
+    });
+    return res;
+  };
+
+  const canAddRecipeCheck = () => {
+    if (recipeName == "") {
+      setErrorMessage(t("error_recipe_no_name"));
+      return false;
+    } else if (recipeNameExists()) {
+      setErrorMessage(t("error_recipe_name_exists"));
+      return false;
+    } else if (category != "" && !Object.keys(recipes).includes(category)) {
+      setErrorMessage(t("error_category"));
+      return false;
+    }
+    return true;
+  };
 
   return (
     <Modal transparent={false} onRequestClose={close}>
@@ -93,30 +120,29 @@ export default function AddRecipeModal({ close }: { close: () => void }) {
             multiline={true}
           />
 
-          {/* <AddItemButtonPair
+          <AddButtonPair
+            type="recipe"
             errorMessage={errorMessage}
-            canAddItemCheck={canAddItemCheck}
-            addItem={() => {
-              addItem({
-                name: itemName,
+            canAddCheck={canAddRecipeCheck}
+            add={() => {
+              const recipe = {
+                name: recipeName,
                 category: category,
-                date: null,
-                qty: qty,
-                isGrocery: isGrocery,
-                isRecurring: isRecurring,
-                isPurchased: false,
-              });
+                ingredients: ingredients,
+                steps: steps,
+              };
+              let r = { ...recipes };
+              if (category in r) {
+                r[category].push(recipe);
+              } else {
+                r[category] = [recipe];
+              }
+              setRecipes(r);
             }}
-            success={() => {
-              onChangeItemName("");
-              setIsGrocery(true);
-              setIsRecurring(false);
-            }}
-            close={close}
             doToast={(n: number) => {
               setRootActive(n);
             }}
-          /> */}
+          />
 
           <CloseButton close={close} />
         </View>

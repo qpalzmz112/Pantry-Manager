@@ -5,7 +5,7 @@ import { Feather } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Item } from "@/types/shopping_list";
 import CheckBox from "../CheckBox";
-import AddItemButtonPair from "./AddItemButtonPair";
+import AddButtonPair from "../../AddButtonPair";
 import LabelledTextInput from "@/components/ingredients_page/add_ingredient_modal/LabelledTextInput";
 import CategoryList from "@/components/ingredients_page/add_ingredient_modal/CategoryList";
 import QuantitySetter from "@/components/ingredients_page/add_ingredient_modal/QuantitySetter";
@@ -106,7 +106,7 @@ export default function AddItemModal({
               category={category}
               categories={categories}
               matching_categories={matching_categories}
-              onChangeCategory={setCategory}
+              setCategory={setCategory}
               setCategories={setCategories}
             />
           )}
@@ -151,10 +151,11 @@ export default function AddItemModal({
 
           <QuantitySetter qty={qty} setQty={setQty} inList={false} />
 
-          <AddItemButtonPair
+          <AddButtonPair
+            type="item"
             errorMessage={errorMessage}
-            canAddItemCheck={canAddItemCheck}
-            addItem={() => {
+            canAddCheck={canAddItemCheck}
+            add={() => {
               addItem({
                 name: itemName,
                 category: category,
@@ -164,13 +165,10 @@ export default function AddItemModal({
                 isRecurring: isRecurring,
                 isPurchased: false,
               });
-            }}
-            success={() => {
               onChangeItemName("");
               setIsGrocery(true);
               setIsRecurring(false);
             }}
-            close={close}
             doToast={(n: number) => {
               setRootActive(n);
             }}

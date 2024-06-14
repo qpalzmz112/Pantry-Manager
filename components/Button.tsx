@@ -21,9 +21,10 @@ export default function Button({
   disabled = false,
 }: props) {
   const [pressed, setPressed] = useState(false);
+
   return (
     <Pressable
-      className={pressableClass + ` ${pressed ? pressedClass : ""}`}
+      className={`${pressableClass} ${pressed ? pressedClass : ""}`}
       disabled={disabled}
       onPress={onPress}
       onPressIn={() => setPressed(true)}

@@ -8,7 +8,7 @@ import LabelledTextInput from "./LabelledTextInput";
 import DateInput from "./DateInput";
 import CategoryList from "./CategoryList";
 import QuantitySetter from "./QuantitySetter";
-import AddIngredientButtonPair from "./AddIngredientButtonPair";
+import AddButtonPair from "@/components/AddButtonPair";
 import CloseButton from "../../CloseButton";
 import toast from "@/code/toast";
 import { useTranslation } from "react-i18next";
@@ -134,10 +134,11 @@ export default function AddIngredientModal({
 
           <QuantitySetter qty={qty} setQty={setQty} inList={false} />
 
-          <AddIngredientButtonPair
+          <AddButtonPair
+            type="ingredient"
             errorMessage={errorMessage}
             canAddCheck={canAddIngredientCheck}
-            addIngredient={() => {
+            add={() => {
               let c = { ...categories };
               c[category].push({
                 name: name,

@@ -1,11 +1,12 @@
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { View } from "react-native";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useIsFocused } from "@react-navigation/native";
 import { set_tab } from "@/code/data_functions";
 import { SettingsButton, Button, AddRecipeModal } from "@/components/index";
 import { Entypo } from "@expo/vector-icons";
+import { RecipeContext } from "@/code/data_context";
 
 export default function Recipes() {
   const isFocused = useIsFocused();
@@ -14,6 +15,9 @@ export default function Recipes() {
       set_tab("Recipes");
     }
   });
+
+  const { data: recipes, update: setRecipes } = useContext(RecipeContext);
+  console.log(recipes);
 
   const [addModalVisible, setAddModalVisible] = useState(false);
 
