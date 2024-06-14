@@ -1,6 +1,6 @@
 import { Modal, View, Text } from "react-native";
 import { useState, useContext } from "react";
-import { CategoryContext } from "@/code/data_context";
+import { CategoryContext, RecipeContext } from "@/code/data_context";
 import LabelledTextInput from "./ingredients_page/add_ingredient_modal/LabelledTextInput";
 import Button from "./Button";
 import CloseButton from "./CloseButton";
@@ -10,24 +10,28 @@ import { useTranslation } from "react-i18next";
 
 interface props {
   placeholder?: string;
+  recipe?: boolean;
   save: (c: string) => void;
   close: () => void;
 }
 
 export default function ChangeCategoryModal({
   placeholder = "",
+  recipe = false,
   save,
   close,
 }: props) {
   const { t } = useTranslation();
+
   const { data: categories, update: setCategories } =
     useContext(CategoryContext);
+  const { data: recipes, update: setRecipes } = useContext(RecipeContext);
   const [category, setCategory] = useState("");
   const [showCategories, setShowCategories] = useState(false);
   const [error, setError] = useState("");
 
   let matching_categories = showCategories
-    ? Object.keys(categories).filter(
+    ? Object.keys(recipe ? recipes : categories).filter(
         (name) =>
           name.toLowerCase().includes(category.toLowerCase()) && name != ""
       )
@@ -37,7 +41,7 @@ export default function ChangeCategoryModal({
     <Modal animationType="slide" onRequestClose={close}>
       <View className="h-[100vh] w-[100vw] flex-col items-center justify-center">
         <LabelledTextInput
-          labelText={t("category")}
+          labelText={t("category") + ":"}
           inputText={category}
           placeholder={placeholder}
           onChangeText={setCategory}
@@ -54,10 +58,10 @@ export default function ChangeCategoryModal({
         {showCategories && (
           <CategoryList
             category={category}
-            categories={categories}
+            categories={recipe ? recipes : categories}
             matching_categories={matching_categories}
             setCategory={setCategory}
-            setCategories={setCategories}
+            setCategories={recipe ? setRecipes : setCategories}
           />
         )}
 
@@ -67,7 +71,10 @@ export default function ChangeCategoryModal({
           pressableClass="bg-gray-300 p-2 mt-6 rounded-lg"
           pressedClass="bg-gray-400"
           onPress={() => {
-            if (category != "" && !Object.keys(categories).includes(category)) {
+            if (
+              category != "" &&
+              !Object.keys(recipe ? recipes : categories).includes(category)
+            ) {
               setError(t("error_category"));
               return;
             }

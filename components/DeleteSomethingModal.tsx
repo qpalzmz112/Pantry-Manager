@@ -53,6 +53,12 @@ export default function DeleteSomethingModal({
           </Text>
         )}
 
+        {type == "recipe_category" && (
+          <Text className="max-w-[80vw] mt-4 text-xl text-center">
+            {t("delete_recipe_category_info")}
+          </Text>
+        )}
+
         {type == "ingredient" && (
           <View className="max-w-[75vw]">
             <DeleteSomethingButton

@@ -8,3 +8,4 @@ export { default as DeleteSomethingModal } from "./DeleteSomethingModal";
 export { default as Button } from "./Button";
 export { default as SettingsButton } from "./SettingsButton";
 export { default as AddRecipeModal } from "./recipes_page/add_recipe_modal/AddRecipeModal";
+export { default as RecipeList } from "./recipes_page/RecipeList";

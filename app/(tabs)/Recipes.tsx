@@ -4,7 +4,13 @@ import { View } from "react-native";
 import { useEffect, useState, useContext } from "react";
 import { useIsFocused } from "@react-navigation/native";
 import { set_tab } from "@/code/data_functions";
-import { SettingsButton, Button, AddRecipeModal } from "@/components/index";
+import {
+  SettingsButton,
+  Button,
+  AddRecipeModal,
+  DeleteSomethingModal,
+  RecipeList,
+} from "@/components/index";
 import { Entypo } from "@expo/vector-icons";
 import { RecipeContext } from "@/code/data_context";
 
@@ -17,9 +23,16 @@ export default function Recipes() {
   });
 
   const { data: recipes, update: setRecipes } = useContext(RecipeContext);
-  console.log(recipes);
 
   const [addModalVisible, setAddModalVisible] = useState(false);
+
+  const [deletingCategory, setDeletingCategory] = useState("");
+  const deleteCategory = () => {
+    let r = { ...recipes };
+    r[deletingCategory].map((i) => r[""].push({ ...i, category: "" }));
+    delete r[deletingCategory];
+    setRecipes(r);
+  };
 
   return (
     <View>
@@ -34,11 +47,20 @@ export default function Recipes() {
         />
       )}
 
-      {/* <IngredientsList
-        categories={categories}
-        setCategories={setCategories}
+      {deletingCategory && (
+        <DeleteSomethingModal
+          name={deletingCategory}
+          type="recipe_category"
+          deleteThing={deleteCategory}
+          close={() => setDeletingCategory("")}
+        />
+      )}
+
+      <RecipeList
+        recipes={recipes}
+        setRecipes={setRecipes}
         setDeletingCategory={setDeletingCategory}
-      /> */}
+      />
 
       <View className="w-[100vw] flex-row justify-center">
         <Button

@@ -23,7 +23,7 @@ const es = {
   use_by: "Usar por: ",
 
   // Change category modal
-  category: "Categoría:",
+  category: "Categoría",
   save: "Confirmar",
   category_updated: "¡Categoría actualizada!",
   error_category:
@@ -87,6 +87,9 @@ const es = {
 
   // Recipes
   recipes_title: "Recetas",
+  recipe_category: "Categoría",
+  delete_recipe_category_info:
+    "Las recetas de esta categoría permanecerán, pero no estarán categorizados.",
 
   // Add Recipe Modal
   recipe_ingredient: "Ingrediente",
@@ -98,6 +101,8 @@ const es = {
   error_recipe_no_name: "El nombre de la receta no puede estar vacío.",
   error_recipe_name_exists: "Ya existe una receta con este nombre.",
   recipe_added: "¡Receta agregada!",
+  save_recipe_changes: "Guardar Cambios",
+  toast_recipe_updated: "¡Receta actualizada!",
 };
 
 export default es;

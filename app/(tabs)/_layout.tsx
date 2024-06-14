@@ -106,7 +106,6 @@ export default function TabLayout() {
   if (items == null || categories == null) {
     return; //loading
   }
-
   return (
     <NotificationsContext.Provider
       value={{ data: notifications, update: setNotifications }}

@@ -10,17 +10,25 @@ import CategoryList from "@/components/ingredients_page/add_ingredient_modal/Cat
 import { get_matching_categories } from "@/code/recipe_utils";
 import RecipeIngredientList from "./RecipeIngredientList";
 import AddButtonPair from "@/components/AddButtonPair";
+import { Recipe } from "@/types/recipe";
+import Button from "@/components/Button";
 
-export default function AddRecipeModal({ close }: { close: () => void }) {
+interface props {
+  recipe?: Recipe;
+  close: () => void;
+}
+
+export default function AddRecipeModal({ recipe, close }: props) {
   const { t } = useTranslation();
-  const [recipeName, setRecipeName] = useState("");
 
-  const [category, setCategory] = useState("");
+  const [recipeName, setRecipeName] = useState(recipe ? recipe.name : "");
+  const [category, setCategory] = useState(recipe ? recipe.category : "");
   const [showCategories, setShowCategories] = useState(false);
 
-  const [ingredients, setIngredients] = useState<string[]>([]);
-
-  const [steps, setSteps] = useState("");
+  const [ingredients, setIngredients] = useState<string[]>(
+    recipe ? recipe.ingredients : []
+  );
+  const [steps, setSteps] = useState(recipe ? recipe.steps : "");
 
   const { data: recipes, update: setRecipes } = useContext(RecipeContext);
 
@@ -35,7 +43,7 @@ export default function AddRecipeModal({ close }: { close: () => void }) {
   const [rootActive, setRootActive] = useState(0);
   useEffect(() => {
     if (rootActive != 0) {
-      toast(t("recipe_added"));
+      toast(t(recipe ? "toast_recipe_updated" : "recipe_added"));
       if (rootActive == 1) {
         close();
       }
@@ -120,29 +128,63 @@ export default function AddRecipeModal({ close }: { close: () => void }) {
             multiline={true}
           />
 
-          <AddButtonPair
-            type="recipe"
-            errorMessage={errorMessage}
-            canAddCheck={canAddRecipeCheck}
-            add={() => {
-              const recipe = {
-                name: recipeName,
-                category: category,
-                ingredients: ingredients,
-                steps: steps,
-              };
-              let r = { ...recipes };
-              if (category in r) {
-                r[category].push(recipe);
-              } else {
-                r[category] = [recipe];
-              }
-              setRecipes(r);
-            }}
-            doToast={(n: number) => {
-              setRootActive(n);
-            }}
-          />
+          {recipe ? (
+            <Button
+              text={t("save_recipe_changes")}
+              onPress={() => {
+                let newRecipes = { ...recipes };
+                // delete original recipe
+                newRecipes[recipe.category] = newRecipes[
+                  recipe.category
+                ].filter((r) => r.name != recipe.name);
+                // save updated recipe
+                const updatedRecipe = {
+                  name: recipeName,
+                  category: category,
+                  ingredients: ingredients,
+                  steps: steps,
+                };
+                if (category in newRecipes) {
+                  newRecipes[category].push(updatedRecipe);
+                } else {
+                  newRecipes[category] = [updatedRecipe];
+                }
+                setRecipes(newRecipes);
+                setRootActive(1);
+              }}
+              pressableClass={`p-2 rounded-md m-4 max-w-[40vw] flex justify-center bg-gray-200`}
+              pressedClass="bg-gray-300"
+              textClass="text-center text-lg"
+            />
+          ) : (
+            <AddButtonPair
+              type="recipe"
+              errorMessage={errorMessage}
+              canAddCheck={canAddRecipeCheck}
+              add={() => {
+                const recipe = {
+                  name: recipeName,
+                  category: category,
+                  ingredients: ingredients,
+                  steps: steps,
+                };
+                let r = { ...recipes };
+                if (category in r) {
+                  r[category].push(recipe);
+                } else {
+                  r[category] = [recipe];
+                }
+                setRecipes(r);
+                setRecipeName("");
+                setCategory("");
+                setIngredients([]);
+                setSteps("");
+              }}
+              doToast={(n: number) => {
+                setRootActive(n);
+              }}
+            />
+          )}
 
           <CloseButton close={close} />
         </View>

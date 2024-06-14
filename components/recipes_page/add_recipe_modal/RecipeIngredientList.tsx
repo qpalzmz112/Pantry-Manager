@@ -15,7 +15,7 @@ export default function RecipeIngredientList({
 }) {
   let { t } = useTranslation();
   let [input, setInput] = useState("");
-  let [showIngredients, setShowIngredients] = useState(false);
+  let [showIngredients, setShowIngredients] = useState(true);
 
   return (
     <>

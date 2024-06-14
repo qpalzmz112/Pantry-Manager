@@ -2,24 +2,24 @@ import { SectionList, Pressable, Text, View } from "react-native";
 import { useState } from "react";
 import * as Haptics from "expo-haptics";
 import { Entypo } from "@expo/vector-icons";
-import ListItem from "./ListItem";
-import { filterBySearch } from "@/code/sort_ingredients";
+import { filterBySearch } from "@/code/recipe_utils";
 import { useTranslation } from "react-i18next";
+import { Recipes } from "@/types/recipe";
 import SearchBar from "../SearchBar";
-import { Categories } from "@/types/ingredients";
+import ListItem from "./ListItem";
 
-export default function IngredientsList({
-  categories,
-  setCategories,
+export default function RecipeList({
+  recipes,
+  setRecipes,
   setDeletingCategory,
 }: {
-  categories: Categories;
-  setCategories: (c: Categories) => void;
+  recipes: Recipes;
+  setRecipes: (c: Recipes) => void;
   setDeletingCategory: (c: string) => void;
 }) {
   const { t } = useTranslation();
   const defaultCollapsedCategories = Object.fromEntries(
-    Object.entries(categories).map((key) => [key, false])
+    Object.entries(recipes).map((key) => [key, false])
   );
   const [collapsedCategories, setCollapsedCategories] = useState(
     defaultCollapsedCategories
@@ -36,41 +36,30 @@ export default function IngredientsList({
 
       <SectionList
         keyboardShouldPersistTaps="always"
-        sections={filterBySearch(search, categories, collapsedCategories)}
+        sections={filterBySearch(search, recipes, collapsedCategories)}
         renderItem={({ item }) => (
           <ListItem
-            ingredient={item}
+            recipe={item}
             updateCategory={(c) => {
               if (c == item.category) {
                 return;
               }
-              let newCategories = { ...categories };
-              newCategories[c].push({ ...item, category: c });
-              newCategories[item.category] = newCategories[
-                item.category
-              ].filter((i) => i.name != item.name);
-              setCategories(newCategories);
+              let newRecipes = { ...recipes };
+              if (!(c in newRecipes)) {
+                newRecipes[c] = [];
+              }
+              newRecipes[c].push({ ...item, category: c });
+              newRecipes[item.category] = newRecipes[item.category].filter(
+                (i) => i.name != item.name
+              );
+              setRecipes(newRecipes);
             }}
-            updateQty={(n) => {
-              let newCategories = { ...categories };
-              newCategories[item.category].find(
-                (i) => i.name == item.name
-              )!.qty = n;
-              setCategories(newCategories);
-            }}
-            updateDate={(date) => {
-              let newCategories = { ...categories };
-              newCategories[item.category].find(
-                (i) => i.name == item.name
-              )!.useByDate = date;
-              setCategories(newCategories);
-            }}
-            deleteIngredient={(name) => {
-              let newCategories = { ...categories };
-              newCategories[item.category] = newCategories[
-                item.category
-              ].filter((ingredient) => ingredient.name != name);
-              setCategories(newCategories);
+            deleteRecipe={(name) => {
+              let newRecipes = { ...recipes };
+              newRecipes[item.category] = newRecipes[item.category].filter(
+                (recipe) => recipe.name != name
+              );
+              setRecipes(newRecipes);
             }}
           />
         )}

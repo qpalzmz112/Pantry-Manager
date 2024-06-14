@@ -23,7 +23,7 @@ const en = {
   use_by: "Use by: ",
 
   // Change category modal
-  category: "Category:",
+  category: "Category",
   save: "Save",
   category_updated: "Category updated!",
   error_category:
@@ -88,6 +88,9 @@ const en = {
 
   // Recipes
   recipes_title: "Recipes",
+  recipe_category: "Category",
+  delete_recipe_category_info:
+    "The recipes in this category will remain, but will be uncategorized.",
 
   // Add Recipe Modal
   recipe_ingredient: "Ingredient",
@@ -99,6 +102,8 @@ const en = {
   error_recipe_no_name: "Recipe name cannot be empty.",
   error_recipe_name_exists: "A recipe with this name already exists.",
   recipe_added: "Recipe added!",
+  save_recipe_changes: "Save Changes",
+  toast_recipe_updated: "Recipe updated!",
 };
 
 export default en;
