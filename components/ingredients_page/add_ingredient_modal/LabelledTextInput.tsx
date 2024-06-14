@@ -6,8 +6,11 @@ interface LabelledTextInputProps {
   placeholder?: string;
   keyboardType?: string;
   maxLength?: number;
+  paddingTop?: string;
+  multiline?: boolean;
   onChangeText: (t: string) => void;
   onPress?: () => void;
+  onSubmitEditing?: () => void;
   onEndEditing?: () => void;
 }
 
@@ -17,23 +20,28 @@ export default function LabelledTextInput({
   placeholder = "",
   keyboardType = "default",
   maxLength,
+  paddingTop = "pt-6",
+  multiline = false,
   onChangeText,
   onPress,
+  onSubmitEditing,
   onEndEditing,
 }: LabelledTextInputProps) {
   return (
     <>
-      <Text className="w-[80vw] text-left pt-6 ">{labelText}</Text>
+      <Text className={`w-[80vw] text-left ${paddingTop}`}>{labelText}</Text>
       <TextInput
         onChangeText={onChangeText}
         onPress={onPress}
+        onSubmitEditing={onSubmitEditing}
         onEndEditing={onEndEditing}
         maxLength={maxLength}
         keyboardType={keyboardType as KeyboardTypeOptions}
         value={inputText}
         placeholder={placeholder}
-        className="border-2 border-gray-500 rounded-lg p-1 w-[80vw] bg-white text-2xl"
+        className="border-2 border-gray-500 rounded-lg p-1 w-[80vw] bg-white text-xl"
         cursorColor="black"
+        multiline={multiline}
       />
     </>
   );

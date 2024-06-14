@@ -2,19 +2,20 @@ import { View, Text, Pressable, Keyboard } from "react-native";
 import * as Haptics from "expo-haptics";
 import Category from "./Category";
 import { Categories } from "@/types/ingredients";
+import { Recipes } from "@/types/recipe";
 
 export default function CategoryList({
   category,
   categories,
   matching_categories,
-  onChangeCategory,
+  setCategory,
   setCategories,
 }: {
   category: string;
-  categories: Categories;
+  categories: any;
   matching_categories: string[];
-  onChangeCategory: (c: string) => void;
-  setCategories: (c: Categories) => void;
+  setCategory: (c: string) => void;
+  setCategories: (c: any) => void;
 }) {
   return (
     <>
@@ -24,10 +25,10 @@ export default function CategoryList({
             <Category
               key={name}
               name={name}
-              onChangeCategory={onChangeCategory}
+              onChangeCategory={setCategory}
               deleteCategory={() => {
                 let c = { ...categories };
-                c[name].map((i) => c[""].push({ ...i, category: "" }));
+                c[name].map((i: any) => c[""].push({ ...i, category: "" }));
                 delete c[name];
                 setCategories(c);
               }}

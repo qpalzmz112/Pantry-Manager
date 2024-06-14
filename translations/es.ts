@@ -84,7 +84,15 @@ const es = {
   notif_text_plural_more: "Tus {{ingredient_name}} caducan en {{count}} días.",
 
   ingredients_title: "Ingredientes",
+
+  // Recipes
   recipes_title: "Recetas",
+
+  // Add Recipe Modal
+  recipe_ingredient: "Ingrediente",
+  recipe_ingredients: "Ingredientes/Categorías de Ingredientes:",
+  add_recipe_ingredient: "Presione Entrar para Agregar",
+  recipe_steps: "Instrucciones:",
 };
 
 export default es;

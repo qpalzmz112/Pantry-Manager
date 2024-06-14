@@ -125,7 +125,7 @@ export default function AddIngredientModal({
               category={category}
               categories={categories}
               matching_categories={matching_categories}
-              onChangeCategory={onChangeCategory}
+              setCategory={onChangeCategory}
               setCategories={setCategories}
             />
           )}

@@ -85,7 +85,15 @@ const en = {
   notif_text_plural_more: "Your {{ingredient_name}} expire in {{count}} days.",
 
   ingredients_title: "Ingredients",
+
+  // Recipes
   recipes_title: "Recipes",
+
+  // Add Recipe Modal
+  recipe_ingredient: "Ingredient",
+  recipe_ingredients: "Ingredients/Ingredient Categories:",
+  add_recipe_ingredient: "Press Enter to Add",
+  recipe_steps: "Instructions:",
 };
 
 export default en;

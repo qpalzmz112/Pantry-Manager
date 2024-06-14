@@ -6,8 +6,9 @@ import toast from "@/code/toast";
 import { RecipeContext } from "@/code/data_context";
 import { RootSiblingParent } from "react-native-root-siblings";
 import { useTranslation } from "react-i18next";
-import RecipeCategoryList from "./RecipeCategoryList";
+import CategoryList from "@/components/ingredients_page/add_ingredient_modal/CategoryList";
 import { get_matching_categories } from "@/code/recipe_utils";
+import RecipeIngredientList from "./RecipeIngredientList";
 
 export default function AddRecipeModal({ close }: { close: () => void }) {
   const { t } = useTranslation();
@@ -15,6 +16,10 @@ export default function AddRecipeModal({ close }: { close: () => void }) {
 
   const [category, setCategory] = useState("");
   const [showCategories, setShowCategories] = useState(false);
+
+  const [ingredients, setIngredients] = useState<string[]>([]);
+
+  const [steps, setSteps] = useState("");
 
   const { data: recipes, update: setRecipes } = useContext(RecipeContext);
 
@@ -40,7 +45,7 @@ export default function AddRecipeModal({ close }: { close: () => void }) {
   return (
     <Modal transparent={false} onRequestClose={close}>
       <RootSiblingParent inactive={rootActive == 2 ? false : true}>
-        <View className="w-[100vw] h-[100vh] bg-gray-100 flex-col justify-center items-center">
+        <View className="w-[100vw] h-[100vh] bg-gray-100 flex-col pt-10 items-center">
           <LabelledTextInput
             labelText={t("item_name")}
             inputText={recipeName}
@@ -67,14 +72,26 @@ export default function AddRecipeModal({ close }: { close: () => void }) {
             }}
           />
           {showCategories && (
-            <RecipeCategoryList
+            <CategoryList
               category={category}
-              recipes={recipes}
+              categories={recipes}
               matching_categories={matching_categories}
               setCategory={setCategory}
-              setRecipes={setRecipes}
+              setCategories={setRecipes}
             />
           )}
+
+          <RecipeIngredientList
+            ingredients={ingredients}
+            setIngredients={setIngredients}
+          />
+
+          <LabelledTextInput
+            labelText={t("recipe_steps")}
+            inputText={steps}
+            onChangeText={(text) => setSteps(text)}
+            multiline={true}
+          />
 
           {/* <AddItemButtonPair
             errorMessage={errorMessage}
