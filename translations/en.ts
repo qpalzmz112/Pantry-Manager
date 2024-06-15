@@ -6,6 +6,7 @@ const en = {
 
   // Add item modal
   item_name: "Name:",
+  item_desc: "Description:",
   category_optional: "Category (optional):",
   is_grocery: "Grocery Item?",
   is_recurring: "Recurring Purchase?",

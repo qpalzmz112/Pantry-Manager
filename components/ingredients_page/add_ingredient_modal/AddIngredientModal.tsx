@@ -7,7 +7,6 @@ import { NotificationsContext } from "@/code/notifications_context";
 import LabelledTextInput from "./LabelledTextInput";
 import DateInput from "./DateInput";
 import CategoryList from "./CategoryList";
-import QuantitySetter from "./QuantitySetter";
 import AddButtonPair from "@/components/AddButtonPair";
 import CloseButton from "../../CloseButton";
 import toast from "@/code/toast";
@@ -30,7 +29,7 @@ export default function AddIngredientModal({
 
   const [date, setDate] = useState<date | null>(null);
 
-  const [qty, setQty] = useState(1);
+  const [desc, setDesc] = useState("");
 
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -104,6 +103,14 @@ export default function AddIngredientModal({
           />
 
           <LabelledTextInput
+            labelText={t("item_desc")}
+            inputText={desc}
+            onChangeText={(text) => {
+              setDesc(text);
+            }}
+          />
+
+          <LabelledTextInput
             labelText={t("category_optional")}
             inputText={category}
             onChangeText={(text) => {
@@ -132,8 +139,6 @@ export default function AddIngredientModal({
 
           <DateInput date={date} onChangeDate={setDate} />
 
-          <QuantitySetter qty={qty} setQty={setQty} inList={false} />
-
           <AddButtonPair
             type="ingredient"
             errorMessage={errorMessage}
@@ -142,7 +147,7 @@ export default function AddIngredientModal({
               let c = { ...categories };
               c[category].push({
                 name: name,
-                qty: qty,
+                desc: desc,
                 useByDate: date,
                 category: category,
               });
@@ -164,7 +169,7 @@ export default function AddIngredientModal({
               setCategories(c);
               onChangeName("");
               onChangeCategory("");
-              setQty(1);
+              setDesc("");
               setDate(null);
             }}
             doToast={(n: number) => {

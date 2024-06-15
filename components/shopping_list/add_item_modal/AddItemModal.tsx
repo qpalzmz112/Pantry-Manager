@@ -29,7 +29,7 @@ export default function AddItemModal({
   const [category, setCategory] = useState("");
   const [showCategories, setShowCategories] = useState(false);
 
-  const [qty, setQty] = useState(1);
+  const [desc, setDesc] = useState("");
 
   const { data: categories, update: setCategories } =
     useContext(CategoryContext);
@@ -83,6 +83,12 @@ export default function AddItemModal({
               onChangeItemName(text);
               setErrorMessage("");
             }}
+          />
+
+          <LabelledTextInput
+            labelText={t("item_desc")}
+            inputText={desc}
+            onChangeText={setDesc}
           />
 
           <LabelledTextInput
@@ -149,8 +155,6 @@ export default function AddItemModal({
             ></CheckBox>
           </View>
 
-          <QuantitySetter qty={qty} setQty={setQty} inList={false} />
-
           <AddButtonPair
             type="item"
             errorMessage={errorMessage}
@@ -160,7 +164,7 @@ export default function AddItemModal({
                 name: itemName,
                 category: category,
                 date: null,
-                qty: qty,
+                desc: desc,
                 isGrocery: isGrocery,
                 isRecurring: isRecurring,
                 isPurchased: false,

@@ -20,7 +20,7 @@ export default function ListItemDate({
     <Button
       text={t("use_by") + date}
       textClass=""
-      pressableClass="py-1 px-2 mx-2 bg-gray-200 rounded-lg"
+      pressableClass="py-1 px-2 mr-2 bg-gray-200 rounded-lg"
       pressedClass="bg-gray-400"
       onPress={() => {
         Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
@@ -32,7 +32,7 @@ export default function ListItemDate({
       <Button
         text={<AntDesign name="calendar" size={24} color="black" />}
         textClass=""
-        pressableClass="mx-4 bg-gray-200 rounded-lg p-1"
+        pressableClass="mr-2 bg-gray-200 rounded-lg p-1"
         pressedClass="bg-gray-400"
         onPress={() => showModal(true)}
       />

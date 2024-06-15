@@ -51,11 +51,11 @@ export default function IngredientsList({
               ].filter((i) => i.name != item.name);
               setCategories(newCategories);
             }}
-            updateQty={(n) => {
+            updateDesc={(d: string) => {
               let newCategories = { ...categories };
               newCategories[item.category].find(
                 (i) => i.name == item.name
-              )!.qty = n;
+              )!.desc = d;
               setCategories(newCategories);
             }}
             updateDate={(date) => {

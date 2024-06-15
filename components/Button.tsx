@@ -24,7 +24,9 @@ export default function Button({
 
   return (
     <Pressable
-      className={`${pressableClass} ${pressed ? pressedClass : ""}`}
+      className={`${pressableClass} ${
+        pressed ? pressedClass : ""
+      } flex justify-center`}
       disabled={disabled}
       onPress={onPress}
       onPressIn={() => setPressed(true)}

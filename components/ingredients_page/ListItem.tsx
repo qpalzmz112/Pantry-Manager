@@ -11,20 +11,20 @@ import {
 import DeleteSomethingModal from "../DeleteSomethingModal";
 import ChangeDateModal from "../ChangeDateModal";
 import ChangeCategoryModal from "../ChangeCategoryModal";
-import QuantitySetter from "./add_ingredient_modal/QuantitySetter";
+import ListItemDescription from "../ListItemDescription";
 import ListItemDate from "../ListItemDate";
 import * as Haptics from "expo-haptics";
 
 export default function ListItem({
   ingredient,
   updateCategory,
-  updateQty,
+  updateDesc,
   updateDate,
   deleteIngredient,
 }: {
   ingredient: Ingredient;
   updateCategory: (c: string) => void;
-  updateQty: (n: number) => void;
+  updateDesc: (d: string) => void;
   updateDate: (d: any) => void;
   deleteIngredient: (n: string) => void;
 }) {
@@ -72,13 +72,14 @@ export default function ListItem({
             <Text className="text-xl">{ingredient.name}</Text>
 
             <View className="flex-row pt-1 items-center">
-              <QuantitySetter
-                qty={ingredient.qty}
-                setQty={(n) => updateQty(n)}
-                inList={true}
-              />
-
               <ListItemDate date={dateDisplay} showModal={setShowDateModal} />
+              <ListItemDescription
+                text={ingredient.desc}
+                maxWidth={
+                  ingredient.useByDate == null ? "max-w-[65vw]" : "max-w-[40vw]"
+                }
+                setText={(s: string) => updateDesc(s)}
+              />
             </View>
           </View>
 
@@ -153,7 +154,7 @@ export default function ListItem({
             name: ingredient.name,
             date: null,
             category: ingredient.category,
-            qty: 1,
+            desc: ingredient.desc,
             isGrocery: true,
             isRecurring: false,
             isPurchased: false,

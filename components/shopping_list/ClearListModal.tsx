@@ -35,11 +35,11 @@ export default function AddItemModal({ close }: { close: () => void }) {
     i.map((item) => {
       let x = ingredientNameExists(item.name);
       if (x != null) {
-        newCategories[x[0]][x[1]].qty += item.qty;
+        return;
       } else {
         newCategories[item.category].push({
           name: item.name,
-          qty: item.qty,
+          desc: item.desc,
           useByDate: item.date,
           category: item.category,
         });
@@ -75,7 +75,7 @@ export default function AddItemModal({ close }: { close: () => void }) {
             isGrocery: i.isGrocery,
             isRecurring: true,
             date: null,
-            qty: i.qty,
+            desc: i.desc,
           };
         } else {
           return i;

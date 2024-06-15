@@ -8,7 +8,7 @@ interface Item {
   name: string;
   category: string;
   date: date | null;
-  qty: number;
+  desc: string;
   isGrocery: boolean;
   isRecurring: boolean;
   isPurchased: boolean;

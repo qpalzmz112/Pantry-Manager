@@ -9,7 +9,7 @@ import { Item } from "@/types/shopping_list";
 import DeleteSomethingModal from "../DeleteSomethingModal";
 import ChangeDateModal from "../ChangeDateModal";
 import ChangeCategoryModal from "../ChangeCategoryModal";
-import QuantitySetter from "../ingredients_page/add_ingredient_modal/QuantitySetter";
+import ListItemDescription from "../ListItemDescription";
 import { useTranslation } from "react-i18next";
 import { date_to_display_string } from "@/code/date_utils";
 
@@ -54,17 +54,16 @@ export default function ListItem({
             {item.category ? item.category : t("uncategorized")}
           </Text>
 
-          <View className={`flex-row ${item.date ? "mt-1" : ""}`}>
-            <QuantitySetter
-              qty={item.qty}
-              setQty={(n) => updateItem(item.name, "qty", n)}
-              inList={true}
-            />
-
+          <View className="flex-row mt-1">
             <ListItemDate
               date={displayDate}
               showModal={setShowDateModal}
               isGrocery={item.isGrocery}
+            />
+            <ListItemDescription
+              text={item.desc}
+              maxWidth={item.date == null ? "max-w-[60vw]" : "max-w-[30vw]"}
+              setText={(s: string) => updateItem(item.name, "desc", s)}
             />
           </View>
         </View>

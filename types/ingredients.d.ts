@@ -6,7 +6,7 @@ interface Categories {
 
 interface Ingredient {
   name: string;
-  qty: number;
+  desc: string;
   useByDate: date | null;
   category: string;
 }
