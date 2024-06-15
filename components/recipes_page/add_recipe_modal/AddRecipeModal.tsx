@@ -10,7 +10,7 @@ import CategoryList from "@/components/ingredients_page/add_ingredient_modal/Cat
 import { get_matching_categories } from "@/code/recipe_utils";
 import RecipeIngredientList from "./RecipeIngredientList";
 import AddButtonPair from "@/components/AddButtonPair";
-import { Recipe } from "@/types/recipe";
+import { Recipe, RecipeIngredient } from "@/types/recipe";
 import Button from "@/components/Button";
 
 interface props {
@@ -25,7 +25,7 @@ export default function AddRecipeModal({ recipe, close }: props) {
   const [category, setCategory] = useState(recipe ? recipe.category : "");
   const [showCategories, setShowCategories] = useState(false);
 
-  const [ingredients, setIngredients] = useState<string[]>(
+  const [ingredients, setIngredients] = useState<RecipeIngredient[]>(
     recipe ? recipe.ingredients : []
   );
   const [steps, setSteps] = useState(recipe ? recipe.steps : "");

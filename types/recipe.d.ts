@@ -1,7 +1,12 @@
+export interface RecipeIngredient {
+  name: string;
+  desc: string;
+}
+
 export interface Recipe {
   name: string;
   category: string;
-  ingredients: string[]; // names of ingredients or ingredient categories
+  ingredients: RecipeIngredient[]; // names of ingredients or ingredient categories
   steps: string;
 }
 

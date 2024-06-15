@@ -5,13 +5,14 @@ import { Entypo } from "@expo/vector-icons";
 import LabelledTextInput from "@/components/ingredients_page/add_ingredient_modal/LabelledTextInput";
 import RecipeIngredient from "./RecipeIngredient";
 import Button from "@/components/Button";
+import { RecipeIngredient as RecipeIngredientT } from "@/types/recipe";
 
 export default function RecipeIngredientList({
   ingredients,
   setIngredients,
 }: {
-  ingredients: string[];
-  setIngredients: (s: string[]) => void;
+  ingredients: RecipeIngredientT[];
+  setIngredients: (s: RecipeIngredientT[]) => void;
 }) {
   let { t } = useTranslation();
   let [input, setInput] = useState("");
@@ -29,10 +30,10 @@ export default function RecipeIngredientList({
             if (input == "") {
               return;
             }
-            if (ingredients.includes(input)) {
+            if (ingredients.map((i) => i.name).includes(input)) {
               return;
             }
-            setIngredients([...ingredients, input]);
+            setIngredients([...ingredients, { name: input, desc: "" }]);
             setInput("");
             setShowIngredients(true);
           }}
@@ -42,7 +43,9 @@ export default function RecipeIngredientList({
           className="bg-white rounded-lg mt-2"
           data={
             ingredients.length > 0
-              ? ["button"].concat(showIngredients ? ingredients : [])
+              ? [{ name: "", desc: "" }].concat(
+                  showIngredients ? ingredients : []
+                )
               : []
           }
           renderItem={({ item, index }) => {
@@ -62,7 +65,13 @@ export default function RecipeIngredientList({
             }
             return (
               <RecipeIngredient
-                name={item}
+                name={item.name}
+                desc={item.desc}
+                setDesc={(d: string) => {
+                  let newIngredients = [...ingredients];
+                  newIngredients.find((i) => i.name == item.name)!.desc = d;
+                  setIngredients(newIngredients);
+                }}
                 deleteIngredient={() =>
                   setIngredients(ingredients.filter((i) => i != item))
                 }
