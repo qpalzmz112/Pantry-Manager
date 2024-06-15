@@ -1,4 +1,5 @@
 import { Recipes, Recipe } from "@/types/recipe";
+import { Categories } from "@/types/ingredients";
 
 export function get_matching_categories(c: string, recipes: Recipes) {
   return Object.keys(recipes).filter((key) => {
@@ -23,6 +24,7 @@ const filterNoSearch = (recipes: Recipes, collapsedCategories: any) => {
   return sorted;
 };
 
+// {title: string, data: Recipe[]}[]
 export function filterBySearch(
   search: string,
   recipes: Recipes,
@@ -45,4 +47,16 @@ export function filterBySearch(
   );
 }
 
-// {title: string, data: Recipe[]}[]
+export function hasIngredient(ingredients: Categories, name: string) {
+  let res = false;
+  Object.keys(ingredients).map((category) => {
+    if (category == name) {
+      res = true;
+    } else if (
+      ingredients[category].map((ingredient) => ingredient.name).includes(name)
+    ) {
+      res = true;
+    }
+  });
+  return res;
+}

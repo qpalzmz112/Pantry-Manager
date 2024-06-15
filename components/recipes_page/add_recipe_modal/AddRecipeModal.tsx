@@ -1,4 +1,4 @@
-import { View, Modal } from "react-native";
+import { View, Modal, KeyboardAvoidingView, Keyboard } from "react-native";
 import { useState, useContext, useEffect } from "react";
 import LabelledTextInput from "@/components/ingredients_page/add_ingredient_modal/LabelledTextInput";
 import CloseButton from "@/components/CloseButton";
@@ -29,6 +29,12 @@ export default function AddRecipeModal({ recipe, close }: props) {
     recipe ? recipe.ingredients : []
   );
   const [steps, setSteps] = useState(recipe ? recipe.steps : "");
+  const [stepInputFocused, setStepInputFocused] = useState(false);
+  Keyboard.addListener("keyboardDidHide", () => {
+    if (stepInputFocused) {
+      setStepInputFocused(false);
+    }
+  });
 
   const { data: recipes, update: setRecipes } = useContext(RecipeContext);
 
@@ -80,55 +86,66 @@ export default function AddRecipeModal({ recipe, close }: props) {
   return (
     <Modal transparent={false} onRequestClose={close}>
       <RootSiblingParent inactive={rootActive == 2 ? false : true}>
-        <View className="w-[100vw] h-[100vh] bg-gray-100 flex-col pt-10 items-center">
-          <LabelledTextInput
-            labelText={t("item_name")}
-            inputText={recipeName}
-            onChangeText={(text) => {
-              setRecipeName(text);
-              setErrorMessage("");
-            }}
-          />
-
-          <LabelledTextInput
-            labelText={t("category_optional")}
-            inputText={category}
-            onChangeText={(text) => {
-              setCategory(text);
-              setErrorMessage("");
-            }}
-            onPress={() => {
-              setShowCategories(true);
-              setCategory("");
-              setErrorMessage("");
-            }}
-            onEndEditing={() => {
-              setShowCategories(false);
-            }}
-          />
-          {showCategories && (
-            <CategoryList
-              category={category}
-              categories={recipes}
-              matching_categories={matching_categories}
-              setCategory={setCategory}
-              setCategories={setRecipes}
-            />
+        <View className="w-[100vw] h-[100vh] bg-gray-100 flex-col justify-center items-center">
+          {!stepInputFocused && (
+            <>
+              <LabelledTextInput
+                labelText={t("item_name")}
+                inputText={recipeName}
+                onChangeText={(text) => {
+                  setRecipeName(text);
+                  setErrorMessage("");
+                }}
+              />
+              <LabelledTextInput
+                labelText={t("category_optional")}
+                inputText={category}
+                onChangeText={(text) => {
+                  setCategory(text);
+                  setErrorMessage("");
+                }}
+                onPress={() => {
+                  setShowCategories(true);
+                  setCategory("");
+                  setErrorMessage("");
+                }}
+                onEndEditing={() => {
+                  setShowCategories(false);
+                }}
+              />
+              {showCategories && (
+                <CategoryList
+                  category={category}
+                  categories={recipes}
+                  matching_categories={matching_categories}
+                  setCategory={setCategory}
+                  setCategories={setRecipes}
+                />
+              )}
+              <RecipeIngredientList
+                ingredients={ingredients}
+                setIngredients={setIngredients}
+              />
+            </>
           )}
 
-          <RecipeIngredientList
-            ingredients={ingredients}
-            setIngredients={setIngredients}
-          />
+          <KeyboardAvoidingView
+            enabled={stepInputFocused}
+            behavior="position"
+            className={stepInputFocused ? "pb-20" : ""}
+          >
+            <LabelledTextInput
+              labelText={t("recipe_steps")}
+              inputText={steps}
+              onChangeText={(text) => setSteps(text)}
+              multiline={stepInputFocused}
+              onFocus={() => setStepInputFocused(true)}
+              onPress={() => setStepInputFocused(true)}
+              onBlur={() => setStepInputFocused(false)}
+            />
+          </KeyboardAvoidingView>
 
-          <LabelledTextInput
-            labelText={t("recipe_steps")}
-            inputText={steps}
-            onChangeText={(text) => setSteps(text)}
-            multiline={true}
-          />
-
-          {recipe ? (
+          {stepInputFocused ? null : recipe ? (
             <Button
               text={t("save_recipe_changes")}
               onPress={() => {

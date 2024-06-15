@@ -12,6 +12,8 @@ interface LabelledTextInputProps {
   onPress?: () => void;
   onSubmitEditing?: () => void;
   onEndEditing?: () => void;
+  onFocus?: () => void;
+  onBlur?: () => void;
 }
 
 export default function LabelledTextInput({
@@ -26,6 +28,8 @@ export default function LabelledTextInput({
   onPress,
   onSubmitEditing,
   onEndEditing,
+  onFocus,
+  onBlur,
 }: LabelledTextInputProps) {
   return (
     <>
@@ -42,6 +46,8 @@ export default function LabelledTextInput({
         className="border-2 border-gray-500 rounded-lg p-1 w-[80vw] bg-white text-xl"
         cursorColor="black"
         multiline={multiline}
+        onFocus={onFocus}
+        onBlur={onBlur}
       />
     </>
   );
