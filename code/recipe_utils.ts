@@ -50,10 +50,10 @@ export function filterBySearch(
 export function hasIngredient(ingredients: Categories, name: string) {
   let res = false;
   Object.keys(ingredients).map((category) => {
-    if (category == name) {
-      res = true;
-    } else if (
-      ingredients[category].map((ingredient) => ingredient.name).includes(name)
+    if (
+      ingredients[category]
+        .map((ingredient) => ingredient.name.toLocaleLowerCase())
+        .includes(name.toLocaleLowerCase())
     ) {
       res = true;
     }

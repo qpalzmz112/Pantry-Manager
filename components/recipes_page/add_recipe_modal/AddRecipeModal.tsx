@@ -29,6 +29,7 @@ export default function AddRecipeModal({ recipe, close }: props) {
     recipe ? recipe.ingredients : []
   );
   const [steps, setSteps] = useState(recipe ? recipe.steps : "");
+
   const [stepInputFocused, setStepInputFocused] = useState(false);
   Keyboard.addListener("keyboardDidHide", () => {
     if (stepInputFocused) {
@@ -85,55 +86,47 @@ export default function AddRecipeModal({ recipe, close }: props) {
 
   return (
     <Modal transparent={false} onRequestClose={close}>
-      <RootSiblingParent inactive={rootActive == 2 ? false : true}>
-        <View className="w-[100vw] h-[100vh] bg-gray-100 flex-col justify-center items-center">
-          {!stepInputFocused && (
-            <>
-              <LabelledTextInput
-                labelText={t("item_name")}
-                inputText={recipeName}
-                onChangeText={(text) => {
-                  setRecipeName(text);
-                  setErrorMessage("");
-                }}
+      <KeyboardAvoidingView behavior="position">
+        <RootSiblingParent inactive={rootActive == 2 ? false : true}>
+          <View className="w-[100vw] h-[100vh] bg-gray-100 flex-col justify-center items-center">
+            <LabelledTextInput
+              labelText={t("item_name")}
+              inputText={recipeName}
+              onChangeText={(text) => {
+                setRecipeName(text);
+                setErrorMessage("");
+              }}
+            />
+            <LabelledTextInput
+              labelText={t("category_optional")}
+              inputText={category}
+              onChangeText={(text) => {
+                setCategory(text);
+                setErrorMessage("");
+              }}
+              onPress={() => {
+                setShowCategories(true);
+                setCategory("");
+                setErrorMessage("");
+              }}
+              onEndEditing={() => {
+                setShowCategories(false);
+              }}
+            />
+            {showCategories && (
+              <CategoryList
+                category={category}
+                categories={recipes}
+                matching_categories={matching_categories}
+                setCategory={setCategory}
+                setCategories={setRecipes}
               />
-              <LabelledTextInput
-                labelText={t("category_optional")}
-                inputText={category}
-                onChangeText={(text) => {
-                  setCategory(text);
-                  setErrorMessage("");
-                }}
-                onPress={() => {
-                  setShowCategories(true);
-                  setCategory("");
-                  setErrorMessage("");
-                }}
-                onEndEditing={() => {
-                  setShowCategories(false);
-                }}
-              />
-              {showCategories && (
-                <CategoryList
-                  category={category}
-                  categories={recipes}
-                  matching_categories={matching_categories}
-                  setCategory={setCategory}
-                  setCategories={setRecipes}
-                />
-              )}
-              <RecipeIngredientList
-                ingredients={ingredients}
-                setIngredients={setIngredients}
-              />
-            </>
-          )}
+            )}
+            <RecipeIngredientList
+              ingredients={ingredients}
+              setIngredients={setIngredients}
+            />
 
-          <KeyboardAvoidingView
-            enabled={stepInputFocused}
-            behavior="position"
-            className={stepInputFocused ? "pb-20" : ""}
-          >
             <LabelledTextInput
               labelText={t("recipe_steps")}
               inputText={steps}
@@ -143,69 +136,69 @@ export default function AddRecipeModal({ recipe, close }: props) {
               onPress={() => setStepInputFocused(true)}
               onBlur={() => setStepInputFocused(false)}
             />
-          </KeyboardAvoidingView>
 
-          {stepInputFocused ? null : recipe ? (
-            <Button
-              text={t("save_recipe_changes")}
-              onPress={() => {
-                let newRecipes = { ...recipes };
-                // delete original recipe
-                newRecipes[recipe.category] = newRecipes[
-                  recipe.category
-                ].filter((r) => r.name != recipe.name);
-                // save updated recipe
-                const updatedRecipe = {
-                  name: recipeName,
-                  category: category,
-                  ingredients: ingredients,
-                  steps: steps,
-                };
-                if (category in newRecipes) {
-                  newRecipes[category].push(updatedRecipe);
-                } else {
-                  newRecipes[category] = [updatedRecipe];
-                }
-                setRecipes(newRecipes);
-                setRootActive(1);
-              }}
-              pressableClass={`p-2 rounded-md m-4 max-w-[40vw] flex justify-center bg-gray-200`}
-              pressedClass="bg-gray-300"
-              textClass="text-center text-lg"
-            />
-          ) : (
-            <AddButtonPair
-              type="recipe"
-              errorMessage={errorMessage}
-              canAddCheck={canAddRecipeCheck}
-              add={() => {
-                const recipe = {
-                  name: recipeName,
-                  category: category,
-                  ingredients: ingredients,
-                  steps: steps,
-                };
-                let r = { ...recipes };
-                if (category in r) {
-                  r[category].push(recipe);
-                } else {
-                  r[category] = [recipe];
-                }
-                setRecipes(r);
-                setRecipeName("");
-                setCategory("");
-                setIngredients([]);
-                setSteps("");
-              }}
-              doToast={(n: number) => {
-                setRootActive(n);
-              }}
-            />
-          )}
+            {recipe ? (
+              <Button
+                text={t("save_recipe_changes")}
+                onPress={() => {
+                  let newRecipes = { ...recipes };
+                  // delete original recipe
+                  newRecipes[recipe.category] = newRecipes[
+                    recipe.category
+                  ].filter((r) => r.name != recipe.name);
+                  // save updated recipe
+                  const updatedRecipe = {
+                    name: recipeName,
+                    category: category,
+                    ingredients: ingredients,
+                    steps: steps,
+                  };
+                  if (category in newRecipes) {
+                    newRecipes[category].push(updatedRecipe);
+                  } else {
+                    newRecipes[category] = [updatedRecipe];
+                  }
+                  setRecipes(newRecipes);
+                  setRootActive(1);
+                }}
+                pressableClass={`p-2 rounded-md m-4 max-w-[40vw] flex justify-center bg-gray-200`}
+                pressedClass="bg-gray-300"
+                textClass="text-center text-lg"
+              />
+            ) : (
+              <AddButtonPair
+                type="recipe"
+                errorMessage={errorMessage}
+                canAddCheck={canAddRecipeCheck}
+                add={() => {
+                  const recipe = {
+                    name: recipeName,
+                    category: category,
+                    ingredients: ingredients,
+                    steps: steps,
+                  };
+                  let r = { ...recipes };
+                  if (category in r) {
+                    r[category].push(recipe);
+                  } else {
+                    r[category] = [recipe];
+                  }
+                  setRecipes(r);
+                  setRecipeName("");
+                  setCategory("");
+                  setIngredients([]);
+                  setSteps("");
+                }}
+                doToast={(n: number) => {
+                  setRootActive(n);
+                }}
+              />
+            )}
 
-          <CloseButton close={close} />
-        </View>
-      </RootSiblingParent>
+            <CloseButton close={close} />
+          </View>
+        </RootSiblingParent>
+      </KeyboardAvoidingView>
     </Modal>
   );
 }

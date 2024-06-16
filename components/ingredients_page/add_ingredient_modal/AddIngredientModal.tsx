@@ -1,4 +1,4 @@
-import { Modal, ScrollView } from "react-native";
+import { Modal, ScrollView, KeyboardAvoidingView } from "react-native";
 import { useState, useEffect, useContext } from "react";
 import { RootSiblingParent } from "react-native-root-siblings";
 import { Categories } from "@/types/ingredients";
@@ -23,12 +23,12 @@ export default function AddIngredientModal({
   setCategories: (c: Categories) => void;
 }) {
   const { t } = useTranslation();
+
   const [name, onChangeName] = useState("");
   const [category, onChangeCategory] = useState("");
   const [showCategories, setShowCategories] = useState(false);
 
   const [date, setDate] = useState<date | null>(null);
-
   const [desc, setDesc] = useState("");
 
   const [errorMessage, setErrorMessage] = useState("");
@@ -84,101 +84,103 @@ export default function AddIngredientModal({
   return (
     <Modal transparent={false} onRequestClose={close}>
       <RootSiblingParent inactive={rootActive == 2 ? false : true}>
-        <ScrollView
-          className="w-[100vw] h-[100vh] bg-gray-100 flex-col"
-          contentContainerStyle={{
-            paddingTop: 175,
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-          keyboardShouldPersistTaps="always"
-        >
-          <LabelledTextInput
-            labelText={t("item_name")}
-            inputText={name}
-            onChangeText={(text) => {
-              onChangeName(text);
-              setErrorMessage("");
+        <KeyboardAvoidingView behavior="position">
+          <ScrollView
+            className="w-[100vw] h-[100vh] bg-gray-100 flex-col"
+            contentContainerStyle={{
+              paddingTop: 175,
+              alignItems: "center",
+              justifyContent: "center",
             }}
-          />
-
-          <LabelledTextInput
-            labelText={t("item_desc")}
-            inputText={desc}
-            onChangeText={(text) => {
-              setDesc(text);
-            }}
-          />
-
-          <LabelledTextInput
-            labelText={t("category_optional")}
-            inputText={category}
-            onChangeText={(text) => {
-              onChangeCategory(text);
-              setErrorMessage("");
-            }}
-            onPress={() => {
-              setShowCategories(true);
-              onChangeCategory("");
-              setErrorMessage("");
-            }}
-            onEndEditing={() => {
-              setShowCategories(false);
-            }}
-          />
-
-          {showCategories && (
-            <CategoryList
-              category={category}
-              categories={categories}
-              matching_categories={matching_categories}
-              setCategory={onChangeCategory}
-              setCategories={setCategories}
+            keyboardShouldPersistTaps="always"
+          >
+            <LabelledTextInput
+              labelText={t("item_name")}
+              inputText={name}
+              onChangeText={(text) => {
+                onChangeName(text);
+                setErrorMessage("");
+              }}
             />
-          )}
 
-          <DateInput date={date} onChangeDate={setDate} />
+            <LabelledTextInput
+              labelText={t("item_desc")}
+              inputText={desc}
+              onChangeText={(text) => {
+                setDesc(text);
+              }}
+            />
 
-          <AddButtonPair
-            type="ingredient"
-            errorMessage={errorMessage}
-            canAddCheck={canAddIngredientCheck}
-            add={() => {
-              let c = { ...categories };
-              c[category].push({
-                name: name,
-                desc: desc,
-                useByDate: date,
-                category: category,
-              });
-              // make appropriate notification if date != null
-              if (date != null) {
-                schedulePushNotification(name, date).then((val) => {
-                  if (val == null) {
-                    return;
-                  }
-                  let id = val[0];
-                  let notif_date = val[1];
-                  setNotifications({
-                    ...notifications,
-                    [name]: [id, `${notif_date}`],
-                  });
+            <LabelledTextInput
+              labelText={t("category_optional")}
+              inputText={category}
+              onChangeText={(text) => {
+                onChangeCategory(text);
+                setErrorMessage("");
+              }}
+              onPress={() => {
+                setShowCategories(true);
+                onChangeCategory("");
+                setErrorMessage("");
+              }}
+              onEndEditing={() => {
+                setShowCategories(false);
+              }}
+            />
+
+            {showCategories && (
+              <CategoryList
+                category={category}
+                categories={categories}
+                matching_categories={matching_categories}
+                setCategory={onChangeCategory}
+                setCategories={setCategories}
+              />
+            )}
+
+            <DateInput date={date} onChangeDate={setDate} />
+
+            <AddButtonPair
+              type="ingredient"
+              errorMessage={errorMessage}
+              canAddCheck={canAddIngredientCheck}
+              add={() => {
+                let c = { ...categories };
+                c[category].push({
+                  name: name,
+                  desc: desc,
+                  useByDate: date,
+                  category: category,
                 });
-              }
+                // make appropriate notification if date != null
+                if (date != null) {
+                  schedulePushNotification(name, date).then((val) => {
+                    if (val == null) {
+                      return;
+                    }
+                    let id = val[0];
+                    let notif_date = val[1];
+                    setNotifications({
+                      ...notifications,
+                      [name]: [id, `${notif_date}`],
+                    });
+                  });
+                }
 
-              setCategories(c);
-              onChangeName("");
-              onChangeCategory("");
-              setDesc("");
-              setDate(null);
-            }}
-            doToast={(n: number) => {
-              setRootActive(n);
-            }}
-          />
+                setCategories(c);
+                onChangeName("");
+                onChangeCategory("");
+                setDesc("");
+                setDate(null);
+              }}
+              doToast={(n: number) => {
+                setRootActive(n);
+              }}
+            />
 
-          <CloseButton close={close} />
-        </ScrollView>
+            <CloseButton close={close} />
+          </ScrollView>
+        </KeyboardAvoidingView>
       </RootSiblingParent>
     </Modal>
   );

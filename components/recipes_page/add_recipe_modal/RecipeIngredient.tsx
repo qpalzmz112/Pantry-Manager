@@ -27,11 +27,11 @@ export default function RecipeIngredient({
   let [showDeleteModal, setShowDeleteModal] = useState(false);
 
   return (
-    <View className="flex justify-center">
+    <View className="flex-row justify-center items-center my-1">
       <Button
         textClass="text-lg"
-        pressableClass={`p-2 rounded-lg m-1 ${bgColor}`}
-        pressedClass="bg-gray-300"
+        pressableClass={`p-2.5 rounded-lg ${bgColor} grow`}
+        pressedClass={bgColor == "bg-gray-200" ? "bg-gray-300" : "bg-red-400"}
         text={name}
         onPress={() => setShowDeleteModal(true)}
       />
@@ -39,7 +39,6 @@ export default function RecipeIngredient({
         text={desc}
         setText={setDesc}
         maxWidth="max-w-[30vw]"
-        className="absolute right-0 m-1"
       />
       {showDeleteModal && (
         <DeleteSomethingModal

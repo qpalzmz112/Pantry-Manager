@@ -94,7 +94,7 @@ const es = {
 
   // Add Recipe Modal
   recipe_ingredient: "Ingrediente",
-  recipe_ingredients: "Ingredientes/Categorías de Ingredientes:",
+  recipe_ingredients: "Ingredientes:",
   add_recipe_ingredient: "Presione Entrar para Agregar",
   recipe_steps: "Instrucciones:",
   add_recipe: "Agregar Receta",
