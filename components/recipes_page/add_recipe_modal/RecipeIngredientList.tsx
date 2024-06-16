@@ -1,22 +1,71 @@
 import { FlatList, View } from "react-native";
-import { useState } from "react";
+import { useState, useContext, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Entypo } from "@expo/vector-icons";
+import { ItemContext, CategoryContext } from "@/code/data_context";
 import LabelledTextInput from "@/components/ingredients_page/add_ingredient_modal/LabelledTextInput";
 import RecipeIngredient from "./RecipeIngredient";
 import Button from "@/components/Button";
 import { RecipeIngredient as RecipeIngredientT } from "@/types/recipe";
+import {
+  missingIngredients,
+  ingredientsInShoppingList,
+} from "@/code/recipe_utils";
 
 export default function RecipeIngredientList({
   ingredients,
   setIngredients,
+  doToast,
 }: {
   ingredients: RecipeIngredientT[];
   setIngredients: (s: RecipeIngredientT[]) => void;
+  doToast: (n: number) => void;
 }) {
   let { t } = useTranslation();
-  let [input, setInput] = useState("");
-  let [showIngredients, setShowIngredients] = useState(true);
+  const [input, setInput] = useState("");
+  const [showIngredients, setShowIngredients] = useState(true);
+
+  const { data: categories, update: setCategories } =
+    useContext(CategoryContext);
+
+  const { data: items, update: setItems } = useContext(ItemContext);
+
+  const [inShoppingList, setInShoppingList] = useState<RecipeIngredientT[]>(
+    ingredientsInShoppingList(items, ingredients)
+  );
+
+  const [missingIngredientList, setMissingIngredientList] = useState<
+    RecipeIngredientT[]
+  >(missingIngredients(categories, ingredients, inShoppingList));
+
+  useEffect(
+    () => setInShoppingList(ingredientsInShoppingList(items, ingredients)),
+    [ingredients, items]
+  );
+  useEffect(
+    () =>
+      setMissingIngredientList(
+        missingIngredients(categories, ingredients, inShoppingList)
+      ),
+    [inShoppingList, ingredients]
+  );
+
+  const addMissingIngredients = () => {
+    let newItems = [...items];
+    missingIngredientList.map((i) =>
+      newItems.push({
+        name: i.name,
+        desc: i.desc,
+        category: "",
+        date: null,
+        isGrocery: true,
+        isRecurring: false,
+        isPurchased: false,
+      })
+    );
+    setItems(newItems);
+    doToast(3);
+  };
 
   return (
     <>
@@ -51,20 +100,44 @@ export default function RecipeIngredientList({
           renderItem={({ item, index }) => {
             if (index == 0) {
               return (
-                <Button
-                  text={
-                    <Entypo
-                      name={showIngredients ? "chevron-down" : "chevron-right"}
-                      size={24}
-                      color="black"
+                <View
+                  className={`flex-row items-center ${
+                    showIngredients ? "justify-center" : ""
+                  }`}
+                >
+                  <Button
+                    text={
+                      <Entypo
+                        name={
+                          showIngredients ? "chevron-down" : "chevron-right"
+                        }
+                        size={26}
+                        color="black"
+                      />
+                    }
+                    pressableClass={showIngredients ? "absolute left-0" : ""}
+                    onPress={() => setShowIngredients(!showIngredients)}
+                  />
+                  {showIngredients && (
+                    <Button
+                      text={t("add_recipe_ingredients")}
+                      textClass="text-center"
+                      pressableClass="bg-gray-200 p-1 rounded-lg m-2"
+                      pressedClass="bg-gray-300"
+                      onPress={() => addMissingIngredients()}
                     />
-                  }
-                  onPress={() => setShowIngredients(!showIngredients)}
-                />
+                  )}
+                </View>
               );
             }
             return (
               <RecipeIngredient
+                inShoppingList={inShoppingList
+                  .map((i) => i.name)
+                  .includes(item.name)}
+                missing={missingIngredientList
+                  .map((i) => i.name)
+                  .includes(item.name)}
                 name={item.name}
                 desc={item.desc}
                 setDesc={(d: string) => {

@@ -1,5 +1,6 @@
-import { Recipes, Recipe } from "@/types/recipe";
+import { Recipes, Recipe, RecipeIngredient } from "@/types/recipe";
 import { Categories } from "@/types/ingredients";
+import { Item } from "@/types/shopping_list";
 
 export function get_matching_categories(c: string, recipes: Recipes) {
   return Object.keys(recipes).filter((key) => {
@@ -59,4 +60,23 @@ export function hasIngredient(ingredients: Categories, name: string) {
     }
   });
   return res;
+}
+
+export function ingredientsInShoppingList(
+  items: Item[],
+  ingredients: RecipeIngredient[]
+) {
+  return ingredients.filter((i) =>
+    items.map((item) => item.name).includes(i.name)
+  );
+}
+
+export function missingIngredients(
+  listIngredients: Categories,
+  recipeIngredients: RecipeIngredient[],
+  inShoppingList: RecipeIngredient[]
+) {
+  return recipeIngredients
+    .filter((i) => !hasIngredient(listIngredients, i.name))
+    .filter((i) => !inShoppingList.map((ing) => ing.name).includes(i.name));
 }

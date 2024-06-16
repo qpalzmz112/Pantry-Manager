@@ -105,6 +105,8 @@ const en = {
   recipe_added: "Recipe added!",
   save_recipe_changes: "Save Changes",
   toast_recipe_updated: "Recipe updated!",
+  add_recipe_ingredients: "Add Missing Ingredients \n to Shopping List",
+  toast_added_missing_ingredients: "Success!",
 };
 
 export default en;

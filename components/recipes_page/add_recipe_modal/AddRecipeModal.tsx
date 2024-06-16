@@ -46,13 +46,18 @@ export default function AddRecipeModal({ recipe, close }: props) {
     recipes
   );
 
-  // 0: inactive, 1: inactive but show toast after closing modal, 2: active and show toast over modal
+  // 0: inactive, 1: inactive and show toast after closing modal, 2: active and show toast over modal
+  // 3: added ingredients to shopping list success (this could be done better...)
   const [rootActive, setRootActive] = useState(0);
   useEffect(() => {
     if (rootActive != 0) {
-      toast(t(recipe ? "toast_recipe_updated" : "recipe_added"));
-      if (rootActive == 1) {
-        close();
+      if (rootActive == 3) {
+        toast(t("toast_added_missing_ingredients"));
+      } else {
+        toast(t(recipe ? "toast_recipe_updated" : "recipe_added"));
+        if (rootActive == 1) {
+          close();
+        }
       }
       setRootActive(0);
     }
@@ -87,7 +92,7 @@ export default function AddRecipeModal({ recipe, close }: props) {
   return (
     <Modal transparent={false} onRequestClose={close}>
       <KeyboardAvoidingView behavior="position">
-        <RootSiblingParent inactive={rootActive == 2 ? false : true}>
+        <RootSiblingParent inactive={rootActive >= 2 ? false : true}>
           <View className="w-[100vw] h-[100vh] bg-gray-100 flex-col justify-center items-center">
             <LabelledTextInput
               labelText={t("item_name")}
@@ -125,6 +130,9 @@ export default function AddRecipeModal({ recipe, close }: props) {
             <RecipeIngredientList
               ingredients={ingredients}
               setIngredients={setIngredients}
+              doToast={(n: number) => {
+                setRootActive(n);
+              }}
             />
 
             <LabelledTextInput

@@ -104,6 +104,9 @@ const es = {
   recipe_added: "¡Receta agregada!",
   save_recipe_changes: "Guardar Cambios",
   toast_recipe_updated: "¡Receta actualizada!",
+  add_recipe_ingredients:
+    "Agregue los Ingredientes Faltantes \n a la Lista de Compras",
+  toast_added_missing_ingredients: "¡Éxito!",
 };
 
 export default es;
