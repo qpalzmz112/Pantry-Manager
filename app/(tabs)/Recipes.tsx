@@ -29,6 +29,9 @@ export default function Recipes() {
   const [deletingCategory, setDeletingCategory] = useState("");
   const deleteCategory = () => {
     let r = { ...recipes };
+    if (!("" in r)) {
+      r[""] = [];
+    }
     r[deletingCategory].map((i) => r[""].push({ ...i, category: "" }));
     delete r[deletingCategory];
     setRecipes(r);
