@@ -1,4 +1,10 @@
-import { Modal, ScrollView, KeyboardAvoidingView } from "react-native";
+import {
+  Modal,
+  ScrollView,
+  KeyboardAvoidingView,
+  Text,
+  View,
+} from "react-native";
 import { useState, useEffect, useContext } from "react";
 import { RootSiblingParent } from "react-native-root-siblings";
 import { Categories } from "@/types/ingredients";
@@ -146,6 +152,17 @@ export default function AddIngredientModal({
             )}
 
             <DateInput date={date} onChangeDate={setDate} />
+
+            {date && (
+              <View className="flex-row gap-2">
+                <Text className="bg-amber-200 p-2 rounded-lg text-center flex-1">
+                  {t("expiring_soon")}
+                </Text>
+                <Text className="bg-red-300 p-2 rounded-lg text-center flex-1">
+                  {t("expired")}
+                </Text>
+              </View>
+            )}
 
             <AddButtonPair
               type="ingredient"

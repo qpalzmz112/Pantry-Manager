@@ -60,6 +60,8 @@ const en = {
   error_ingredient_no_name: "Ingredient name cannot be empty.",
   error_ingredient_name_exists: "An ingredient with this name already exists.",
   toast_ingredient_added: "Ingredient added!",
+  expiring_soon: "Expiring in 1 Week",
+  expired: "Expired",
 
   // Delete something modal
   delete: "Delete",
@@ -94,6 +96,8 @@ const en = {
     "The recipes in this category will remain, but will be uncategorized.",
   sort_recipes_by_ingredients: "Sort recipes by available ingredients:",
   missing_ingredients: "Missing Ingredients:",
+  in_list: "In Shopping List",
+  missing: "Missing",
 
   // Add Recipe Modal
   recipe_ingredient: "Ingredient",

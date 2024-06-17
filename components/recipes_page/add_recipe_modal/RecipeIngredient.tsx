@@ -31,7 +31,7 @@ export default function RecipeIngredient({
     <View className="flex-row justify-center items-center my-1">
       <Button
         textClass="text-lg"
-        pressableClass={`p-1.5 rounded-lg ${bgColor} grow`}
+        pressableClass={`p-1.5 rounded-lg ${bgColor} grow shrink`}
         pressedClass={
           missing
             ? "bg-red-400"

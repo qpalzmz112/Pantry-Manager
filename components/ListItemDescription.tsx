@@ -33,7 +33,7 @@ export default function ListItemDescription({
         }`}
         onPressIn={() => setPressed(true)}
         onPressOut={() => setPressed(false)}
-        name="notes"
+        name="edit-note"
         size={24}
         color="gray"
       />

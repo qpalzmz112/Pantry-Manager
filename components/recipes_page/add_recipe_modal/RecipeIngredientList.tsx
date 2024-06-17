@@ -1,4 +1,4 @@
-import { FlatList, View } from "react-native";
+import { FlatList, View, Text } from "react-native";
 import { useState, useContext, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Entypo } from "@expo/vector-icons";
@@ -11,6 +11,7 @@ import {
   missingIngredients,
   ingredientsInShoppingList,
 } from "@/code/recipe_utils";
+import * as Haptics from "expo-haptics";
 
 export default function RecipeIngredientList({
   ingredients,
@@ -115,8 +116,13 @@ export default function RecipeIngredientList({
                         color="black"
                       />
                     }
-                    pressableClass={showIngredients ? "absolute left-0" : ""}
-                    onPress={() => setShowIngredients(!showIngredients)}
+                    pressableClass={
+                      showIngredients ? "absolute left-0" : "py-2"
+                    }
+                    onPress={() => {
+                      setShowIngredients(!showIngredients);
+                      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+                    }}
                   />
                   {showIngredients && (
                     <Button
@@ -153,6 +159,16 @@ export default function RecipeIngredientList({
           }}
         />
       </View>
+      {showIngredients && (
+        <View className="flex-row gap-2 mt-2">
+          <Text className="bg-amber-200 p-2 rounded-lg text-center flex-1">
+            {t("in_list")}
+          </Text>
+          <Text className="bg-red-300 p-2 rounded-lg text-center align-middle flex-1">
+            {t("missing")}
+          </Text>
+        </View>
+      )}
     </>
   );
 }

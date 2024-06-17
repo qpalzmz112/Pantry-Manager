@@ -154,15 +154,19 @@ export default function AddItemModal({
               </View>
 
               {showingInfo && (
-                <Text
-                  className="bg-white p-1 m-1 border-2"
-                  onPress={() => {
-                    setShowingInfo(false);
-                  }}
-                >
-                  {t("recurring_info")}
-                  {<MaterialIcons name="loop" size={22} color="black" />}
-                </Text>
+                <View className="bg-white p-2 my-1 rounded-lg flex">
+                  <Text
+                    className="leading-6 text-center text-gray-500"
+                    onPress={() => {
+                      setShowingInfo(false);
+                    }}
+                  >
+                    {t("recurring_info")}
+                  </Text>
+                  <Text className="grow text-center">
+                    {<MaterialIcons name="loop" size={24} color="gray" />}
+                  </Text>
+                </View>
               )}
 
               <CheckBox

@@ -1,26 +1,26 @@
 const es = {
   // Shopping List
-  shopping_list_title: "Lista de Compras",
+  shopping_list_title: "Lista de compras",
   Groceries: "Comestibles",
-  "Non-Grocery Items": "No Comestibles",
+  "Non-Grocery Items": "No comestibles",
 
   // Add item modal
   item_name: "Nombre:",
   item_desc: "Descripción:",
   category_optional: "Categoría (opcional):",
   is_grocery: "¿Comestible?",
-  is_recurring: "¿Compra Recurrente?",
+  is_recurring: "¿Compra recurrente?",
   recurring_info:
     "Las compras recurrentes permanecerán en su lista de compras cuando la borre y se marcarán con este ícono:",
   qty: "Cant: ",
-  add_item: "Añadir Artículo",
-  add_item_return: "Añadir Artículo y Regresar a la Lista",
+  add_item: "Añadir artículo",
+  add_item_return: "Añadir artículo y regresar a la lista",
   item_added: "¡Artículo añadido!",
   error_name_exists: "Ya existe un elemento con este nombre.",
   error_empty_name: "El nombre del elemento no puede estar vacío.",
 
   // List items
-  uncategorized: "Sin Categoría",
+  uncategorized: "Sin categoría",
   use_by: "Usar por: ",
 
   // Change category modal
@@ -31,14 +31,14 @@ const es = {
     "Ingrese el nombre de una categoría existente o deje el campo de categoría en blanco.",
 
   // Change date modal
-  save_date: "Confirmar Fecha",
+  save_date: "Confirmar fecha",
   date_info: "Después de agregar una fecha, puedes cambiarla tocándola.",
   date_saved: "¡Fecha actualizada!",
 
   // Date input
   date_input_label: "Utilizar por fecha (opcional):",
-  choose_date: "Elegir una Fecha de Vencimiento",
-  remove_date: "Eliminar Fecha",
+  choose_date: "Elegir una fecha de vencimiento",
+  remove_date: "Eliminar fecha",
   date_placeholder: "DD-MM-AA",
   intlDateTime: "{{val, datetime}}",
 
@@ -52,14 +52,16 @@ const es = {
 
   // Ingredients list
   search: "Búsqueda",
-  clear_search: "Borrar Búsqueda",
+  clear_search: "Borrar búsqueda",
 
   // Add ingredient modal
-  add_ingredient: "Añadir Ingrediente",
-  add_ingredient_return: "Añadir Ingrediente y Regresar a la Lista",
+  add_ingredient: "Añadir ingrediente",
+  add_ingredient_return: "Añadir ingrediente y regresar a la Lista",
   error_ingredient_no_name: "El nombre del ingrediente no puede estar vacío.",
   error_ingredient_name_exists: "Ya existe un ingrediente con este nombre.",
   toast_ingredient_added: "¡Ingrediente añadido!",
+  expiring_soon: "Expira en 1 semana",
+  expired: "Caducada",
 
   // Delete something modal
   delete: "Borrar",
@@ -93,21 +95,23 @@ const es = {
     "Las recetas de esta categoría permanecerán, pero no estarán categorizados.",
   sort_recipes_by_ingredients: "Ordenar recetas por ingredientes disponibles:",
   missing_ingredients: "Ingredientes faltantes:",
+  in_list: "En la lista de compras",
+  missing: "Desaparecida",
 
   // Add Recipe Modal
   recipe_ingredient: "Ingrediente",
   recipe_ingredients: "Ingredientes:",
-  add_recipe_ingredient: "Presione Entrar para Agregar",
+  add_recipe_ingredient: "Presione entrar para agregar",
   recipe_steps: "Instrucciones:",
-  add_recipe: "Agregar Receta",
-  add_recipe_return: "Agregar Receta y Regresar a la Lista",
+  add_recipe: "Agregar receta",
+  add_recipe_return: "Agregar receta y regresar a la lista",
   error_recipe_no_name: "El nombre de la receta no puede estar vacío.",
   error_recipe_name_exists: "Ya existe una receta con este nombre.",
   recipe_added: "¡Receta agregada!",
-  save_recipe_changes: "Guardar Cambios",
+  save_recipe_changes: "Guardar cambios",
   toast_recipe_updated: "¡Receta actualizada!",
   add_recipe_ingredients:
-    "Agregue los Ingredientes Faltantes \n a la Lista de Compras",
+    "Agregue los ingredientes faltantes \n a la lista de compras",
   toast_added_missing_ingredients: "¡Éxito!",
 };
 

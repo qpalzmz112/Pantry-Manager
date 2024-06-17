@@ -36,7 +36,9 @@ export default function ListItem({
         }}
       >
         <View
-          className={`flex-row items-center p-2 mx-1 mb-2 rounded-xl bg-white`}
+          className={`flex-row items-center p-2 mx-1 mb-2 rounded-xl ${
+            missingIngredients ? "bg-gray-200" : "bg-white"
+          }`}
         >
           <View className="flex-col">
             <Text className="text-xl">{recipe.name}</Text>
