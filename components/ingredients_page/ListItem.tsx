@@ -71,7 +71,7 @@ export default function ListItem({
           <View className="flex-col">
             <Text className="text-xl">{ingredient.name}</Text>
 
-            <View className="flex-row pt-1 items-center">
+            <View className="flex-row mt-1">
               <ListItemDate date={dateDisplay} showModal={setShowDateModal} />
               <ListItemDescription
                 text={ingredient.desc}

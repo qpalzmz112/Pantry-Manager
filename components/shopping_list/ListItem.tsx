@@ -67,6 +67,7 @@ export default function ListItem({
             />
           </View>
         </View>
+
         <View className="absolute right-2 flex-row items-center">
           <CheckBox
             checked={isPurchased}

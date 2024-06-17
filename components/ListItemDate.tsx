@@ -19,7 +19,7 @@ export default function ListItemDate({
   return date ? (
     <Button
       text={t("use_by") + date}
-      textClass=""
+      textClass="text-gray-600"
       pressableClass="py-1 px-2 mr-2 bg-gray-200 rounded-lg"
       pressedClass="bg-gray-400"
       onPress={() => {
@@ -30,7 +30,7 @@ export default function ListItemDate({
   ) : (
     isGrocery && (
       <Button
-        text={<AntDesign name="calendar" size={24} color="black" />}
+        text={<AntDesign name="calendar" size={24} color="gray" />}
         textClass=""
         pressableClass="mr-2 bg-gray-200 rounded-lg p-1"
         pressedClass="bg-gray-400"
