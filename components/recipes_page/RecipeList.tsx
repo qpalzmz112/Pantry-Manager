@@ -1,12 +1,14 @@
 import { SectionList, Pressable, Text, View } from "react-native";
-import { useState } from "react";
+import { useState, useContext, useEffect } from "react";
+import { CategoryContext } from "@/code/data_context";
 import * as Haptics from "expo-haptics";
 import { Entypo } from "@expo/vector-icons";
-import { filterBySearch } from "@/code/recipe_utils";
+import { filterBySearch, makeMissingIngredientDict } from "@/code/recipe_utils";
 import { useTranslation } from "react-i18next";
 import { Recipes } from "@/types/recipe";
 import SearchBar from "../SearchBar";
 import ListItem from "./ListItem";
+import CheckBox from "../shopping_list/CheckBox";
 
 export default function RecipeList({
   recipes,
@@ -18,6 +20,7 @@ export default function RecipeList({
   setDeletingCategory: (c: string) => void;
 }) {
   const { t } = useTranslation();
+
   const defaultCollapsedCategories = Object.fromEntries(
     Object.entries(recipes).map((key) => [key, false])
   );
@@ -25,6 +28,20 @@ export default function RecipeList({
     defaultCollapsedCategories
   );
   const [search, setSearch] = useState("");
+  const [sortByIngredients, setSortByIngredients] = useState(false);
+
+  const { data: categories } = useContext(CategoryContext);
+  const [recipesToMissingIngredients, setRecipesToMissingIngredients] =
+    useState<{ [name: string]: number }>(
+      makeMissingIngredientDict(categories, recipes)
+    );
+
+  useEffect(() => {
+    setRecipesToMissingIngredients(
+      makeMissingIngredientDict(categories, recipes)
+    );
+  }, [recipes, categories]);
+
   return (
     <View className="h-[79vh]">
       <SearchBar
@@ -34,12 +51,28 @@ export default function RecipeList({
         setCollapsedCategories={setCollapsedCategories}
       />
 
+      <View className="bg-white rounded-lg p-2 flex-row items-center justify-center gap-x-8">
+        <Text>{t("sort_recipes_by_ingredients")}</Text>
+        <View className="flex justify-center items-center">
+          <CheckBox
+            onPress={() => setSortByIngredients(!sortByIngredients)}
+            checked={sortByIngredients}
+          />
+        </View>
+      </View>
+
       <SectionList
         keyboardShouldPersistTaps="always"
-        sections={filterBySearch(search, recipes, collapsedCategories)}
+        sections={filterBySearch(
+          search,
+          recipes,
+          collapsedCategories,
+          sortByIngredients ? recipesToMissingIngredients : undefined
+        )}
         renderItem={({ item }) => (
           <ListItem
             recipe={item}
+            missingIngredients={recipesToMissingIngredients[item.name]}
             updateCategory={(c) => {
               if (c == item.category) {
                 return;

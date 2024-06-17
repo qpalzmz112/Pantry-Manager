@@ -84,15 +84,22 @@ export default function AddIngredientModal({
   return (
     <Modal transparent={false} onRequestClose={close}>
       <RootSiblingParent inactive={rootActive == 2 ? false : true}>
-        <KeyboardAvoidingView behavior="position">
-          <ScrollView
-            className="w-[100vw] h-[100vh] bg-gray-100 flex-col"
+        <ScrollView
+          className="w-[100vw] h-[100vh] bg-gray-100 flex-col"
+          contentContainerStyle={{
+            paddingTop: 175,
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+          keyboardShouldPersistTaps="always"
+        >
+          <KeyboardAvoidingView
+            behavior="position"
+            className="flex-col"
             contentContainerStyle={{
-              paddingTop: 175,
               alignItems: "center",
               justifyContent: "center",
             }}
-            keyboardShouldPersistTaps="always"
           >
             <LabelledTextInput
               labelText={t("item_name")}
@@ -177,10 +184,9 @@ export default function AddIngredientModal({
                 setRootActive(n);
               }}
             />
-
-            <CloseButton close={close} />
-          </ScrollView>
-        </KeyboardAvoidingView>
+          </KeyboardAvoidingView>
+          <CloseButton close={close} />
+        </ScrollView>
       </RootSiblingParent>
     </Modal>
   );

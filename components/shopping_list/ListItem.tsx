@@ -93,6 +93,7 @@ export default function ListItem({
 
       {showCategoryModal && (
         <ChangeCategoryModal
+          placeholder={item.category}
           save={(c) => updateItem(item.name, "category", c)}
           close={() => setShowCategoryModal(false)}
         />

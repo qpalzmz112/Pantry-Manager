@@ -1,4 +1,10 @@
-import { Text, View, Modal, Pressable } from "react-native";
+import {
+  Text,
+  View,
+  Modal,
+  Pressable,
+  KeyboardAvoidingView,
+} from "react-native";
 import { useState, useContext, useEffect } from "react";
 import { CategoryContext } from "@/code/data_context";
 import { Feather } from "@expo/vector-icons";
@@ -76,108 +82,120 @@ export default function AddItemModal({
     <Modal transparent={false} onRequestClose={close}>
       <RootSiblingParent inactive={rootActive == 2 ? false : true}>
         <View className="w-[100vw] h-[100vh] bg-gray-100 flex-col justify-center items-center">
-          <LabelledTextInput
-            labelText={t("item_name")}
-            inputText={itemName}
-            onChangeText={(text) => {
-              onChangeItemName(text);
-              setErrorMessage("");
+          <KeyboardAvoidingView
+            behavior="position"
+            contentContainerStyle={{
+              alignItems: "center",
+              justifyContent: "center",
             }}
-          />
-
-          <LabelledTextInput
-            labelText={t("item_desc")}
-            inputText={desc}
-            onChangeText={setDesc}
-          />
-
-          <LabelledTextInput
-            labelText={t("category_optional")}
-            inputText={category}
-            onChangeText={(text) => {
-              setCategory(text);
-              setErrorMessage("");
-            }}
-            onPress={() => {
-              setShowCategories(true);
-              setCategory("");
-              setErrorMessage("");
-            }}
-            onEndEditing={() => {
-              setShowCategories(false);
-            }}
-          />
-          {showCategories && (
-            <CategoryList
-              category={category}
-              categories={categories}
-              matching_categories={matching_categories}
-              setCategory={setCategory}
-              setCategories={setCategories}
-            />
-          )}
-
-          <View className="w-[80vw] flex items-left mt-4">
-            <Text>{t("is_grocery")}</Text>
-            <CheckBox
-              onPress={() => {
-                setIsGrocery(!isGrocery);
+          >
+            <LabelledTextInput
+              labelText={t("item_name")}
+              inputText={itemName}
+              onChangeText={(text) => {
+                onChangeItemName(text);
+                setErrorMessage("");
               }}
-              checked={isGrocery}
-            ></CheckBox>
-          </View>
+            />
 
-          <View className="w-[80vw] flex items-left mt-4">
-            <View className="flex-row">
-              <Text>{t("is_recurring")}</Text>
-              <Pressable onPress={() => setShowingInfo(!showingInfo)}>
-                <Feather name="info" size={20} color="black" className="pl-2" />
-              </Pressable>
-            </View>
+            <LabelledTextInput
+              labelText={t("item_desc")}
+              inputText={desc}
+              onChangeText={setDesc}
+            />
 
-            {showingInfo && (
-              <Text
-                className="bg-white p-1 m-1 border-2"
-                onPress={() => {
-                  setShowingInfo(false);
-                }}
-              >
-                {t("recurring_info")}
-                {<MaterialIcons name="loop" size={22} color="black" />}
-              </Text>
+            <LabelledTextInput
+              labelText={t("category_optional")}
+              inputText={category}
+              onChangeText={(text) => {
+                setCategory(text);
+                setErrorMessage("");
+              }}
+              onPress={() => {
+                setShowCategories(true);
+                setCategory("");
+                setErrorMessage("");
+              }}
+              onEndEditing={() => {
+                setShowCategories(false);
+              }}
+            />
+            {showCategories && (
+              <CategoryList
+                category={category}
+                categories={categories}
+                matching_categories={matching_categories}
+                setCategory={setCategory}
+                setCategories={setCategories}
+              />
             )}
 
-            <CheckBox
-              onPress={() => {
-                setIsRecurring(!isRecurring);
+            <View className="w-[80vw] flex items-left mt-4">
+              <Text>{t("is_grocery")}</Text>
+              <CheckBox
+                onPress={() => {
+                  setIsGrocery(!isGrocery);
+                }}
+                checked={isGrocery}
+              ></CheckBox>
+            </View>
+
+            <View className="w-[80vw] flex items-left mt-4">
+              <View className="flex-row">
+                <Text>{t("is_recurring")}</Text>
+                <Pressable onPress={() => setShowingInfo(!showingInfo)}>
+                  <Feather
+                    name="info"
+                    size={20}
+                    color="black"
+                    className="pl-2"
+                  />
+                </Pressable>
+              </View>
+
+              {showingInfo && (
+                <Text
+                  className="bg-white p-1 m-1 border-2"
+                  onPress={() => {
+                    setShowingInfo(false);
+                  }}
+                >
+                  {t("recurring_info")}
+                  {<MaterialIcons name="loop" size={22} color="black" />}
+                </Text>
+              )}
+
+              <CheckBox
+                onPress={() => {
+                  setIsRecurring(!isRecurring);
+                }}
+                checked={isRecurring}
+              ></CheckBox>
+            </View>
+
+            <AddButtonPair
+              type="item"
+              errorMessage={errorMessage}
+              canAddCheck={canAddItemCheck}
+              add={() => {
+                addItem({
+                  name: itemName,
+                  category: category,
+                  date: null,
+                  desc: desc,
+                  isGrocery: isGrocery,
+                  isRecurring: isRecurring,
+                  isPurchased: false,
+                });
+                onChangeItemName("");
+                setIsGrocery(true);
+                setIsRecurring(false);
               }}
-              checked={isRecurring}
-            ></CheckBox>
-          </View>
-
-          <AddButtonPair
-            type="item"
-            errorMessage={errorMessage}
-            canAddCheck={canAddItemCheck}
-            add={() => {
-              addItem({
-                name: itemName,
-                category: category,
-                date: null,
-                desc: desc,
-                isGrocery: isGrocery,
-                isRecurring: isRecurring,
-                isPurchased: false,
-              });
-              onChangeItemName("");
-              setIsGrocery(true);
-              setIsRecurring(false);
-            }}
-            doToast={(n: number) => {
-              setRootActive(n);
-            }}
-          />
-
+              doToast={(n: number) => {
+                setRootActive(n);
+              }}
+            />
+          </KeyboardAvoidingView>
           <CloseButton close={close} />
         </View>
       </RootSiblingParent>

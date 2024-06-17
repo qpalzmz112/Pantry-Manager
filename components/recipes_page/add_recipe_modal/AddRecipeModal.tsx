@@ -91,9 +91,15 @@ export default function AddRecipeModal({ recipe, close }: props) {
 
   return (
     <Modal transparent={false} onRequestClose={close}>
-      <KeyboardAvoidingView behavior="position">
-        <RootSiblingParent inactive={rootActive >= 2 ? false : true}>
-          <View className="w-[100vw] h-[100vh] bg-gray-100 flex-col justify-center items-center">
+      <RootSiblingParent inactive={rootActive >= 2 ? false : true}>
+        <View className="w-[100vw] h-[100vh] bg-gray-100 flex-col justify-center items-center">
+          <KeyboardAvoidingView
+            behavior="position"
+            contentContainerStyle={{
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
             <LabelledTextInput
               labelText={t("item_name")}
               inputText={recipeName}
@@ -202,11 +208,10 @@ export default function AddRecipeModal({ recipe, close }: props) {
                 }}
               />
             )}
-
-            <CloseButton close={close} />
-          </View>
-        </RootSiblingParent>
-      </KeyboardAvoidingView>
+          </KeyboardAvoidingView>
+          <CloseButton close={close} />
+        </View>
+      </RootSiblingParent>
     </Modal>
   );
 }

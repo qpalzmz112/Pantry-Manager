@@ -6,16 +6,20 @@ import { AntDesign } from "@expo/vector-icons";
 import ChangeCategoryModal from "../ChangeCategoryModal";
 import DeleteSomethingModal from "../DeleteSomethingModal";
 import AddRecipeModal from "./add_recipe_modal/AddRecipeModal";
+import { useTranslation } from "react-i18next";
 
 export default function ListItem({
   recipe,
+  missingIngredients,
   updateCategory,
   deleteRecipe,
 }: {
   recipe: Recipe;
+  missingIngredients: number;
   updateCategory: (c: string) => void;
   deleteRecipe: (n: string) => void;
 }) {
+  const { t } = useTranslation();
   const [showingDelete, setShowingDelete] = useState(false);
   const [showInfoModal, setShowInfoModal] = useState(false);
   const [showCategoryModal, setShowCategoryModal] = useState(false);
@@ -36,6 +40,9 @@ export default function ListItem({
         >
           <View className="flex-col">
             <Text className="text-xl">{recipe.name}</Text>
+            <Text className="text-md text-gray-500">{`${t(
+              "missing_ingredients"
+            )} ${missingIngredients}`}</Text>
           </View>
 
           <Pressable

@@ -92,6 +92,8 @@ const en = {
   recipe_category: "Category",
   delete_recipe_category_info:
     "The recipes in this category will remain, but will be uncategorized.",
+  sort_recipes_by_ingredients: "Sort recipes by available ingredients:",
+  missing_ingredients: "Missing Ingredients:",
 
   // Add Recipe Modal
   recipe_ingredient: "Ingredient",

@@ -10,7 +10,26 @@ export function get_matching_categories(c: string, recipes: Recipes) {
 
 const sortByName = (a: Recipe, b: Recipe) => a.name.localeCompare(b.name);
 
-const filterNoSearch = (recipes: Recipes, collapsedCategories: any) => {
+const filterNoSearch = (
+  recipes: Recipes,
+  collapsedCategories: any,
+  recipesToMissingIngredients?: { [name: string]: number }
+) => {
+  const sortByIngredients = (a: Recipe, b: Recipe) => {
+    if (
+      recipesToMissingIngredients![a.name] <
+      recipesToMissingIngredients![b.name]
+    ) {
+      return -1;
+    } else if (
+      recipesToMissingIngredients![b.name] <
+      recipesToMissingIngredients![a.name]
+    ) {
+      return 1;
+    }
+    return 0;
+  };
+
   // get names of nonempty categories: string[]
   let names = Object.keys(recipes).filter((c) => recipes[c].length > 0);
 
@@ -19,7 +38,9 @@ const filterNoSearch = (recipes: Recipes, collapsedCategories: any) => {
     if (collapsedCategories[name]) {
       return { title: name, data: [] };
     }
-    let data = recipes[name].sort(sortByName);
+    let data = recipes[name].sort(
+      recipesToMissingIngredients ? sortByIngredients : sortByName
+    );
     return { title: name, data: data };
   });
   return sorted;
@@ -29,11 +50,17 @@ const filterNoSearch = (recipes: Recipes, collapsedCategories: any) => {
 export function filterBySearch(
   search: string,
   recipes: Recipes,
-  collapsedCategories: any
+  collapsedCategories: any,
+  recipesToMissingIngredients?: { [name: string]: number }
 ) {
   if (search == "") {
-    return filterNoSearch(recipes, collapsedCategories);
+    return filterNoSearch(
+      recipes,
+      collapsedCategories,
+      recipesToMissingIngredients ? recipesToMissingIngredients : undefined
+    );
   }
+
   let filteredCategories = Object.keys(recipes).map((category) => {
     let ingredients = recipes[category].filter(({ name }) =>
       name.toLowerCase().includes(search.toLowerCase())
@@ -79,4 +106,24 @@ export function missingIngredients(
   return recipeIngredients
     .filter((i) => !hasIngredient(listIngredients, i.name))
     .filter((i) => !inShoppingList.map((ing) => ing.name).includes(i.name));
+}
+
+export function countMissingIngredients(
+  listIngredients: Categories,
+  recipe: Recipe
+) {
+  return missingIngredients(listIngredients, recipe.ingredients, []).length;
+}
+
+export function makeMissingIngredientDict(
+  listIngredients: Categories,
+  recipes: Recipes
+) {
+  let res: { [name: string]: number } = {};
+  Object.keys(recipes).map((category) => {
+    recipes[category].map(
+      (r) => (res[r.name] = countMissingIngredients(listIngredients, r))
+    );
+  });
+  return res;
 }
