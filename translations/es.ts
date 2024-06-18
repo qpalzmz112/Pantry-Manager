@@ -5,9 +5,9 @@ const es = {
   "Non-Grocery Items": "No comestibles",
 
   // Add item modal
-  item_name: "Nombre:",
+  item_name: "Nombre (requerida):",
   item_desc: "Descripción:",
-  category_optional: "Categoría (opcional):",
+  category_input: "Categoría:",
   is_grocery: "¿Comestible?",
   is_recurring: "¿Compra recurrente?",
   recurring_info:

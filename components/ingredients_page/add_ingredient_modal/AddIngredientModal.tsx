@@ -90,15 +90,7 @@ export default function AddIngredientModal({
   return (
     <Modal transparent={false} onRequestClose={close}>
       <RootSiblingParent inactive={rootActive == 2 ? false : true}>
-        <ScrollView
-          className="w-[100vw] h-[100vh] bg-gray-100 flex-col"
-          contentContainerStyle={{
-            paddingTop: 175,
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-          keyboardShouldPersistTaps="always"
-        >
+        <View className="w-[100vw] h-[100vh] bg-gray-100 flex-col justify-center items-center">
           <KeyboardAvoidingView
             behavior="position"
             className="flex-col"
@@ -106,6 +98,7 @@ export default function AddIngredientModal({
               alignItems: "center",
               justifyContent: "center",
             }}
+            keyboardVerticalOffset={40}
           >
             <LabelledTextInput
               labelText={t("item_name")}
@@ -125,7 +118,7 @@ export default function AddIngredientModal({
             />
 
             <LabelledTextInput
-              labelText={t("category_optional")}
+              labelText={t("category_input")}
               inputText={category}
               onChangeText={(text) => {
                 onChangeCategory(text);
@@ -150,60 +143,61 @@ export default function AddIngredientModal({
                 setCategories={setCategories}
               />
             )}
-
-            <DateInput date={date} onChangeDate={setDate} />
-
-            {date && (
-              <View className="flex-row gap-2">
-                <Text className="bg-amber-200 p-2 rounded-lg text-center flex-1">
-                  {t("expiring_soon")}
-                </Text>
-                <Text className="bg-red-300 p-2 rounded-lg text-center flex-1">
-                  {t("expired")}
-                </Text>
-              </View>
-            )}
-
-            <AddButtonPair
-              type="ingredient"
-              errorMessage={errorMessage}
-              canAddCheck={canAddIngredientCheck}
-              add={() => {
-                let c = { ...categories };
-                c[category].push({
-                  name: name,
-                  desc: desc,
-                  useByDate: date,
-                  category: category,
-                });
-                // make appropriate notification if date != null
-                if (date != null) {
-                  schedulePushNotification(name, date).then((val) => {
-                    if (val == null) {
-                      return;
-                    }
-                    let id = val[0];
-                    let notif_date = val[1];
-                    setNotifications({
-                      ...notifications,
-                      [name]: [id, `${notif_date}`],
-                    });
-                  });
-                }
-
-                setCategories(c);
-                onChangeName("");
-                onChangeCategory("");
-                setDesc("");
-                setDate(null);
-              }}
-              doToast={(n: number) => {
-                setRootActive(n);
-              }}
-            />
           </KeyboardAvoidingView>
+
+          <DateInput date={date} onChangeDate={setDate} />
+
+          {date && (
+            <View className="flex-row gap-2 max-w-[80vw]">
+              <Text className="bg-amber-200 p-2 rounded-lg text-center flex-1">
+                {t("expiring_soon")}
+              </Text>
+              <Text className="bg-red-300 p-2 rounded-lg text-center flex-1">
+                {t("expired")}
+              </Text>
+            </View>
+          )}
+
+          <AddButtonPair
+            type="ingredient"
+            errorMessage={errorMessage}
+            canAddCheck={canAddIngredientCheck}
+            add={() => {
+              let c = { ...categories };
+              c[category].push({
+                name: name,
+                desc: desc,
+                useByDate: date,
+                category: category,
+              });
+              // make appropriate notification if date != null
+              if (date != null) {
+                schedulePushNotification(name, date).then((val) => {
+                  if (val == null) {
+                    return;
+                  }
+                  let id = val[0];
+                  let notif_date = val[1];
+                  setNotifications({
+                    ...notifications,
+                    [name]: [id, `${notif_date}`],
+                  });
+                });
+              }
+
+              setCategories(c);
+              onChangeName("");
+              onChangeCategory("");
+              setDesc("");
+              setDate(null);
+            }}
+            doToast={(n: number) => {
+              setRootActive(n);
+            }}
+          />
+
           <CloseButton close={close} />
-        </ScrollView>
+        </View>
       </RootSiblingParent>
     </Modal>
   );

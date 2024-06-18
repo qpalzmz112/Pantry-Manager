@@ -5,9 +5,9 @@ const en = {
   "Non-Grocery Items": "Non-Grocery Items",
 
   // Add item modal
-  item_name: "Name:",
+  item_name: "Name (Required):",
   item_desc: "Description:",
-  category_optional: "Category (optional):",
+  category_input: "Category:",
   is_grocery: "Grocery Item?",
   is_recurring: "Recurring Purchase?",
   recurring_info:

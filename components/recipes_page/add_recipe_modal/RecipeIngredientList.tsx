@@ -159,7 +159,7 @@ export default function RecipeIngredientList({
           }}
         />
       </View>
-      {showIngredients && (
+      {showIngredients && ingredients.length > 0 && (
         <View className="flex-row gap-2 mt-2">
           <Text className="bg-amber-200 p-2 rounded-lg text-center flex-1">
             {t("in_list")}

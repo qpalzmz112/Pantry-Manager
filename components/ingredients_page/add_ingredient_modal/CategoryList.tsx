@@ -1,8 +1,6 @@
-import { View, Text, Pressable, Keyboard } from "react-native";
+import { View, Text, Pressable, Keyboard, ScrollView } from "react-native";
 import * as Haptics from "expo-haptics";
 import Category from "./Category";
-import { Categories } from "@/types/ingredients";
-import { Recipes } from "@/types/recipe";
 
 export default function CategoryList({
   category,
@@ -18,7 +16,10 @@ export default function CategoryList({
   setCategories: (c: any) => void;
 }) {
   return (
-    <>
+    <ScrollView
+      className="max-h-[25vh] bg-white rounded-lg max-w-[80vw] h-auto grow-0"
+      keyboardShouldPersistTaps="always"
+    >
       {matching_categories.length > 0 && (
         <View className="w-[80vw] flex-row flex-wrap">
           {matching_categories.map((name) => (
@@ -51,6 +52,6 @@ export default function CategoryList({
           <Text className="text-xl">Add new category: {category}</Text>
         </Pressable>
       )}
-    </>
+    </ScrollView>
   );
 }

@@ -105,7 +105,7 @@ export default function AddItemModal({
             />
 
             <LabelledTextInput
-              labelText={t("category_optional")}
+              labelText={t("category_input")}
               inputText={category}
               onChangeText={(text) => {
                 setCategory(text);
@@ -129,77 +129,73 @@ export default function AddItemModal({
                 setCategories={setCategories}
               />
             )}
-
-            <View className="w-[80vw] flex items-left mt-4">
-              <Text>{t("is_grocery")}</Text>
-              <CheckBox
-                onPress={() => {
-                  setIsGrocery(!isGrocery);
-                }}
-                checked={isGrocery}
-              ></CheckBox>
-            </View>
-
-            <View className="w-[80vw] flex items-left mt-4">
-              <View className="flex-row">
-                <Text>{t("is_recurring")}</Text>
-                <Pressable onPress={() => setShowingInfo(!showingInfo)}>
-                  <Feather
-                    name="info"
-                    size={20}
-                    color="black"
-                    className="pl-2"
-                  />
-                </Pressable>
-              </View>
-
-              {showingInfo && (
-                <View className="bg-white p-2 my-1 rounded-lg flex">
-                  <Text
-                    className="leading-6 text-center text-gray-500"
-                    onPress={() => {
-                      setShowingInfo(false);
-                    }}
-                  >
-                    {t("recurring_info")}
-                  </Text>
-                  <Text className="grow text-center">
-                    {<MaterialIcons name="loop" size={24} color="gray" />}
-                  </Text>
-                </View>
-              )}
-
-              <CheckBox
-                onPress={() => {
-                  setIsRecurring(!isRecurring);
-                }}
-                checked={isRecurring}
-              ></CheckBox>
-            </View>
-
-            <AddButtonPair
-              type="item"
-              errorMessage={errorMessage}
-              canAddCheck={canAddItemCheck}
-              add={() => {
-                addItem({
-                  name: itemName,
-                  category: category,
-                  date: null,
-                  desc: desc,
-                  isGrocery: isGrocery,
-                  isRecurring: isRecurring,
-                  isPurchased: false,
-                });
-                onChangeItemName("");
-                setIsGrocery(true);
-                setIsRecurring(false);
-              }}
-              doToast={(n: number) => {
-                setRootActive(n);
-              }}
-            />
           </KeyboardAvoidingView>
+
+          <View className="w-[80vw] flex items-left mt-4">
+            <Text>{t("is_grocery")}</Text>
+            <CheckBox
+              onPress={() => {
+                setIsGrocery(!isGrocery);
+              }}
+              checked={isGrocery}
+            ></CheckBox>
+          </View>
+
+          <View className="w-[80vw] flex items-left mt-4">
+            <View className="flex-row">
+              <Text>{t("is_recurring")}</Text>
+              <Pressable onPress={() => setShowingInfo(!showingInfo)}>
+                <Feather name="info" size={20} color="black" className="pl-2" />
+              </Pressable>
+            </View>
+
+            {showingInfo && (
+              <View className="bg-white p-2 my-1 rounded-lg flex">
+                <Text
+                  className="leading-6 text-center text-gray-500"
+                  onPress={() => {
+                    setShowingInfo(false);
+                  }}
+                >
+                  {t("recurring_info")}
+                </Text>
+                <Text className="grow text-center">
+                  {<MaterialIcons name="loop" size={24} color="gray" />}
+                </Text>
+              </View>
+            )}
+
+            <CheckBox
+              onPress={() => {
+                setIsRecurring(!isRecurring);
+              }}
+              checked={isRecurring}
+            ></CheckBox>
+          </View>
+
+          <AddButtonPair
+            type="item"
+            errorMessage={errorMessage}
+            canAddCheck={canAddItemCheck}
+            add={() => {
+              addItem({
+                name: itemName,
+                category: category,
+                date: null,
+                desc: desc,
+                isGrocery: isGrocery,
+                isRecurring: isRecurring,
+                isPurchased: false,
+              });
+              onChangeItemName("");
+              setIsGrocery(true);
+              setIsRecurring(false);
+            }}
+            doToast={(n: number) => {
+              setRootActive(n);
+            }}
+          />
+
           <CloseButton close={close} />
         </View>
       </RootSiblingParent>

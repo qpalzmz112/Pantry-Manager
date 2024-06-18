@@ -109,7 +109,7 @@ export default function AddRecipeModal({ recipe, close }: props) {
               }}
             />
             <LabelledTextInput
-              labelText={t("category_optional")}
+              labelText={t("category_input")}
               inputText={category}
               onChangeText={(text) => {
                 setCategory(text);
