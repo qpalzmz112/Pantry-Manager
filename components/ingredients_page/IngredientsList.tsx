@@ -26,7 +26,7 @@ export default function IngredientsList({
   );
   const [search, setSearch] = useState("");
   return (
-    <View className="h-[79vh]">
+    <View className="shrink">
       <SearchBar
         search={search}
         setSearch={setSearch}

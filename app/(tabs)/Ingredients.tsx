@@ -36,7 +36,7 @@ export default function Ingredients() {
   };
 
   return (
-    <View>
+    <View className="h-screen flex-col flex-initial">
       <StatusBar hidden={false} style="dark" />
       <Stack.Screen options={{ headerRight: () => <SettingsButton /> }} />
 
@@ -65,7 +65,7 @@ export default function Ingredients() {
         setDeletingCategory={setDeletingCategory}
       />
 
-      <View className="w-[100vw] flex-row justify-center">
+      <View className="w-[100vw] flex-row justify-center mt-auto mb-1">
         <Button
           text={<Entypo name="plus" size={24} color="black" />}
           pressableClass="m-1 bg-gray-300 rounded-3xl w-[45vw]"

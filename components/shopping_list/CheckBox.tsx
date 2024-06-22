@@ -16,7 +16,7 @@ export default function CheckBox({
 }: CheckBoxProps) {
   return (
     <Pressable
-      className={`border-2 rounded-lg ${borderColor} ${bgColor} flex items-center justify-center ${className}`}
+      className={`border-2 rounded-lg ${borderColor} ${bgColor} flex items-center justify-center ${className} self-start`}
       onPress={() => {
         onPress();
       }}

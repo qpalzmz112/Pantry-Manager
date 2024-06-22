@@ -55,7 +55,7 @@ export default function ShoppingList() {
   };
 
   return (
-    <View className="h-[85.5vh] border-2">
+    <View className="h-screen flex-col flex-initial">
       <StatusBar hidden={false} style="dark" />
       <Stack.Screen options={{ headerRight: () => <SettingsButton /> }} />
 
@@ -127,7 +127,7 @@ export default function ShoppingList() {
         )}
       />
 
-      <View className="w-[100vw] flex-row justify-center gap-2 mb-1.5">
+      <View className="w-[100vw] flex-row justify-center mt-auto mb-2 gap-3">
         <Button
           text={<Entypo name="plus" size={24} color="black" />}
           pressableClass="bg-gray-300 rounded-3xl w-[45vw]"
