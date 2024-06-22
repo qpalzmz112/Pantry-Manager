@@ -38,7 +38,7 @@ export default function Recipes() {
   };
 
   return (
-    <View className="h-screen flex-col flex-initial">
+    <View className="h-screen flex-col flex-initial gap-1">
       <StatusBar hidden={false} style="dark" />
       <Stack.Screen options={{ headerRight: () => <SettingsButton /> }} />
 

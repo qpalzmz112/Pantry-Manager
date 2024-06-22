@@ -55,7 +55,7 @@ export default function ShoppingList() {
   };
 
   return (
-    <View className="h-screen flex-col flex-initial gap-1">
+    <View className="h-screen flex-col flex-initial gap-2">
       <StatusBar hidden={false} style="dark" />
       <Stack.Screen options={{ headerRight: () => <SettingsButton /> }} />
 

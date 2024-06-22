@@ -43,7 +43,7 @@ export default function RecipeList({
   }, [recipes, categories]);
 
   return (
-    <View className="h-[79vh]">
+    <View className="shrink">
       <SearchBar
         search={search}
         setSearch={setSearch}
