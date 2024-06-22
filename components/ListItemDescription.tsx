@@ -17,6 +17,12 @@ export default function ListItemDescription({
 }: props) {
   const [pressed, setPressed] = useState(false);
   const [showIcon, setShowIcon] = useState(text.length == 0);
+  if (text.length == 0) {
+    if (!showIcon) {
+      setShowIcon(true); // not sure why this is necessary...
+    }
+  }
+
   Keyboard.addListener("keyboardDidHide", () => setShowIcon(text.length == 0));
 
   return (

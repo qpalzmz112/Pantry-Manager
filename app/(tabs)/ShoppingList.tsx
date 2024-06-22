@@ -19,6 +19,8 @@ import { sortItems } from "@/code/sort_items";
 import { useTranslation } from "react-i18next";
 import { SettingsButton } from "@/components/index";
 
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 export default function ShoppingList() {
   const { t } = useTranslation();
   const [addModalVisible, setAddModalVisible] = useState(false);
@@ -53,9 +55,11 @@ export default function ShoppingList() {
   };
 
   return (
-    <View className="h-[85.5vh]">
+    <View className="h-[85.5vh] border-2">
       <StatusBar hidden={false} style="dark" />
       <Stack.Screen options={{ headerRight: () => <SettingsButton /> }} />
+
+      {/* <Button text="clear data" onPress={() => AsyncStorage.clear()} /> */}
 
       <SectionList
         keyboardShouldPersistTaps="always"
@@ -123,10 +127,10 @@ export default function ShoppingList() {
         )}
       />
 
-      <View className="w-[100vw] flex-row justify-center">
+      <View className="w-[100vw] flex-row justify-center gap-2 mb-1.5">
         <Button
           text={<Entypo name="plus" size={24} color="black" />}
-          pressableClass="m-1 bg-gray-300 rounded-3xl w-[45vw]"
+          pressableClass="bg-gray-300 rounded-3xl w-[45vw]"
           pressedClass="bg-gray-400"
           textClass="text-center text-xl py-2 font-medium"
           onPress={() => {
@@ -141,7 +145,7 @@ export default function ShoppingList() {
               color={items.length == 0 ? "gray" : "black"}
             />
           }
-          pressableClass="m-1 bg-gray-300 rounded-3xl w-[45vw]"
+          pressableClass="bg-gray-300 rounded-3xl w-[45vw]"
           pressedClass="bg-gray-400"
           textClass="text-center text-xl py-2 font-medium"
           onPress={() => setClearModalVisible(true)}

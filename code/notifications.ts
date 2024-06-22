@@ -25,9 +25,11 @@ export default function Notification() {
   t = useTranslation().t;
 
   useEffect(() => {
-    registerForPushNotificationsAsync().then((token: any) =>
-      setExpoPushToken(token)
-    );
+    registerForPushNotificationsAsync().then((token: any) => {
+      // if token is null, turn notifs off in settings context
+      // when notifs are turned on, request permissions again if not already granted
+      setExpoPushToken(token);
+    });
 
     notificationListener.current =
       Notifications.addNotificationReceivedListener((notification: any) => {
@@ -148,7 +150,7 @@ async function registerForPushNotificationsAsync() {
     finalStatus = status;
   }
   if (finalStatus !== "granted") {
-    alert("Failed to get push token for push notification!");
+    //alert("Failed to get push token for push notification!");
     return;
   }
   token = (await Notifications.getExpoPushTokenAsync()).data;

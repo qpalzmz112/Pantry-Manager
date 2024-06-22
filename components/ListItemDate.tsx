@@ -32,7 +32,7 @@ export default function ListItemDate({
       <Button
         text={<AntDesign name="calendar" size={24} color="gray" />}
         textClass=""
-        pressableClass="mr-2 bg-gray-200 rounded-lg p-1"
+        pressableClass="mr-2 bg-gray-200 rounded-lg px-2"
         pressedClass="bg-gray-400"
         onPress={() => showModal(true)}
       />

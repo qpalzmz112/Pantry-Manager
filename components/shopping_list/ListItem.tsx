@@ -44,7 +44,7 @@ export default function ListItem({
       >
         <View className="flex-col">
           <View className="flex-row">
-            <Text className="text-xl mr-3">{item.name}</Text>
+            <Text className="text-xl mr-2">{item.name}</Text>
             {item.isRecurring && (
               <MaterialIcons name="loop" size={22} color="black" />
             )}

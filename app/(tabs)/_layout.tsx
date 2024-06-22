@@ -93,6 +93,15 @@ export default function TabLayout() {
       setLoadedSettings(true);
       if (val != null) {
         setSettings(val);
+      } else {
+        let d = new Date();
+        d.setUTCHours(10);
+        d.setUTCMinutes(0);
+        setSettings({
+          notifs_on: true, ///// not always
+          expir_notif_days: 1,
+          expir_notif_time: d.valueOf(),
+        });
       }
     });
     get_data("notifications").then((val) => {
