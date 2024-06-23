@@ -49,9 +49,6 @@ export default function SettingsModal({ close }: { close: () => void }) {
           disabled={!notifsEnabled}
           value={settings.notifs_on}
           onValueChange={(val) => {
-            Notifications.getAllScheduledNotificationsAsync().then((val) =>
-              console.log(val)
-            );
             // turning notifications on
             if (val) {
               setSettings({ ...settings, notifs_on: true });
