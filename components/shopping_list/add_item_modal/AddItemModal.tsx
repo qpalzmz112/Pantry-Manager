@@ -188,7 +188,8 @@ export default function AddItemModal({
                 isPurchased: false,
               });
               onChangeItemName("");
-              setIsGrocery(true);
+              setDesc("");
+              setCategory("");
               setIsRecurring(false);
             }}
             doToast={(n: number) => {
