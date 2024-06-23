@@ -19,8 +19,6 @@ import { sortItems } from "@/code/sort_items";
 import { useTranslation } from "react-i18next";
 import { SettingsButton } from "@/components/index";
 
-import AsyncStorage from "@react-native-async-storage/async-storage";
-
 export default function ShoppingList() {
   const { t } = useTranslation();
   const [addModalVisible, setAddModalVisible] = useState(false);
@@ -58,8 +56,6 @@ export default function ShoppingList() {
     <View className="h-screen flex-col flex-initial gap-2">
       <StatusBar hidden={false} style="dark" />
       <Stack.Screen options={{ headerRight: () => <SettingsButton /> }} />
-
-      {/* <Button text="clear data" onPress={() => AsyncStorage.clear()} /> */}
 
       <SectionList
         keyboardShouldPersistTaps="always"

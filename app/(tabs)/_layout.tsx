@@ -16,6 +16,7 @@ import { Item } from "@/types/shopping_list";
 import { Categories } from "@/types/ingredients";
 import { Recipes } from "@/types/recipe";
 import { useTranslation } from "react-i18next";
+import Notification from "@/code/notifications";
 
 export default function TabLayout() {
   const { t } = useTranslation();
@@ -94,11 +95,12 @@ export default function TabLayout() {
       if (val != null) {
         setSettings(val);
       } else {
+        // default value for settings
         let d = new Date();
         d.setUTCHours(10);
         d.setUTCMinutes(0);
         setSettings({
-          notifs_on: true, ///// not always
+          notifs_on: false, // gets turned on in notifications.ts
           expir_notif_days: 1,
           expir_notif_time: d.valueOf(),
         });
@@ -125,6 +127,7 @@ export default function TabLayout() {
             value={{ data: categories, update: setCategories }}
           >
             <ItemContext.Provider value={{ data: items, update: updateItems }}>
+              <Notification />
               <StatusBar style="dark" />
               <Tabs
                 screenOptions={{

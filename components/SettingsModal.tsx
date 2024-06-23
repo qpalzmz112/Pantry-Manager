@@ -32,20 +32,35 @@ export default function SettingsModal({ close }: { close: () => void }) {
   const [showTime, setShowTime] = useState(false);
   const [time, setTime] = useState<Date>(new Date(settings.expir_notif_time));
 
+  const [notifsEnabled, setNotifsEnabled] = useState(settings.notifs_on);
+  Notifications.getPermissionsAsync().then((val) => {
+    if (!val.granted) {
+      setNotifsEnabled(false);
+    } else {
+      setNotifsEnabled(true);
+    }
+  });
+
   return (
     <Modal onRequestClose={close}>
       <View className="w-screen h-screen flex items-center justify-center">
         <Text className="text-lg">{t("notif_switch_label")}</Text>
         <Switch
+          disabled={!notifsEnabled}
           value={settings.notifs_on}
           onValueChange={(val) => {
-            setSettings({ ...settings, notifs_on: val });
+            Notifications.getAllScheduledNotificationsAsync().then((val) =>
+              console.log(val)
+            );
+            // turning notifications on
             if (val) {
+              setSettings({ ...settings, notifs_on: true });
               // for each ingredient with a date, add the appropriate notification
               schedulePushNotificationAllIngredients(categories).then((val) =>
                 setNotifications(val)
               );
             } else {
+              setSettings({ ...settings, notifs_on: false });
               Notifications.cancelAllScheduledNotificationsAsync();
               setNotifications({});
             }
@@ -53,6 +68,10 @@ export default function SettingsModal({ close }: { close: () => void }) {
           className="mb-10"
           style={{ transform: [{ scaleX: 1.15 }, { scaleY: 1.15 }] }}
         />
+
+        {!notifsEnabled && (
+          <Text className="text-black max-w-[80vw]">{t("error_notifs")}</Text>
+        )}
 
         <View
           className={`flex items-center justify-center ${

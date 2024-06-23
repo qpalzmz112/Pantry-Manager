@@ -1,10 +1,11 @@
 import * as Notifications from "expo-notifications";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useContext } from "react";
 import { Platform } from "react-native";
 import { date } from "@/types/shopping_list";
 import { get_data } from "./data_functions";
 import { useTranslation } from "react-i18next";
 import { Ingredient, Categories } from "@/types/ingredients";
+import { SettingsContext } from "./settings_context";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -21,13 +22,15 @@ export default function Notification() {
   const [notification, setNotification] = useState(false);
   const notificationListener = useRef<any>();
   const responseListener = useRef<any>();
+  const { data: settings, update: setSettings } = useContext(SettingsContext);
 
   t = useTranslation().t;
 
   useEffect(() => {
     registerForPushNotificationsAsync().then((token: any) => {
-      // if token is null, turn notifs off in settings context
-      // when notifs are turned on, request permissions again if not already granted
+      if (token == null) {
+        setSettings({ ...settings, notifs_on: false });
+      }
       setExpoPushToken(token);
     });
 
@@ -141,7 +144,7 @@ export async function schedulePushNotification(
   return [id, notif_date.toString()];
 }
 
-async function registerForPushNotificationsAsync() {
+export async function registerForPushNotificationsAsync() {
   let token;
   const { status: existingStatus } = await Notifications.getPermissionsAsync();
   let finalStatus = existingStatus;

@@ -79,6 +79,8 @@ const en = {
   info_1:
     "The number of days you will be notified before an ingredient expires:",
   info_2: "The time of day you will be notified:",
+  error_notifs:
+    "Notifications for this app are disabled. Please enable them in the app's settings.",
 
   // Notifications
   notif_text_singular_one: "Your {{ingredient_name}} expires in 1 day.",
