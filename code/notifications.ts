@@ -27,6 +27,11 @@ export default function Notification() {
   t = useTranslation().t;
 
   useEffect(() => {
+    if (settings.notifs_on == false) {
+      // user has already said no to notifications, don't want to keep asking
+      return;
+    }
+
     registerForPushNotificationsAsync().then((token: any) => {
       if (token == null) {
         setSettings({ ...settings, notifs_on: false });
