@@ -21,7 +21,8 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.qpalzm112.PantryManager"
+      "package": "com.qpalzm112.PantryManager",
+      "versionCode": 2
     },
     "web": {
       "bundler": "metro",
