@@ -80,7 +80,7 @@ const es = {
     "El número de días que se le notificará antes de que caduque un ingrediente:",
   info_2: "La hora del día en que se le notificará:",
   error_notifs:
-    "Las notificaciones de esta aplicación están deshabilitadas. Habilítelos en la configuración de la aplicación.",
+    "Las notificaciones de esta aplicación están deshabilitadas. Habilítelos en la configuración de su dispositivo.",
 
   // Notifications
   notif_text_singular_one: "Tu {{ingredient_name}} caduca en 1 día.",
