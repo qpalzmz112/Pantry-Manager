@@ -22,7 +22,7 @@
         "backgroundColor": "#ffffff"
       },
       "package": "com.qpalzm112.PantryManager",
-      "versionCode": 2
+      "versionCode": 3
     },
     "web": {
       "bundler": "metro",
