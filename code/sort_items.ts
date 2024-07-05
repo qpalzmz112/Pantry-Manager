@@ -5,7 +5,7 @@ const sortByName = (a: Item, b: Item) => a.name.localeCompare(b.name);
 const sortByCategory = (a: Item, b: Item) =>
   a.category.localeCompare(b.category);
 
-const sortItems = (items: Item[]) => {
+const sortItemSet = (items: Item[]) => {
   // split items by category
   let categorized = items.filter((i) => i.category != "");
   let categories: { [category: string]: Item[] } = {};
@@ -32,6 +32,20 @@ const sortItems = (items: Item[]) => {
   let uncategorized = items.filter((i) => i.category == "").sort(sortByName);
 
   return sorted.concat(uncategorized);
+};
+
+const sortItemsByPurchased = (items: Item[]) => {
+  let unpurchased = items.filter((i) => !i.isPurchased);
+  let purchased = items.filter((i) => i.isPurchased);
+  return sortItemSet(unpurchased).concat(sortItemSet(purchased));
+};
+
+const sortItems = (items: Item[], sortByPurchased: boolean) => {
+  if (sortByPurchased) {
+    return sortItemsByPurchased(items);
+  } else {
+    return sortItemSet(items);
+  }
 };
 
 export { sortItems, sortByName };

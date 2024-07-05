@@ -5,7 +5,7 @@ import { Recipes } from "@/types/recipe";
 
 export const ItemContext = createContext<{
   data: Item[];
-  update: (i: Item[]) => void;
+  update: (i: any) => void; // i can be Item or prevstate updater function
 }>({ data: [], update: () => {} });
 
 export const CategoryContext = createContext<{

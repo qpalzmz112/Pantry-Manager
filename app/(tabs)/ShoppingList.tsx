@@ -1,4 +1,4 @@
-import { View, SectionList, Text, Pressable, SafeAreaView } from "react-native";
+import { View, SectionList, Text, Pressable } from "react-native";
 import { useState, useEffect, useContext } from "react";
 import { useIsFocused } from "@react-navigation/native";
 import { Stack } from "expo-router";
@@ -15,26 +15,35 @@ import {
 import { Item } from "@/types/shopping_list";
 import { set_tab } from "@/code/data_functions";
 import { ItemContext } from "@/code/data_context";
+import { SettingsContext } from "@/code/settings_context";
 import { sortItems } from "@/code/sort_items";
 import { useTranslation } from "react-i18next";
 import { SettingsButton } from "@/components/index";
 
 export default function ShoppingList() {
   const { t } = useTranslation();
+
+  const [callbackID, setCallbackID] = useState<any>();
+  const [highlightedItems, setHighlightedItems] = useState<{
+    [key: string]: boolean;
+  }>({});
   const [addModalVisible, setAddModalVisible] = useState(false);
   const [clearModalVisible, setClearModalVisible] = useState(false);
+
   const { data: items, update: updateItems } = useContext(ItemContext);
   const [collapsedSections, setCollapsedSections] = useState({
     Groceries: false,
     "Non-Grocery Items": false,
   });
 
-  const isFocused = useIsFocused();
-  useEffect(() => {
-    if (isFocused) {
-      set_tab("ShoppingList");
-    }
-  });
+  const { data: settings } = useContext(SettingsContext);
+
+  // const isFocused = useIsFocused();
+  // useEffect(() => {
+  //   if (isFocused) {
+  //     set_tab("ShoppingList");
+  //   }
+  // });
 
   const updateItem = (itemName: string, fieldName: string, value: any) => {
     if (value == null && fieldName != "date") {
@@ -49,7 +58,34 @@ export default function ShoppingList() {
       return item;
     });
 
-    updateItems(sortItems(newItems));
+    if (fieldName == "isPurchased") {
+      if (value == false) {
+        setHighlightedItems((prev) => {
+          return { ...prev, [itemName]: true };
+        });
+      }
+      updateItems(newItems); // update visuals but don't sort yet
+
+      clearTimeout(callbackID);
+
+      setCallbackID(
+        setTimeout(() => {
+          updateItems((prev: Item[]) =>
+            sortItems(prev, settings.sort_shopping_list)
+          );
+          setCallbackID(null);
+
+          if (value == false) {
+            // going from purchased to un-purchased
+            setTimeout(() => {
+              setHighlightedItems({});
+            }, 350);
+          }
+        }, 500)
+      );
+    } else {
+      updateItems(sortItems(newItems, settings.sort_shopping_list));
+    }
   };
 
   return (
@@ -79,7 +115,13 @@ export default function ShoppingList() {
             collapsedSections[obj.title as keyof typeof collapsedSections]
         )}
         renderItem={({ item }) => (
-          <ListItem item={item} updateItem={updateItem} />
+          <ListItem
+            item={item}
+            updateItem={updateItem}
+            isHighlighted={
+              settings.sort_shopping_list && highlightedItems[item.name]
+            }
+          />
         )}
         renderSectionHeader={({ section: { title } }) => (
           <Pressable
@@ -155,7 +197,9 @@ export default function ShoppingList() {
             setAddModalVisible(false);
           }}
           addItem={(item: Item) => {
-            updateItems(sortItems([...items, item]));
+            updateItems(
+              sortItems([...items, item], settings.sort_shopping_list)
+            );
           }}
           nameAlreadyExists={(name) =>
             items.map((item) => item.name).includes(name, 0)

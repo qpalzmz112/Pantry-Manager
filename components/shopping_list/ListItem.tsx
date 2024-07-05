@@ -15,9 +15,11 @@ import { date_to_display_string } from "@/code/date_utils";
 
 export default function ListItem({
   item,
+  isHighlighted,
   updateItem,
 }: {
   item: Item;
+  isHighlighted: boolean;
   updateItem: (itemName: string, field: string, value: any) => void;
 }) {
   const { t } = useTranslation();
@@ -39,7 +41,11 @@ export default function ListItem({
     >
       <View
         className={`flex-row items-center p-2 mx-1 mb-2 rounded-xl ${
-          isPurchased ? "bg-black opacity-40" : "bg-white"
+          isPurchased
+            ? "bg-black opacity-40"
+            : isHighlighted
+            ? "bg-violet-300"
+            : "bg-white"
         }`}
       >
         <View className="flex-col">

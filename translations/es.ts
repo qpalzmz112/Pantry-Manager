@@ -75,6 +75,8 @@ const es = {
     "Ingrediente eliminado y añadido a la lista de compras.",
 
   // Settings modal
+  sort_shopping_list_label:
+    "Ordenar los artículos comprados al final de la lista de compras:",
   notif_switch_label: "Notificaciones: ",
   info_1:
     "El número de días que se le notificará antes de que caduque un ingrediente:",

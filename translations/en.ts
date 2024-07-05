@@ -75,6 +75,7 @@ const en = {
     "Ingredient deleted and added to shopping list",
 
   // Settings modal
+  sort_shopping_list_label: "Sort purchased items to bottom of shopping list:",
   notif_switch_label: "Notifications: ",
   info_1:
     "The number of days you will be notified before an ingredient expires:",
