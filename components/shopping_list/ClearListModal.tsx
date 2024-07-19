@@ -86,8 +86,10 @@ export default function AddItemModal({ close }: { close: () => void }) {
   };
 
   const clearList = () => {
-    let purchased = items.filter((i) => i.isPurchased && i.isGrocery); // all of these are getting added to categories
-    let toRemove = purchased.filter((i) => !i.isRecurring); // all of these are getting removed from items
+    let purchased = items.filter((i) => i.isPurchased && i.isGrocery); // all of these are getting added to ingredients
+    let toRemove = purchased
+      .filter((i) => !i.isRecurring)
+      .concat(items.filter((i) => !i.isGrocery && i.isPurchased)); // all of these are getting removed from items
     let toUpdate = purchased.filter((i) => i.isRecurring); // all of these are staying but getting updated
 
     addPurchased(purchased);
